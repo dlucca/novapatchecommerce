@@ -1,8 +1,12 @@
 import { retrieveCart } from "@lib/data/cart"
-import CartDropdown from "../cart-dropdown"
+import CartButtonClient from "./cart-button-client"
 
-export default async function CartButton() {
+interface CartButtonProps {
+  scrolled?: boolean
+}
+
+export default async function CartButton({ scrolled = false }: CartButtonProps) {
   const cart = await retrieveCart().catch(() => null)
 
-  return <CartDropdown cart={cart} />
+  return <CartButtonClient cart={cart} scrolled={scrolled} />
 }
