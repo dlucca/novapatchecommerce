@@ -1,4 +1,5 @@
 import { SignIn } from '@clerk/nextjs'
+import Image from 'next/image'
 
 export const metadata = {
   title: "Iniciar Sesión - NovaPatch",
@@ -11,8 +12,9 @@ export default function Page() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-600 mb-2">NovaPatch</h1>
-          <p className="text-gray-600">Bienvenido de vuelta</p>
+          {/* Agregar logo de NovaPatch */}
+          <Image src="../../../images/nav/Logo.svg" alt="Logo de NovaPatch" width={100} height={100} />
+          <Image src="../../../images/nav/Name.svg" alt="Logo de NovaPatch" width={100} height={100} />
         </div>
 
         {/* Clerk SignIn Component */}

@@ -2,6 +2,7 @@ import { Metadata } from "next"
 
 import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
+import ProductPatchesSection from "@modules/home/components/product-patches-section"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 import { featureFlags } from "@lib/feature-flags"
@@ -36,6 +37,9 @@ export default async function Home(props: {
     <div className="min-h-screen">
       {/* Hero Section */}
       <Hero />
+
+      {/* Product Patches Section */}
+      <ProductPatchesSection />
 
       {/* Featured Products Section */}
       {featureFlags.ENABLE_PRODUCTS && collections && region && (

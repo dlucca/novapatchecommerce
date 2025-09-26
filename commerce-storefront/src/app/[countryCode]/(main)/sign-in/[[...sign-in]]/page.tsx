@@ -12,7 +12,6 @@ export default function Page() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-blue-600 mb-2">NovaPatch</h1>
-          <p className="text-gray-600">Bienvenido de vuelta</p>
         </div>
 
         {/* Clerk SignIn Component */}
