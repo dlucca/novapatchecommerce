@@ -19,8 +19,10 @@ import { Fragment, useEffect, useRef, useState } from "react"
 
 const CartDropdown = ({
   cart: cartState,
+  scrolled = false,
 }: {
   cart?: HttpTypes.StoreCart | null
+  scrolled?: boolean
 }) => {
   const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
     undefined
@@ -82,7 +84,11 @@ const CartDropdown = ({
       <Popover className="relative h-full">
         <PopoverButton className="h-full">
           <LocalizedClientLink
-            className="flex items-center text-gray-700 hover:text-blue-600 transition-colors duration-200"
+            className={`flex items-center transition-colors duration-200 ${
+              scrolled
+                ? 'text-gray-700 hover:text-blue-600'
+                : 'text-white hover:text-blue-200'
+            }`}
             href="/cart"
             data-testid="nav-cart-link"
           >
