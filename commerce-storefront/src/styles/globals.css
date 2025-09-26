@@ -2,6 +2,65 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* Novapatch Color Scheme */
+:root {
+  --nova-blue-primary: #2C5697;
+  --nova-blue-secondary: #B7D3E9;
+  --nova-blue-light: #E5F0F9;
+  
+  --nova-teal-primary: #1A8F89;
+  --nova-teal-secondary: #66C0B3;
+  
+  --nova-yellow-primary: #FFD766;
+  --nova-yellow-secondary: #FFF4D6;
+  
+  --nova-gray-dark: #333333;
+  --nova-gray-medium: #777777;
+  --nova-gray-light: #F5F5F5;
+  
+  /* Product Colors */
+  --nova-product-teal: #1A8F89;
+  --nova-product-blue: #2C5697;
+  --nova-product-red: #E85D5D;
+  --nova-product-yellow: #FFCA28;
+  --nova-product-purple: #9C59B6;
+  --nova-product-pink: #E84393;
+  
+  /* Animations & Transitions */
+  --nova-transition-fast: 200ms ease;
+  --nova-transition-medium: 300ms ease;
+  --nova-transition-slow: 500ms ease;
+  
+  /* Focus styles for accessibility */
+  --nova-focus-ring-color: rgba(42, 143, 137, 0.5);
+  --nova-focus-ring-width: 3px;
+}
+
+/* Base Focus Styles for Accessibility */
+*:focus-visible {
+  outline: var(--nova-focus-ring-width) solid var(--nova-focus-ring-color);
+  outline-offset: 2px;
+}
+
+/* Skip to content link for keyboard users */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 1em;
+  z-index: 999;
+  background: white;
+  color: var(--nova-blue-primary);
+  padding: 1em;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform var(--nova-transition-fast);
+}
+
+.skip-to-content:focus {
+  left: 1em;
+  transform: translateY(0);
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
@@ -16,7 +75,146 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+}  
 
+@layer components {
+  /* Typography */
+  .nova-heading-1 {
+    font-size: 2.25rem; /* text-4xl */
+    font-weight: 700; /* font-bold */
+    line-height: 1.2; /* leading-tight */
+    color: var(--nova-blue-primary);
+  }
+  
+  @media (min-width: 768px) {
+    .nova-heading-1 {
+      font-size: 3rem; /* md:text-5xl */
+    }
+  }
+  
+  .nova-heading-2 {
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 700; /* font-bold */
+    line-height: 1.2; /* leading-tight */
+    color: var(--nova-blue-primary);
+  }
+  
+  @media (min-width: 768px) {
+    .nova-heading-2 {
+      font-size: 2.25rem; /* md:text-4xl */
+    }
+  }
+  
+  .nova-heading-3 {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 700; /* font-bold */
+    line-height: 1.2; /* leading-tight */
+    color: var(--nova-blue-primary);
+  }
+  
+  @media (min-width: 768px) {
+    .nova-heading-3 {
+      font-size: 1.875rem; /* md:text-3xl */
+    }
+  }
+  
+  .nova-heading-accent {
+    color: var(--nova-teal-primary);
+  }
+  
+  /* Buttons */
+  .nova-button-primary {
+    border-radius: 9999px; /* rounded-full */
+    padding: 0.75rem 1.5rem; /* px-6 py-3 */
+    font-weight: 500; /* font-medium */
+    transition: all 200ms ease; /* transition-all duration-200 */
+    background-color: var(--nova-teal-primary);
+    color: white;
+  }
+  
+  .nova-button-primary:hover {
+    background-color: var(--nova-blue-primary);
+  }
+  
+  .nova-button-secondary {
+    border-radius: 9999px; /* rounded-full */
+    padding: 0.75rem 1.5rem; /* px-6 py-3 */
+    font-weight: 500; /* font-medium */
+    transition: all 200ms ease; /* transition-all duration-200 */
+    background-color: white;
+    color: var(--nova-teal-primary);
+    border: 1px solid var(--nova-teal-primary);
+  }
+  
+  .nova-button-secondary:hover {
+    background-color: var(--nova-blue-light);
+  }
+  
+  /* Background Colors */
+  .nova-bg-blue-light {
+    background-color: var(--nova-blue-light);
+  }
+  
+  .nova-bg-yellow-light {
+    background-color: var(--nova-yellow-secondary);
+  }
+  
+  /* Product Cards */
+  .nova-product-teal {
+    background-color: var(--nova-product-teal);
+  }
+  
+  .nova-product-blue {
+    background-color: var(--nova-product-blue);
+  }
+  
+  .nova-product-red {
+    background-color: var(--nova-product-red);
+  }
+  
+  .nova-product-yellow {
+    background-color: var(--nova-product-yellow);
+  }
+  
+  .nova-product-purple {
+    background-color: var(--nova-product-purple);
+  }
+  
+  .nova-product-pink {
+    background-color: var(--nova-product-pink);
+  }
+  
+  /* Hero Section */
+  .nova-hero {
+    /* Removing gradient as we'll use the image as background */
+    background-color: transparent;
+  }
+  
+  /* Comparison Table */
+  .nova-check {
+    text-align: center; /* text-center */
+    font-size: 1.125rem; /* text-lg */
+    color: var(--nova-teal-primary);
+  }
+  
+  .nova-x {
+    text-align: center; /* text-center */
+    font-size: 1.125rem; /* text-lg */
+    color: var(--nova-product-red);
+  }
+  
+  /* Mobile Optimization */
+  .nova-mobile-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* grid-cols-2 */
+    gap: 1rem; /* gap-4 */
+  }
+  
+  .nova-mobile-hidden {
+    display: none; /* hidden */
+  }
+}
+
+@layer utilities {
   input:focus ~ label,
   input:not(:placeholder-shown) ~ label {
     @apply -translate-y-2 text-xsmall-regular;
@@ -25,7 +223,7 @@
   input:focus ~ label {
     @apply left-0;
   }
-
+  
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
