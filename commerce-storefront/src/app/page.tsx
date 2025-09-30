@@ -3,7 +3,6 @@ import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 import Nav from "@modules/layout/templates/nav"
 import Footer from "@modules/layout/templates/footer"
-import ProductFeatures from "@components/product/product-features"
 import {
   HeroSection,
   ProductPatchesSection,
@@ -45,7 +44,6 @@ export default async function Home() {
       <Nav />
       <div className="min-h-screen">
         <HeroSection />
-        <ProductFeatures />
         <ProductPatchesSection />
         <ComparisonSection />                   
         <HowItWorksSection />

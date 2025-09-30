@@ -13,7 +13,7 @@ const ProductPatchesSection = () => {
   ]
 
   return (
-    <section className="relative overflow-hidden py-20 my-16">
+    <section className="relative overflow-hidden py-20 mt-44 md:mt-32 mb-16">
       {/* Container principal con el fondo con formas */}
       <div className="w-full">
 
