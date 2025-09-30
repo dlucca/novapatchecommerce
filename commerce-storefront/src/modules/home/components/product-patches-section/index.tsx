@@ -45,7 +45,13 @@ const ProductPatchesSection = () => {
         </div>
 
         {/* Sección de contenido principal - equivalente a .images */}
-        <div className="py-8 md:py-12 w-full" style={{ backgroundColor: "#EFF6FF", borderBottomLeftRadius: '120px' }}>
+        <div className="py-8 md:py-12 w-full relative" style={{ backgroundColor: "#EFF6FF", borderBottomLeftRadius: '120px' }}>
+          {/* Círculos decorativos blancos */}
+          <div className="absolute bottom-80 right-5 flex items-center">
+            <div className="h-6 w-6 md:h-9 md:w-9 bg-white rounded-full mr-1"></div>
+            <div className="h-6 w-6 md:h-9 md:w-9 bg-white rounded-full mr-1"></div>
+            <div className="h-6 w-6 md:h-9 md:w-9 bg-white rounded-full"></div>
+          </div>
           <div className="w-full px-8 md:px-16 lg:px-24 py-8 md:py-12">
             {/* Grid de productos */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
