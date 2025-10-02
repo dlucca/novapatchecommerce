@@ -81,7 +81,7 @@ const ComparisonSection = () => {
                 <thead>
                   <tr>
                     <th
-                      className="text-left py-6 px-4 font-bold text-2xl"
+                      className="text-left py-6 px-4 font-bold text-3xl"
                       style={{ color: "#3d6a96", minWidth: 200 }}
                     >
                       Característica
@@ -90,7 +90,7 @@ const ComparisonSection = () => {
                       <div className="flex flex-col items-center gap-1">
                         <Image
                           src="/images/comparison/namelogo.svg"
-                          width={100}
+                          width={80}
                           height={32}
                           alt="Novapatch"
                         />
@@ -188,7 +188,7 @@ const ComparisonSection = () => {
                   <div className="flex justify-center">
                     <Image
                       src="/images/comparison/namelogo.svg"
-                      width={80}
+                      width={24}
                       height={24}
                       alt="Novapatch"
                     />
