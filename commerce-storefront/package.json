@@ -8,13 +8,14 @@
     "medusa-storefront"
   ],
   "scripts": {
-    "dev": "next dev --turbopack -p 8000",
+    "dev": "next dev -p 8000",
     "build": "next build",
     "start": "next start -p 8000",
     "lint": "next lint",
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
+    "@babel/runtime": "^7.28.4",
     "@clerk/nextjs": "^6.32.2",
     "@headlessui/react": "^2.2.0",
     "@medusajs/js-sdk": "latest",
