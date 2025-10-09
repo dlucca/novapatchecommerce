@@ -1,6 +1,7 @@
 import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
 import { ClerkProvider } from '@clerk/nextjs'
+import ClerkMedusaSyncProvider from "../components/providers/clerk-medusa-sync"
 import "styles/globals.css"
 
 export const metadata: Metadata = {
@@ -34,14 +35,15 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         },
       }}
     >
-      <html lang="es" data-mode="light">
-        <body>
-          {/* Skip to content link for keyboard accessibility */}
-          <a href="#main-content" className="skip-to-content">
-            Saltar al contenido principal
-          </a>
-          
-          <main id="main-content" className="relative">{props.children}</main>
+      <html lang="es" data-mode="light" suppressHydrationWarning>
+        <body suppressHydrationWarning>
+          <ClerkMedusaSyncProvider>
+            <a href="#main-content" className="skip-to-content">
+              Saltar al contenido principal
+            </a>
+            
+            <main id="main-content" className="relative">{props.children}</main>
+          </ClerkMedusaSyncProvider>
         </body>
       </html>
     </ClerkProvider>
