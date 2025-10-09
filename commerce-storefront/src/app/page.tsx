@@ -1,56 +1,22 @@
-import { featureFlags } from "@lib/feature-flags"
-import { listCollections } from "@lib/data/collections"
-import { getRegion } from "@lib/data/regions"
-import Nav from "@modules/layout/templates/nav"
-import Footer from "@modules/layout/templates/footer"
-import {
-  HeroSection,
-  ProductPatchesSection,
-  ComparisonSection,
-  HowItWorksSection,
-  TestimonialsSection,
-  FAQSection
-} from "@modules/home/components"
+import { redirect } from 'next/navigation'
+import { detectUserCountry } from '@lib/util/region-detection'
 
-export const metadata = {
-  title: "Novapatch - Parches Médicos Innovadores",
-  description: "Activa tu bienestar sin complicaciones con nuestros parches médicos innovadores. La forma más limpia y práctica de tomar vitaminas.",
-}
+/**
+ * Página raíz - Redirige automáticamente a la región detectada
+ *
+ * Esta página detecta el país del usuario y redirige a:
+ * - /mx para usuarios de México
+ * - /br para usuarios de Brasil
+ *
+ * La detección se basa en:
+ * 1. Cookie de país guardada (si existe)
+ * 2. Headers de geolocalización (Cloudflare)
+ * 3. Accept-Language header
+ * 4. Fallback a México
+ */
+export default async function RootPage() {
+  const countryCode = await detectUserCountry()
 
-export default async function Home() {
-  // TODO: Obtener región fija para MVP
-  let region = null
-  try {
-    region = await getRegion(featureFlags.FIXED_REGION)
-  } catch (error) {
-    console.log("No se pudo cargar la región:", error)
-  }
-
-  // TODO: Obtener colecciones si están habilitadas
-  let collections = null
-  if (featureFlags.ENABLE_COLLECTIONS && region) {
-    try {
-      const result = await listCollections({
-        fields: "id, handle, title",
-      })
-      collections = result.collections
-    } catch (error) {
-      console.log("No se pudieron cargar las colecciones:", error)
-    }
-  }
-
-  return (
-    <>
-      <Nav />
-      <div className="min-h-screen">
-        <HeroSection />
-        <ProductPatchesSection />
-        <ComparisonSection />                   
-        <HowItWorksSection />
-        <TestimonialsSection />
-        <FAQSection />
-      </div>
-      <Footer />
-    </>
-  )
+  // Redirigir a la región detectada
+  redirect(`/${countryCode}`)
 }
