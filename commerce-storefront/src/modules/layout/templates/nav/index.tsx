@@ -7,7 +7,19 @@ import NavClient from "./nav-client"
 export default async function Nav() {
   let user = null
   try {
-    user = await currentUser()
+    const clerkUser = await currentUser()
+    if (clerkUser) {
+      user = {
+        id: clerkUser.id,
+        firstName: clerkUser.firstName,
+        lastName: clerkUser.lastName,
+        imageUrl: clerkUser.imageUrl,
+        emailAddresses: clerkUser.emailAddresses.map(email => ({
+          id: email.id,
+          emailAddress: email.emailAddress,
+        })),
+      }
+    }
   } catch (error) {
     console.log('Error getting user:', error)
   }

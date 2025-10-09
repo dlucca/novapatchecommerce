@@ -10,9 +10,20 @@ import SideMenu from "@modules/layout/components/side-menu"
 import AuthUserButton from "@components/auth/user-button"
 import { useScroll } from "../../../../hooks/use-scroll"
 
+interface SerializedUser {
+  id: string
+  firstName: string | null
+  lastName: string | null
+  imageUrl: string
+  emailAddresses: Array<{
+    id: string
+    emailAddress: string
+  }>
+}
+
 interface NavClientProps {
   regions: StoreRegion[]
-  user: any
+  user: SerializedUser | null
 }
 
 export default function NavClient({ regions, user }: NavClientProps) {
@@ -21,7 +32,7 @@ export default function NavClient({ regions, user }: NavClientProps) {
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
       <header
-        className={`relative h-16 mx-auto duration-300 transition-all ${
+        className={`relative h-12 sm:h-14 lg:h-16 xl:h-14 2xl:h-12 mx-auto duration-300 transition-all ${
           scrolled
             ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200'
             : 'bg-white/95 backdrop-blur-sm shadow-sm'
@@ -87,14 +98,14 @@ export default function NavClient({ regions, user }: NavClientProps) {
               data-testid="nav-home-link"
             >
               <Image
-                src="/images/nav/Logo.svg"
+                src="/assets/nav/Logo.svg"
                 alt="Novapatch Logo"
                 width={32}
                 height={32}
                 className="h-8 w-8"
               />
               <Image
-                src="/images/nav/Name.svg"
+                src="/assets/nav/Name.svg"
                 alt="Novapatch"
                 width={120}
                 height={24}
