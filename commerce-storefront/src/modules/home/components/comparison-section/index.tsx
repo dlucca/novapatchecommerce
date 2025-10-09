@@ -50,14 +50,14 @@ const ComparisonSection = () => {
       <div className="">
         <div className="text-center mb-12">
           <h2
-            className="text-3xl md:text-4xl lg:text-5xl mb-2"
+            className="text-2xl md:text-4xl lg:text-4xl mb-4"
             style={{ color: "#3d6a96" }}
           >
             La forma más <span className="font-bold">limpia</span> y{" "}
             <span className="font-bold">práctica</span>
           </h2>
           <h2
-            className="text-3xl md:text-4xl lg:text-5xl mb-2"
+            className="text-2xl md:text-4xl lg:text-4xl mb-4"
             style={{ color: "#3d6a96" }}
           >
             de <span className="font-bold">tomar vitaminas</span>
@@ -87,15 +87,18 @@ const ComparisonSection = () => {
                       Característica
                     </th>
                     <th className="text-center py-6 px-6">
-                      <div className="flex flex-col items-center gap-1">
-                        <Image
-                          src="/images/comparison/namelogo.svg"
-                          width={80}
-                          height={32}
-                          alt="Novapatch"
-                        />
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="h-12 flex items-center justify-center">
+                          <Image
+                            src="/assets/comparison/namelogo.svg"
+                            width={120}
+                            height={48}
+                            alt="Novapatch"
+                            className="object-contain"
+                          />
+                        </div>
                         <span
-                          className="text-lg font-bold"
+                          className="text-sm font-bold whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Nuestros parches
@@ -103,15 +106,18 @@ const ComparisonSection = () => {
                       </div>
                     </th>
                     <th className="text-center py-6 px-6">
-                      <div className="flex flex-col items-center gap-1">
-                        <Image
-                          src="/images/comparison/parche.svg"
-                          width={32}
-                          height={32}
-                          alt="Parche"
-                        />
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="h-12 flex items-center justify-center">
+                          <Image
+                            src="/assets/comparison/parche.svg"
+                            width={40}
+                            height={48}
+                            alt="Parche"
+                            className="object-contain"
+                          />
+                        </div>
                         <span
-                          className="text-lg font-bold"
+                          className="text-sm font-bold whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Cápsulas comunes
@@ -119,15 +125,18 @@ const ComparisonSection = () => {
                       </div>
                     </th>
                     <th className="text-center py-6 px-6">
-                      <div className="flex flex-col items-center gap-1">
-                        <Image
-                          src="/images/comparison/bear.svg"
-                          width={32}
-                          height={32}
-                          alt="Osito"
-                        />
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="h-12 flex items-center justify-center">
+                          <Image
+                            src="/assets/comparison/bear.svg"
+                            width={30}
+                            height={48}
+                            alt="Osito"
+                            className="object-contain"
+                          />
+                        </div>
                         <span
-                          className="text-lg font-bold"
+                          className="text-sm font-bold whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Gomitas comunes
@@ -143,7 +152,7 @@ const ComparisonSection = () => {
                       style={{ borderBottom: "1px solid #e0e0e0" }}
                     >
                       <td
-                        className="py-4 px-4 font-bold text-lg"
+                        className="py-4 px-4 font-bold text-sm"
                         style={{ color: "#3d6a96" }}
                       >
                         {feature.name}
@@ -165,7 +174,7 @@ const ComparisonSection = () => {
             {/* Flor decorativa en la esquina izquierda */}
             <div className="absolute -right-12 -top-28 z-10">
               <Image
-                src="/images/features/flower.svg"
+                src="/assets/features/flower.svg"
                 alt="Decoración floral"
                 width={215}
                 height={215}
@@ -187,7 +196,7 @@ const ComparisonSection = () => {
                   </div>
                   <div className="flex justify-center">
                     <Image
-                      src="/images/comparison/namelogo.svg"
+                      src="/assets/comparison/namelogo.svg"
                       width={24}
                       height={24}
                       alt="Novapatch"
@@ -195,7 +204,7 @@ const ComparisonSection = () => {
                   </div>
                   <div className="flex justify-center">
                     <Image
-                      src="/images/comparison/parche.svg"
+                      src="/assets/comparison/parche.svg"
                       width={24}
                       height={24}
                       alt="Parche"
@@ -203,7 +212,7 @@ const ComparisonSection = () => {
                   </div>
                   <div className="flex justify-center">
                     <Image
-                      src="/images/comparison/bear.svg"
+                      src="/assets/comparison/bear.svg"
                       width={24}
                       height={24}
                       alt="Osito"
