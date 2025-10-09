@@ -15,7 +15,7 @@ export default function CountrySelectorClient() {
   
   const currentCountry = (params?.countryCode as CountryCode) || 'mx'
   const countries = getAllCountries()
-  const currentCountryInfo = countries.find(c => c.code === currentCountry)
+  const currentCountryInfo = countries.find(c => c?.code === currentCountry)
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -65,21 +65,21 @@ export default function CountrySelectorClient() {
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
           {countries.map((country) => (
             <button
-              key={country.code}
+              key={country?.code}
               onClick={() => {
-                handleCountryChange(country.code as CountryCode)
+                handleCountryChange(country?.code as CountryCode)
                 setIsOpen(false)
               }}
               className={`w-full flex items-center space-x-3 px-4 py-2 hover:bg-gray-50 transition-colors duration-150 ${
-                country.code === currentCountry ? 'bg-blue-50' : ''
+                country?.code === currentCountry ? 'bg-blue-50' : ''
               }`}
             >
-              <span className="text-xl">{country.flag}</span>
+              <span className="text-xl">{country?.flag}</span>
               <div className="flex-1 text-left">
-                <div className="text-sm font-medium text-gray-900">{country.name}</div>
-                <div className="text-xs text-gray-500">{country.currency}</div>
+                <div className="text-sm font-medium text-gray-900">{country?.name}</div>
+                <div className="text-xs text-gray-500">{country?.currency}</div>
               </div>
-              {country.code === currentCountry && (
+              {country?.code === currentCountry && (
                 <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                   <path
                     fillRule="evenodd"
