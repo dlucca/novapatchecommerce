@@ -13,8 +13,8 @@ export default function Page() {
         {/* Header */}
         <div className="text-center mb-8">
           {/* Agregar logo de NovaPatch */}
-          <Image src="../../../images/nav/Logo.svg" alt="Logo de NovaPatch" width={100} height={100} />
-          <Image src="../../../images/nav/Name.svg" alt="Logo de NovaPatch" width={100} height={100} />
+          <Image src="../../../assets/nav/Logo.svg" alt="Logo de NovaPatch" width={100} height={100} />
+          <Image src="../../../assets/nav/Name.svg" alt="Logo de NovaPatch" width={100} height={100} />
         </div>
 
         {/* Clerk SignIn Component */}

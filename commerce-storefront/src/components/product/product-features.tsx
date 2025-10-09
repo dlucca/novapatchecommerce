@@ -5,37 +5,37 @@ const ProductFeatures = () => {
   // Usamos los archivos SVG que ya existen en la carpeta con tamaños personalizados
   const features = [
     {
-      src: "/images/features/not_sugar-cropped.svg",
+      src: "/assets/features/not_sugar-cropped.svg",
       alt: "Sin azúcar",
       width: 60,
       height: 60
     },
     {
-      src: "/images/features/vegan-cropped.svg",
+      src: "/assets/features/vegan-cropped.svg",
       alt: "100% vegano",
       width: 75, // Hacemos este icono más grande porque parece ser pequeño
       height: 75
     },
     {
-      src: "/images/features/gluten_free-cropped.svg",
+      src: "/assets/features/gluten_free-cropped.svg",
       alt: "Libre de gluten",
       width: 60,
       height: 60
     },
     {
-      src: "/images/features/water_proo-cropped.svg",
+      src: "/assets/features/water_proo-cropped.svg",
       alt: "Resistente al agua",
       width: 60,
       height: 60
     },
     {
-      src: "/images/features/latex-free.svg",
+      src: "/assets/features/latex-free.svg",
       alt: "Sin látex",
       width: 60,
       height: 60
     },
     {
-      src: "/images/features/minutes-cropped.svg",
+      src: "/assets/features/minutes-cropped.svg",
       alt: "Efecto en minutos",
       width: 60,
       height: 60
@@ -48,7 +48,7 @@ const ProductFeatures = () => {
         {/* Flor decorativa en la esquina izquierda */}
         <div className="absolute left-1 top-0">
           <Image 
-            src="/images/features/flower.svg" 
+            src="/assets/features/flower.svg" 
             alt="Decoración floral" 
             width={30} 
             height={30} 

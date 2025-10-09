@@ -10,7 +10,7 @@ const HowItWorksSection = () => {
           <div className="flex-1 flex justify-center items-center">
             <div className="w-full max-w-lg">
               <Image
-                src="/images/work/howwork.svg"
+                src="/assets/work/howwork.svg"
                 alt="Cómo funciona - Parches inteligentes"
                 width={500}
                 height={400}

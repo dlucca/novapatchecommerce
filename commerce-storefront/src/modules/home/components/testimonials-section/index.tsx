@@ -10,17 +10,17 @@ const TestimonialsSection = () => {
     {
       stars: 5,
       text: "Usé el de energía por la mañana y el de sueño en la noche. ¡Una maravilla!",
-      image: "../../../images/testimonials/woman3.svg"
+      image: "../../../assets/testimonials/woman3.svg"
     },
     {
       stars: 5,
       text: "¡Me salvan en el trabajo! Me siento con energía y súper concentrada.",
-      image: "../../../images/testimonials/woman-2.svg"
+      image: "../../../assets/testimonials/woman-2.svg"
     },
     {
       stars: 5,
       text: "Estoy fascinada. ¡El parche de inmunidad diaria es mi favorito!",
-      image: "../../../images/testimonials/woman-1.svg"
+      image: "../../../assets/testimonials/woman-1.svg"
     }
   ]
 
