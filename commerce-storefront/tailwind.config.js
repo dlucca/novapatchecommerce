@@ -34,6 +34,14 @@ module.exports = {
           80: "#1F2937",
           90: "#111827",
         },
+        novapatch: {
+          title: "#3d6a96",      
+          button: "#4e83bb",     
+          footer: "#005088",     
+          band: "#83b5f4",       
+          "bg-light": "#EFF6FF", 
+          testimonial: "#dac70a" 
+        },
       },
       borderRadius: {
         none: "0px",
@@ -140,6 +148,10 @@ module.exports = {
           "0%": { transform: "translateY(-100%)" },
           "100%": { transform: "translateY(0)" },
         },
+        "scroll-features": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         ring: "ring 2.2s cubic-bezier(0.5, 0, 0.5, 1) infinite",
@@ -155,8 +167,25 @@ module.exports = {
         enter: "enter 200ms ease-out",
         "slide-in": "slide-in 1.2s cubic-bezier(.41,.73,.51,1.02)",
         leave: "leave 150ms ease-in forwards",
+        "scroll-features": "scroll-features 40s linear infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-radix")()],
+  plugins: [
+    require("tailwindcss-radix")(),
+    require("tailwindcss-fluid-type")({
+      // Configuración del plugin
+      settings: {
+        fontSizeMin: 1.0, // 16px (base mínimo)
+        fontSizeMax: 1.2, // 19.2px (base máximo)
+        ratioMin: 1.125, // Escala menor en móvil
+        ratioMax: 1.25, // Escala mayor en desktop
+        screenMin: 20, // 320px
+        screenMax: 96, // 1536px (2xl)
+        unit: 'rem',
+        prefix: '~', // Prefijo para clases fluidas
+        extendValues: true,
+      },
+    }),
+  ],
 }
