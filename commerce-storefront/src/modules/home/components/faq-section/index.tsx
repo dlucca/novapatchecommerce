@@ -37,27 +37,37 @@ const FAQSection = () => {
   }
 
   return (
-    <section className="py-12 md:py-16 bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-2 md:mb-4" style={{ color: '#005088' }}>
+    <section className="bg-white" style={{ paddingTop: 'clamp(3rem, 4vw, 4rem)', paddingBottom: 'clamp(3rem, 4vw, 4rem)' }}>
+      <div className="max-w-7xl mx-auto" style={{ paddingLeft: 'clamp(1rem, 2vw, 2rem)', paddingRight: 'clamp(1rem, 2vw, 2rem)' }}>
+        {/* Título - Fluid */}
+        <div className="text-center" style={{ marginBottom: 'clamp(2.5rem, 3vw, 3rem)' }}>
+          <h2
+            className="font-bold text-novapatch-title"
+            style={{ fontSize: 'clamp(1.875rem, 3vw + 0.5rem, 3rem)', marginBottom: 'clamp(0.75rem, 1vw, 1rem)' }}
+          >
             ¿Tienes dudas?
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
+        {/* Grid de FAQs - Fluid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto" style={{ gap: 'clamp(1rem, 1.5vw, 1.5rem)' }}>
           {faqs.map((faq, index) => (
             <div key={index}>
+              {/* Botón de pregunta - Fluid */}
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full text-white font-medium py-4 px-6 rounded-2xl text-left transition-colors duration-200 flex items-center justify-between"
-                style={{ backgroundColor: '#4e83bb' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3d6a96'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4e83bb'}
+                className="w-full text-white font-medium text-left transition-colors duration-200 flex items-center justify-between gap-3 shadow-md hover:shadow-lg bg-novapatch-button hover:bg-novapatch-title"
+                style={{
+                  padding: 'clamp(0.75rem, 1vw, 1rem) clamp(1.25rem, 1.5vw, 1.5rem)',
+                  borderRadius: 'clamp(0.75rem, 1vw, 1rem)',
+                  fontSize: 'clamp(0.875rem, 1vw, 1rem)'
+                }}
               >
-                <span className="text-sm md:text-base">{faq.question}</span>
+                <span className="leading-tight pr-2">
+                  {faq.question}
+                </span>
                 <svg
-                  className={`w-5 h-5 transition-transform duration-200 ${openFAQ === index ? 'rotate-180' : ''}`}
+                  className={`w-[clamp(20px,2vw,24px)] h-[clamp(20px,2vw,24px)] flex-shrink-0 transition-transform duration-200 ${openFAQ === index ? 'rotate-180' : ''}`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -66,21 +76,27 @@ const FAQSection = () => {
                 </svg>
               </button>
 
+              {/* Respuesta expandible - Fluid */}
               {openFAQ === index && (
-                <div className="mt-3 p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm md:text-base text-gray-700">{faq.answer}</p>
+                <div className="bg-gray-50 shadow-inner" style={{ marginTop: 'clamp(0.5rem, 0.75vw, 0.75rem)', padding: 'clamp(1rem, 1.25vw, 1.25rem)', borderRadius: 'clamp(0.5rem, 0.75vw, 0.75rem)' }}>
+                  <p className="text-gray-700 leading-relaxed" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}>
+                    {faq.answer}
+                  </p>
                 </div>
               )}
             </div>
           ))}
         </div>
 
-        <div className="text-center mt-8 md:mt-12">
+        {/* Botón CTA final - Fluid */}
+        <div className="text-center" style={{ marginTop: 'clamp(2.5rem, 3vw, 3rem)' }}>
           <button
-            className="text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200 text-sm"
-            style={{ backgroundColor: '#4e83bb' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3d6a96'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4e83bb'}
+            className="text-white font-medium transition-colors duration-200 shadow-md hover:shadow-lg bg-novapatch-button hover:bg-novapatch-title"
+            style={{
+              padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(2rem, 2.5vw, 2.5rem)',
+              borderRadius: 'clamp(0.5rem, 0.75vw, 0.75rem)',
+              fontSize: 'clamp(0.875rem, 1vw, 1rem)'
+            }}
           >
             Suscríbete y ahorra
           </button>

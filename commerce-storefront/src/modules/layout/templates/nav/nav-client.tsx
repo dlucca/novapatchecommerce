@@ -8,6 +8,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 
 import SideMenu from "@modules/layout/components/side-menu"
 import AuthUserButton from "@components/auth/user-button"
+import CountrySelectorClient from "@modules/layout/components/country-selector/country-selector-client"
 import { useScroll } from "../../../../hooks/use-scroll"
 
 interface SerializedUser {
@@ -116,6 +117,9 @@ export default function NavClient({ regions, user }: NavClientProps) {
 
           {/* Elementos de la Derecha */}
           <div className="hidden md:flex items-center space-x-4 flex-1 justify-end">
+            {/* Selector de País */}
+            <CountrySelectorClient />
+
             {/* Icono de Búsqueda */}
             <button className={`p-2 transition-colors duration-200 ${
               scrolled
