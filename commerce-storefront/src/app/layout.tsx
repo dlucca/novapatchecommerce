@@ -2,7 +2,7 @@ import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
 import { ClerkProvider } from '@clerk/nextjs'
 import ClerkMedusaSyncProvider from "../components/providers/clerk-medusa-sync"
-import "styles/globals.css"
+import "../styles/globals.css"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
