@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense } from "react"
+import { Suspense, useState } from "react"
 import { SignInButton } from '@clerk/nextjs'
 import Image from "next/image"
 import { StoreRegion } from "@medusajs/types"
@@ -9,7 +9,11 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import SideMenu from "@modules/layout/components/side-menu"
 import AuthUserButton from "@components/auth/user-button"
 import CountrySelectorClient from "@modules/layout/components/country-selector/country-selector-client"
+import CartDropdown from "@modules/layout/components/cart-dropdown"
+import SearchBox from "@modules/search/components/search-box"
 import { useScroll } from "../../../../hooks/use-scroll"
+import { HttpTypes } from "@medusajs/types"
+import { useParams } from "next/navigation"
 
 interface SerializedUser {
   id: string
@@ -25,10 +29,14 @@ interface SerializedUser {
 interface NavClientProps {
   regions: StoreRegion[]
   user: SerializedUser | null
+  cart: HttpTypes.StoreCart | null
 }
 
-export default function NavClient({ regions, user }: NavClientProps) {
-  const scrolled = useScroll(50) // Detecta scroll después de 50px
+export default function NavClient({ regions, user, cart }: NavClientProps) {
+  const scrolled = useScroll(50)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const params = useParams()
+  const countryCode = (params?.countryCode as string) || "mx" // Detecta scroll después de 50px
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
@@ -39,7 +47,7 @@ export default function NavClient({ regions, user }: NavClientProps) {
             : 'bg-white/95 backdrop-blur-sm shadow-sm'
         }`}
       >
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between w-full h-full">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between w-full h-full relative">
 
           {/* Navegación Izquierda - Solo desktop */}
           <div className="hidden md:flex items-center space-x-8 flex-1">
@@ -121,17 +129,21 @@ export default function NavClient({ regions, user }: NavClientProps) {
             <CountrySelectorClient />
 
             {/* Icono de Búsqueda */}
-            <button className={`p-2 transition-colors duration-200 ${
-              scrolled
-                ? 'text-gray-700 hover:text-blue-600'
-                : 'text-gray-600 hover:text-blue-600'
-            }`}>
+            <button
+              onClick={() => setSearchOpen(true)}
+              className={`p-2 transition-colors duration-200 ${
+                scrolled
+                  ? 'text-gray-700 hover:text-blue-600'
+                  : 'text-gray-600 hover:text-blue-600'
+              }`}
+              data-testid="nav-search-button"
+            >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
 
-            {/* Carrito */}
+            {/* Carrito con Dropdown */}
             <Suspense
               fallback={
                 <LocalizedClientLink
@@ -152,18 +164,7 @@ export default function NavClient({ regions, user }: NavClientProps) {
                 </LocalizedClientLink>
               }
             >
-              <div className={`relative p-2 transition-colors duration-200 ${
-                scrolled
-                  ? 'text-gray-700 hover:text-blue-600'
-                  : 'text-gray-600 hover:text-blue-600'
-              }`}>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9" />
-                </svg>
-                <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  0
-                </span>
-              </div>
+              <CartDropdown cart={cart} scrolled={scrolled} />
             </Suspense>
 
             {/* Icono de login para no logueados */}
@@ -192,6 +193,14 @@ export default function NavClient({ regions, user }: NavClientProps) {
           <div className="flex items-center md:hidden">
             <SideMenu regions={regions} />
           </div>
+
+          {/* Search Box - Inline */}
+          <SearchBox
+            isOpen={searchOpen}
+            close={() => setSearchOpen(false)}
+            countryCode={countryCode}
+            scrolled={scrolled}
+          />
         </nav>
       </header>
     </div>
