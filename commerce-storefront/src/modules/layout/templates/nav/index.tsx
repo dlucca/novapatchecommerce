@@ -1,5 +1,6 @@
 import { currentUser } from '@clerk/nextjs/server'
 import { listRegions } from "@lib/data/regions"
+import { retrieveCart } from "@lib/data/cart"
 import { StoreRegion } from "@medusajs/types"
 import { featureFlags } from "@lib/feature-flags"
 import NavClient from "./nav-client"
@@ -28,5 +29,7 @@ export default async function Nav() {
     ? await listRegions().then((regions: StoreRegion[]) => regions)
     : []
 
-  return <NavClient regions={regions} user={user} />
+  const cart = await retrieveCart().catch(() => null)
+
+  return <NavClient regions={regions} user={user} cart={cart} />
 }
