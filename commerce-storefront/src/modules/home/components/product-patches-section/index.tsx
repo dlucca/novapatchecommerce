@@ -64,15 +64,12 @@ const ProductPatchesSection = () => {
   return (
     <section className="relative overflow-visible w-full" style={{ marginTop: 'clamp(8rem, 10vw, 11rem)', marginBottom: 'clamp(3rem, 4vw, 4rem)' }}>
       <div className="w-full">
-        {/* Contenedor principal - Fluid */}
         <div className="flex flex-col md:flex-row w-full h-auto md:h-[clamp(280px,35vh,320px)]">
-          {/* Lado izquierdo con contenido */}
           <div
             className="w-full md:w-1/2 flex items-center justify-start rounded-t-[30px] md:rounded-t-none md:rounded-tr-[50px] bg-novapatch-bg-light"
-            style={{ padding: 'clamp(2rem, 2.5vw, 2.5rem) clamp(1.5rem, 5vw, 5rem)' }}
+            style={{ padding: 'clamp(2rem, 2.5vw, 2.5rem) clamp(1.5rem, 5vw, 5rem) clamp(2rem, 2.5vw, 2.5rem) clamp(4rem, 12vw, 12rem)' }}
           >
             <div className="w-full">
-              {/* Título - Fluid */}
               <h2
                 className="leading-tight text-novapatch-title"
                 style={{ fontSize: 'clamp(1.25rem, 2.5vw + 0.5rem, 2.25rem)', marginBottom: 'clamp(1rem, 1.25vw, 1.25rem)' }}
@@ -82,13 +79,11 @@ const ProductPatchesSection = () => {
                 tu <span className="font-bold">cuerpo necesita</span>
               </h2>
 
-              {/* Descripción - Fluid */}
               <p className="text-gray-700 max-w-md" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)', marginBottom: 'clamp(1.25rem, 1.5vw, 1.5rem)' }}>
                 Cada uno está formulado para activar un aspecto diferente de tu
                 bienestar natural.
               </p>
 
-              {/* Botón - Fluid */}
               <button
                 className="text-white font-medium rounded-lg shadow-md hover:opacity-90 transition-opacity bg-novapatch-button"
                 style={{ padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}
@@ -98,30 +93,25 @@ const ProductPatchesSection = () => {
             </div>
           </div>
 
-          {/* Lado derecho con curva interna - solo visible en desktop */}
           <div
             className="hidden md:block h-full w-1/2 relative bg-novapatch-bg-light"
           >
-            {/* Curva interna */}
             <div
               className="h-full w-full bg-white rounded-bl-[clamp(100px,12vw,120px)]"
             ></div>
           </div>
         </div>
 
-        {/* Sección de productos con curva - Fluid */}
         <div
           className="w-full relative rounded-b-[30px] md:rounded-br-none rounded-bl-[clamp(80px,10vw,120px)] bg-novapatch-bg-light"
           style={{ paddingTop: 'clamp(2rem, 2.5vw, 2.5rem)', paddingBottom: 'clamp(2.5rem, 3.5vw, 3.5rem)' }}
         >
-          {/* Círculos decorativos blancos - Fluid */}
           <div className="absolute flex items-center z-10" style={{ top: 'clamp(-1rem, -1.25vw, -1.25rem)', right: 'clamp(0.75rem, 1vw, 1rem)' }}>
             <div className="h-[clamp(24px,2vw,36px)] w-[clamp(24px,2vw,36px)] bg-white rounded-full mr-1"></div>
             <div className="h-[clamp(24px,2vw,36px)] w-[clamp(24px,2vw,36px)] bg-white rounded-full mr-1"></div>
             <div className="h-[clamp(24px,2vw,36px)] w-[clamp(24px,2vw,36px)] bg-white rounded-full"></div>
           </div>
 
-          {/* Contenedor de productos - Fluid */}
           <div className="w-full" style={{ paddingLeft: 'clamp(1rem, 5vw, 5rem)', paddingRight: 'clamp(1rem, 5vw, 5rem)' }} ref={sectionRef}>
             <div className="flex justify-center items-center overflow-x-auto md:overflow-visible pb-4 md:pb-0 scrollbar-hide">
               <div className="flex justify-center items-center min-w-max md:min-w-0">

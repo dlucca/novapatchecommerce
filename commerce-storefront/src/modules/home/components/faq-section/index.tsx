@@ -39,21 +39,18 @@ const FAQSection = () => {
   return (
     <section className="bg-white" style={{ paddingTop: 'clamp(3rem, 4vw, 4rem)', paddingBottom: 'clamp(3rem, 4vw, 4rem)' }}>
       <div className="max-w-7xl mx-auto" style={{ paddingLeft: 'clamp(1rem, 2vw, 2rem)', paddingRight: 'clamp(1rem, 2vw, 2rem)' }}>
-        {/* Título - Fluid */}
         <div className="text-center" style={{ marginBottom: 'clamp(2.5rem, 3vw, 3rem)' }}>
           <h2
             className="font-bold text-novapatch-title"
-            style={{ fontSize: 'clamp(1.875rem, 3vw + 0.5rem, 3rem)', marginBottom: 'clamp(0.75rem, 1vw, 1rem)' }}
+            style={{ fontSize: 'clamp(1.25rem, 2.5vw + 0.5rem, 2.25rem)', marginBottom: 'clamp(0.75rem, 1vw, 1rem)' }}
           >
             ¿Tienes dudas?
           </h2>
         </div>
 
-        {/* Grid de FAQs - Fluid */}
         <div className="grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto" style={{ gap: 'clamp(1rem, 1.5vw, 1.5rem)' }}>
           {faqs.map((faq, index) => (
             <div key={index}>
-              {/* Botón de pregunta - Fluid */}
               <button
                 onClick={() => toggleFAQ(index)}
                 className="w-full text-white font-medium text-left transition-colors duration-200 flex items-center justify-between gap-3 shadow-md hover:shadow-lg bg-novapatch-button hover:bg-novapatch-title"
@@ -76,19 +73,21 @@ const FAQSection = () => {
                 </svg>
               </button>
 
-              {/* Respuesta expandible - Fluid */}
-              {openFAQ === index && (
-                <div className="bg-gray-50 shadow-inner" style={{ marginTop: 'clamp(0.5rem, 0.75vw, 0.75rem)', padding: 'clamp(1rem, 1.25vw, 1.25rem)', borderRadius: 'clamp(0.5rem, 0.75vw, 0.75rem)' }}>
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  openFAQ === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                }`}
+              >
+                <div className="bg-gray-50 shadow-inner animate-fade-in" style={{ marginTop: 'clamp(0.5rem, 0.75vw, 0.75rem)', padding: 'clamp(1rem, 1.25vw, 1.25rem)', borderRadius: 'clamp(0.5rem, 0.75vw, 0.75rem)' }}>
                   <p className="text-gray-700 leading-relaxed" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}>
                     {faq.answer}
                   </p>
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Botón CTA final - Fluid */}
         <div className="text-center" style={{ marginTop: 'clamp(2.5rem, 3vw, 3rem)' }}>
           <button
             className="text-white font-medium transition-colors duration-200 shadow-md hover:shadow-lg bg-novapatch-button hover:bg-novapatch-title"

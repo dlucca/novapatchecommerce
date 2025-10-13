@@ -111,9 +111,9 @@ const HeroSection = () => {
 
       {/* Content */}
       <div className="relative z-20 h-full flex items-start md:items-center pt-24 md:pt-0">
-        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+        <div className="w-full px-12 sm:px-16 md:px-24 lg:px-32 xl:px-40">
           <div className="max-w-2xl">
-            <h1 className="font-bold leading-tight text-novapatch-title" style={{ fontSize: 'clamp(2.5rem, 4vw + 1rem, 4.5rem)', marginBottom: 'clamp(1rem, 2vw, 1.5rem)' }}>
+            <h1 className="font-bold leading-tight text-novapatch-title" style={{ fontSize: 'clamp(2.25rem, 3.5vw + 0.875rem, 4rem)', marginBottom: 'clamp(1rem, 2vw, 1.5rem)' }}>
               Activa tu <br/>
               <span>bienestar</span> sin <br/>
               complicaciones
@@ -123,7 +123,7 @@ const HeroSection = () => {
               Olvídate de pastillas o polvos. Nuestros parches trabajan mientras tú vives tu día... literalmente haciendo cualquier otra cosa.
             </p>
 
-            <LocalizedClientLink href="/store">
+            <LocalizedClientLink href="/store/zencore-patch">
               <button className="text-white font-medium rounded-lg shadow-md hover:opacity-90 transition-opacity bg-novapatch-button" style={{ padding: 'clamp(0.625rem, 1vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}>
                 Comprar ahora
               </button>
@@ -132,8 +132,8 @@ const HeroSection = () => {
         </div>
 
         {/* Product display */}
-        <div className="hidden md:block absolute" style={{ right: '10%', bottom: '16%' }}>
-          <div className="relative" style={{ width: 'clamp(50rem, 55vw, 60rem)', height: 'clamp(30rem, 22vw, 26rem)' }}>
+        <div className="hidden md:block absolute" style={{ right: '6%', bottom: '10%' }}>
+          <div className="relative" style={{ width: 'clamp(40rem, 50vw, 50rem)', height: 'clamp(30rem, 22vw, 26rem)' }}>
             <Image
               src="/assets/hero/form.svg"
               alt="Forma decorativa Novapatch"
@@ -154,8 +154,8 @@ const HeroSection = () => {
                     <Image
                       src={product.src}
                       alt={product.alt}
-                      width={product.width * 1.6}
-                      height={product.height * 1.6}
+                      width={product.width * 1.5}
+                      height={product.height * 1.5}
                       className={`object-contain ${product.className}`}
                       priority={index === 0}
                     />
@@ -182,15 +182,14 @@ const HeroSection = () => {
         </svg>
 
         {/* Íconos de características posicionados sobre la banda azul */}
-        <div className="absolute left-0 right-0 w-full z-40 top-1/2 -translate-y-1/2 overflow-hidden">
-          {/* Flor decorativa en la esquina izquierda - Fluid */}
-          <div className="absolute left-~3/5 bottom-~12/18 z-50">
+        <div className="absolute left-0 right-0 w-full z-40 top-1/2 -translate-y-1/2 overflow-visible">
+          <div className="absolute left-[8%] bottom-[25%] z-50">
             <Image
               src="/assets/features/flower.svg"
               alt="Decoración floral"
-              width={30}
-              height={30}
-              className="w-[clamp(28px,4vw,40px)] h-[clamp(28px,4vw,40px)]"
+              width={60}
+              height={60}
+              className="w-[clamp(50px,6vw,80px)] h-[clamp(50px,6vw,80px)]"
               style={{ opacity: 0.5 }}
             />
           </div>
@@ -203,7 +202,6 @@ const HeroSection = () => {
                     key={index}
                     className="flex flex-col items-center flex-shrink-0"
                   >
-                    {/* Contenedor de ícono - Fluid */}
                     <div className="flex items-center justify-center h-[clamp(48px,6vw,64px)] w-[clamp(48px,6vw,64px)]">
                       <Image
                         src={feature.src}
@@ -214,7 +212,6 @@ const HeroSection = () => {
                         className="filter brightness-0 invert w-full h-full"
                       />
                     </div>
-                    {/* Texto - Fluid */}
                     <p className="text-white font-bold text-[clamp(9px,1.2vw,12px)] text-center mt-~1.5/2 whitespace-nowrap">
                       {feature.alt}
                     </p>
