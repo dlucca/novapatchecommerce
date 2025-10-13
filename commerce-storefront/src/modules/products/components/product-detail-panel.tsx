@@ -4,6 +4,7 @@ import { HttpTypes } from "@medusajs/types"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { convertToLocale } from "@lib/util/money"
 import { addToCart } from "@lib/data/cart"
+import { logger } from "@lib/util/logger"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
 import { useState } from "react"
@@ -47,7 +48,7 @@ export default function ProductDetailPanel({
     const variant = product.variants?.[0]
 
     if (!variant?.id) {
-      console.error("No se encontró una variante para este producto")
+      logger.error("No variant found for product", new Error(`Product ${product.id} has no variants`), { context: 'ProductDetailPanel' })
       return
     }
 
@@ -61,13 +62,9 @@ export default function ProductDetailPanel({
       })
 
       setItemAdded(true)
-      console.log("Producto agregado al carrito:", {
-        product: product.title,
-        quantity,
-        purchaseType,
-      })
+      logger.info(`Product added to cart: ${product.title}, quantity: ${quantity}, type: ${purchaseType}`)
     } catch (error) {
-      console.error("Error al agregar al carrito:", error)
+      logger.error("Failed to add product to cart", error as Error, { context: 'ProductDetailPanel' })
     } finally {
       setIsAdding(false)
     }

@@ -1,11 +1,19 @@
-export const isObject = (input: any) => input instanceof Object
-export const isArray = (input: any) => Array.isArray(input)
-export const isEmpty = (input: any) => {
-  return (
-    input === null ||
-    input === undefined ||
-    (isObject(input) && Object.keys(input).length === 0) ||
-    (isArray(input) && (input as any[]).length === 0) ||
-    (typeof input === "string" && input.trim().length === 0)
-  )
+export const isObject = (input: unknown): input is Record<string, unknown> => {
+  return input !== null && typeof input === 'object' && !Array.isArray(input)
+}
+
+export const isArray = <T = unknown>(input: unknown): input is T[] => {
+  return Array.isArray(input)
+}
+
+export const isEmpty = (input: unknown): boolean => {
+  if (input === null || input === undefined) return true
+  
+  if (typeof input === "string") return input.trim().length === 0
+  
+  if (isArray(input)) return input.length === 0
+  
+  if (isObject(input)) return Object.keys(input).length === 0
+  
+  return false
 }

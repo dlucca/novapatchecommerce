@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
+import { logger } from "@lib/util/logger"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { convertToLocale } from "@lib/util/money"
@@ -65,7 +66,7 @@ const SearchBox = ({ isOpen, close, countryCode, scrolled = false }: SearchBoxPr
         const data = await response.json()
         setResults(data.products || [])
       } catch (error) {
-        console.error("Search error:", error)
+        logger.error("Product search failed", error as Error, { context: 'SearchBox' })
         setResults([])
       } finally {
         setLoading(false)

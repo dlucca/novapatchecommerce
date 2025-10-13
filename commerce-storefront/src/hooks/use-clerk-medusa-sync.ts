@@ -2,9 +2,10 @@
 
 import { useUser } from "@clerk/nextjs"
 import { useEffect, useRef } from "react"
+import { logger } from "@lib/util/logger"
 
 /**
- * Hook for sinc users from Clerk to Medusa
+ * Hook for syncing users from Clerk to Medusa
  */
 export function useClerkMedusaSync() {
   const { user, isLoaded, isSignedIn } = useUser()
@@ -12,17 +13,17 @@ export function useClerkMedusaSync() {
 
   useEffect(() => {
     if (!isLoaded) {
-      console.log("⏳ Clerk aún cargando...")
+      logger.debug("Clerk still loading...")
       return
     }
 
     if (!isSignedIn || !user) {
-      console.log("👤 Usuario no autenticado")
+      logger.debug("User not authenticated")
       return
     }
 
     if (syncedRef.current === user.id) {
-      console.log("✅ Usuario ya sincronizado:", user.id)
+      logger.debug("User already synced:", user.id)
       return
     }
 
@@ -31,7 +32,7 @@ export function useClerkMedusaSync() {
         const email = user.primaryEmailAddress?.emailAddress
         
         if (!email) {
-          console.warn("⚠️ Usuario de Clerk no tiene email")
+          logger.warn("Clerk user has no email", { context: 'ClerkMedusaSync' })
           return
         }
 
@@ -49,27 +50,27 @@ export function useClerkMedusaSync() {
           }),
         })
 
-        console.log("📡 Response status:", response.status)
+        logger.debug(`Medusa sync response status: ${response.status}`)
 
         if (response.ok) {
           const data = await response.json()
-          console.log("📦 Response data:", data)
+          logger.debug("Medusa sync response data:", data)
           
-          const customerId = data.customer?.id || data.id || 'registrado'
+          const customerId = data.customer?.id || data.id || 'registered'
           
-          console.log("✅ Usuario registrado en Medusa:", customerId)
+          logger.success(`User registered in Medusa: ${customerId}`)
           syncedRef.current = user.id
           
-          console.log("🎉 El subscriber debería haber enviado el email de bienvenida")
+          logger.info("Welcome email should have been sent by subscriber")
         } else if (response.status === 422 || response.status === 409) {
-          console.log("ℹ️ Usuario ya existe en Medusa (status:", response.status, ")")
+          logger.debug(`User already exists in Medusa (status: ${response.status})`)
           syncedRef.current = user.id
         } else {
           const errorText = await response.text()
-          console.error("❌ Error al sincronizar con Medusa:", response.status, errorText)
+          logger.error(`Failed to sync with Medusa: ${response.status}`, new Error(errorText), { context: 'ClerkMedusaSync' })
         }
       } catch (error) {
-        console.error("❌ Error en sincronización:", error)
+        logger.error("Error during Clerk-Medusa synchronization", error as Error, { context: 'ClerkMedusaSync' })
       }
     }
 

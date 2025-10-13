@@ -4,6 +4,7 @@ import { Dialog, Transition } from "@headlessui/react"
 import { Fragment, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
+import { logger } from "@lib/util/logger"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { convertToLocale } from "@lib/util/money"
@@ -35,7 +36,7 @@ const SearchModal = ({ isOpen, close, countryCode }: SearchModalProps) => {
         const data = await response.json()
         setResults(data.products || [])
       } catch (error) {
-        console.error("Search error:", error)
+        logger.error("Product search in modal failed", error as Error, { context: 'SearchModal' })
         setResults([])
       } finally {
         setLoading(false)

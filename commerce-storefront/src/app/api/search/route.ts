@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { sdk } from "@lib/config"
+import { logger } from "@lib/util/logger"
 import { HttpTypes } from "@medusajs/types"
 import { getRegion } from "@lib/data/regions"
 
@@ -38,7 +39,7 @@ export async function GET(request: NextRequest) {
       count: response.count || 0,
     })
   } catch (error) {
-    console.error("Search API error:", error)
+    logger.error("Search API failed", error as Error, { context: 'SearchAPI' })
     return NextResponse.json({ products: [], error: "Search failed" }, { status: 500 })
   }
 }

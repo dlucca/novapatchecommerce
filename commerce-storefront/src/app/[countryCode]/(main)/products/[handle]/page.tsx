@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
+import { logger } from "@lib/util/logger"
 import ProductTemplate from "@modules/products/templates"
 
 type Props = {
@@ -41,10 +42,10 @@ export async function generateStaticParams() {
       )
       .filter((param) => param.handle)
   } catch (error) {
-    console.error(
-      `Failed to generate static paths for product pages: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }.`
+    logger.error(
+      "Failed to generate static paths for product pages",
+      error as Error,
+      { context: 'ProductPage' }
     )
     return []
   }
