@@ -220,7 +220,6 @@ const SearchBox = ({ isOpen, close, countryCode, scrolled = false }: SearchBoxPr
                     )
                   })}
                   
-                  {/* Ver todos los resultados */}
                   {results.length >= 10 && (
                     <div className="border-t border-gray-100 px-6 py-3">
                       <button
