@@ -17,10 +17,12 @@ export default async function StoreGridTemplate({
   sortBy,
   page,
   countryCode,
+  selectedHandle,
 }: {
   sortBy?: SortOptions
   page: number
   countryCode: string
+  selectedHandle?: string
 }) {
   const queryParams: PaginatedProductsParams = {
     limit: PRODUCT_LIMIT,
@@ -54,6 +56,7 @@ export default async function StoreGridTemplate({
       countryCode={countryCode}
       currentPage={page}
       totalPages={totalPages}
+      selectedHandle={selectedHandle}
     />
   )
 }

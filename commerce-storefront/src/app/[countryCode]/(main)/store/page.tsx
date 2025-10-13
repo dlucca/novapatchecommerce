@@ -1,7 +1,6 @@
 import { Metadata } from "next"
-
-import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-import StoreGridTemplate from "@modules/store/templates/store-grid-template"
+import { redirect } from "next/navigation"
+import { listProducts } from "@lib/data/products"
 
 export const metadata: Metadata = {
   title: "Productos - NovaPatch",
@@ -9,10 +8,6 @@ export const metadata: Metadata = {
 }
 
 type Params = {
-  searchParams: Promise<{
-    sortBy?: SortOptions
-    page?: string
-  }>
   params: Promise<{
     countryCode: string
   }>
@@ -20,15 +15,15 @@ type Params = {
 
 export default async function StorePage(props: Params) {
   const params = await props.params;
-  const searchParams = await props.searchParams;
-  const { sortBy, page } = searchParams
-  const pageNumber = page ? parseInt(page) : 1
-
-  return (
-    <StoreGridTemplate
-      sortBy={sortBy}
-      page={pageNumber}
-      countryCode={params.countryCode}
-    />
-  )
+  
+  const { response } = await listProducts({
+    countryCode: params.countryCode,
+    queryParams: { limit: 1 },
+  })
+  
+  const firstProduct = response.products[0]
+  const defaultHandle = firstProduct?.handle || "zencore-patch"
+  
+  // Redirigir a /store/[handle]
+  redirect(`/${params.countryCode}/store/${defaultHandle}`)
 }

@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Novapatch" }],
   colorScheme: "light",
   themeColor: [{ media: "(prefers-color-scheme: light)", color: "#2C5697" }],
+  other: {
+    charset: "UTF-8"
+  }
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {

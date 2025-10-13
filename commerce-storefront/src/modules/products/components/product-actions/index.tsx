@@ -2,7 +2,10 @@
 
 import { addToCart } from "@lib/data/cart"
 import { useIntersection } from "@lib/hooks/use-in-view"
+import { getProductPrice } from "@lib/util/get-product-price"
+import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import { isEqual } from "lodash"
 import { useParams } from "next/navigation"
@@ -31,7 +34,9 @@ export default function ProductActions({
 }: ProductActionsProps) {
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
   const [quantity, setQuantity] = useState(1)
+  const [purchaseType, setPurchaseType] = useState<'single' | 'subscription'>('single')
   const countryCode = useParams().countryCode as string
 
   // If there is only 1 variant, preselect the options
@@ -47,6 +52,12 @@ export default function ProductActions({
       return
     }
 
+    // If there's only one variant, return it directly
+    if (product.variants.length === 1) {
+      return product.variants[0]
+    }
+
+    // For multiple variants, find the one matching selected options
     return product.variants.find((v) => {
       const variantOptions = optionsAsKeymap(v.options)
       return isEqual(variantOptions, options)
@@ -63,7 +74,17 @@ export default function ProductActions({
 
   //check if the selected options produce a valid variant
   const isValidVariant = useMemo(() => {
-    return product.variants?.some((v) => {
+    // If there's only one variant, it's always valid
+    if (product.variants?.length === 1) {
+      return true
+    }
+    
+    // For multiple variants, check if the selected options match a variant
+    if (!product.variants || Object.keys(options).length === 0) {
+      return false
+    }
+    
+    return product.variants.some((v) => {
       const variantOptions = optionsAsKeymap(v.options)
       return isEqual(variantOptions, options)
     })
@@ -71,27 +92,48 @@ export default function ProductActions({
 
   // check if the selected variant is in stock
   const inStock = useMemo(() => {
+    if (!selectedVariant) {
+      return false
+    }
+
     // If we don't manage inventory, we can always add to cart
-    if (selectedVariant && !selectedVariant.manage_inventory) {
+    if (!selectedVariant.manage_inventory) {
       return true
     }
 
     // If we allow back orders on the variant, we can add to cart
-    if (selectedVariant?.allow_backorder) {
+    if (selectedVariant.allow_backorder) {
       return true
     }
 
     // If there is inventory available, we can add to cart
-    if (
-      selectedVariant?.manage_inventory &&
-      (selectedVariant?.inventory_quantity || 0) > 0
-    ) {
+    if ((selectedVariant.inventory_quantity ?? 0) > 0) {
       return true
     }
 
     // Otherwise, we can't add to cart
     return false
   }, [selectedVariant])
+
+  // Calculate discounted price for subscription (20% off)
+  const getSubscriptionPrice = () => {
+    if (!selectedVariant?.calculated_price) return null
+    
+    const originalAmount = selectedVariant.calculated_price.calculated_amount || 0
+    const discountedAmount = Math.round(originalAmount * 0.8) // 20% off
+    const currencyCode = selectedVariant.calculated_price.currency_code || 'MXN'
+    
+    return {
+      original: convertToLocale({
+        amount: originalAmount,
+        currency_code: currencyCode,
+      }),
+      discounted: convertToLocale({
+        amount: discountedAmount,
+        currency_code: currencyCode,
+      }),
+    }
+  }
 
   const actionsRef = useRef<HTMLDivElement>(null)
 
@@ -110,6 +152,12 @@ export default function ProductActions({
     })
 
     setIsAdding(false)
+    setShowSuccess(true)
+    
+    // Hide success message after 5 seconds
+    setTimeout(() => {
+      setShowSuccess(false)
+    }, 5000)
   }
 
   const incrementQuantity = () => {
@@ -120,12 +168,17 @@ export default function ProductActions({
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
   }
 
+  // Calculate discounted price for subscription (20% off)
+  const getDiscountedPrice = (price: number) => {
+    return Math.round(price * 0.8) // 20% discount
+  }
+
   return (
     <>
-      <div className="flex flex-col" style={{ gap: 'clamp(1rem, 1.5vw, 1.5rem)' }} ref={actionsRef}>
+      <div className="flex flex-col gap-4" ref={actionsRef}>
         {/* Opciones de variantes (si hay más de una) */}
         {(product.variants?.length ?? 0) > 1 && (
-          <div className="flex flex-col" style={{ gap: 'clamp(0.75rem, 1vw, 1rem)' }}>
+          <div className="flex flex-col gap-3">
             {(product.options || []).map((option) => {
               return (
                 <div key={option.id}>
@@ -143,83 +196,19 @@ export default function ProductActions({
           </div>
         )}
 
-        <div className="py-4 border-y border-gray-200">
-          <ProductPrice product={product} variant={selectedVariant} />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Cantidad
-          </label>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={decrementQuantity}
-              disabled={quantity <= 1 || isAdding}
-              className="w-10 h-10 rounded-lg border-2 border-gray-300 flex items-center justify-center text-gray-700 hover:border-teal-500 hover:text-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-              </svg>
-            </button>
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => {
-                const val = parseInt(e.target.value)
-                if (val > 0) setQuantity(val)
-              }}
-              className="w-16 h-10 text-center border-2 border-gray-300 rounded-lg font-semibold text-gray-900 focus:border-teal-500 focus:outline-none"
-              min="1"
-            />
-            <button
-              onClick={incrementQuantity}
-              disabled={isAdding}
-              className="w-10 h-10 rounded-lg border-2 border-gray-300 flex items-center justify-center text-gray-700 hover:border-teal-500 hover:text-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* Botón Agregar al carrito */}
-        <button
-          onClick={handleAddToCart}
-          disabled={
-            !inStock ||
-            !selectedVariant ||
-            !!disabled ||
-            isAdding ||
-            !isValidVariant
-          }
-          className="w-full bg-teal-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-teal-600 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-500 flex items-center justify-center gap-2"
-          data-testid="add-product-button"
-        >
-          {isAdding ? (
-            <>
-              <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Agregando...
-            </>
-          ) : !selectedVariant && !options ? (
-            "Seleccionar variante"
-          ) : !inStock || !isValidVariant ? (
-            "Agotado"
-          ) : (
-            "Agregar al carrito"
-          )}
-        </button>
-
-        <div className="space-y-3 pt-4 border-t border-gray-200">
-          <label className="flex items-start gap-3 cursor-pointer">
+        {/* Radio buttons de tipo de compra */}
+        <div className="space-y-3">
+          <label className={`flex items-start gap-3 cursor-pointer p-3 border-2 rounded-lg transition-colors ${
+            purchaseType === 'single' 
+              ? 'border-novapatch-button bg-blue-50' 
+              : 'border-gray-200 hover:border-gray-300'
+          }`}>
             <input
               type="radio"
               name="purchase-type"
-              defaultChecked
-              className="mt-1 w-4 h-4 text-teal-500 focus:ring-teal-500"
+              checked={purchaseType === 'single'}
+              onChange={() => setPurchaseType('single')}
+              className="mt-1 w-4 h-4 text-novapatch-button focus:ring-novapatch-button"
             />
             <div className="flex-1">
               <div className="flex items-center justify-between">
@@ -233,41 +222,59 @@ export default function ProductActions({
             </div>
           </label>
 
-          <label className="flex items-start gap-3 cursor-pointer p-3 border-2 border-teal-500 rounded-lg bg-teal-50">
+          <label className={`flex items-start gap-3 cursor-pointer p-3 border-2 rounded-lg transition-colors ${
+            purchaseType === 'subscription' 
+              ? 'border-novapatch-button bg-blue-50' 
+              : 'border-gray-200 hover:border-gray-300'
+          }`}>
             <input
               type="radio"
               name="purchase-type"
-              className="mt-1 w-4 h-4 text-teal-500 focus:ring-teal-500"
+              checked={purchaseType === 'subscription'}
+              onChange={() => setPurchaseType('subscription')}
+              className="mt-1 w-4 h-4 text-novapatch-button focus:ring-novapatch-button"
             />
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <span className="font-medium text-gray-900">Suscríbete y ahorra</span>
-                  <span className="bg-teal-600 text-white text-xs font-bold px-2 py-0.5 rounded">
+                  <span className="bg-novapatch-button text-white text-xs font-bold px-2 py-0.5 rounded">
                     Ahorra 20%
                   </span>
                 </div>
-                <span className="font-bold text-teal-700">
-                  {selectedVariant && (
-                    <ProductPrice product={product} variant={selectedVariant} />
-                  )}
-                </span>
+                <div className="text-right">
+                  {(() => {
+                    const subscriptionPrice = getSubscriptionPrice()
+                    if (!subscriptionPrice) return null
+                    
+                    return (
+                      <>
+                        <div className="text-gray-500 line-through text-sm">
+                          {subscriptionPrice.original}
+                        </div>
+                        <div className="font-bold text-novapatch-button text-lg">
+                          {subscriptionPrice.discounted}
+                        </div>
+                      </>
+                    )
+                  })()}
+                </div>
               </div>
               <ul className="space-y-1 text-sm text-gray-700">
                 <li className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 text-novapatch-button flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   ¡Pausa, cambia o cancela en cualquier momento!
                 </li>
                 <li className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 text-novapatch-button flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   Entrega cada 30 días
                 </li>
                 <li className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 text-novapatch-button flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   Envío gratuito a partir del segundo pedido
@@ -276,6 +283,85 @@ export default function ProductActions({
             </div>
           </label>
         </div>
+
+        {/* Cantidad + Botón Agregar en la misma fila */}
+        <div className="flex items-center gap-3">
+          {/* Selector de cantidad */}
+          <div className="flex items-center gap-2 border-2 border-gray-300 rounded-full">
+            <button
+              onClick={decrementQuantity}
+              disabled={quantity <= 1 || isAdding}
+              className="w-10 h-12 flex items-center justify-center text-gray-700 hover:text-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-l-full"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+              </svg>
+            </button>
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => {
+                const val = parseInt(e.target.value)
+                if (val > 0) setQuantity(val)
+              }}
+              className="w-12 h-12 text-center font-semibold text-gray-900 focus:outline-none bg-transparent"
+              min="1"
+            />
+            <button
+              onClick={incrementQuantity}
+              disabled={isAdding}
+              className="w-10 h-12 flex items-center justify-center text-gray-700 hover:text-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-r-full"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Botón Agregar al carrito */}
+          <button
+            onClick={handleAddToCart}
+            disabled={!selectedVariant || !inStock || isAdding || !!disabled}
+            className="flex-1 bg-teal-600 text-white font-semibold py-3 px-6 rounded-full hover:bg-teal-700 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-500 flex items-center justify-center gap-2"
+            data-testid="add-product-button"
+          >
+            {isAdding ? (
+              <>
+                <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Agregando...
+              </>
+            ) : !selectedVariant ? (
+              "Seleccionar variante"
+            ) : !inStock ? (
+              "Agotado"
+            ) : (
+              "agregar"
+            )}
+          </button>
+        </div>
+
+        {/* Mensaje de éxito y botón ir al carrito */}
+        {showSuccess && (
+          <div className="bg-teal-50 border-2 border-teal-500 rounded-2xl p-4 flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="flex items-center gap-3">
+              <div className="bg-teal-500 rounded-full p-1">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <span className="text-teal-800 font-medium">¡Producto agregado al carrito!</span>
+            </div>
+            <LocalizedClientLink
+              href="/cart"
+              className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-200"
+            >
+              Ver carrito
+            </LocalizedClientLink>
+          </div>
+        )}
 
         <MobileActions
           product={product}

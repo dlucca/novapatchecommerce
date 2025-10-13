@@ -186,7 +186,7 @@ const SearchBox = ({ isOpen, close, countryCode, scrolled = false }: SearchBoxPr
                     return (
                       <LocalizedClientLink
                         key={product.id}
-                        href={`/products/${product.handle}`}
+                        href={`/store/${product.handle}`}
                         onClick={handleProductClick}
                         className="flex items-center gap-4 px-6 py-3 hover:bg-gray-50 transition-colors"
                       >
