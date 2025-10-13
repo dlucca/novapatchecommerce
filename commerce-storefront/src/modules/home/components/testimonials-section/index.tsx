@@ -10,17 +10,17 @@ const TestimonialsSection = () => {
     {
       stars: 5,
       text: "Usé el de energía por la mañana y el de sueño en la noche. ¡Una maravilla!",
-      image: "../../../assets/testimonials/woman3.svg"
+      image: "/assets/testimonials/woman3.svg"
     },
     {
       stars: 5,
       text: "¡Me salvan en el trabajo! Me siento con energía y súper concentrada.",
-      image: "../../../assets/testimonials/woman-2.svg"
+      image: "/assets/testimonials/woman-2.svg"
     },
     {
       stars: 5,
       text: "Estoy fascinada. ¡El parche de inmunidad diaria es mi favorito!",
-      image: "../../../assets/testimonials/woman-1.svg"
+      image: "/assets/testimonials/woman-1.svg"
     }
   ]
 
@@ -45,9 +45,7 @@ const TestimonialsSection = () => {
   return (
     <section className="bg-novapatch-testimonial" style={{ paddingTop: 'clamp(3rem, 4vw, 4rem)', paddingBottom: 'clamp(3rem, 4vw, 4rem)' }}>
       <div className="max-w-7xl mx-auto" style={{ paddingLeft: 'clamp(1rem, 2vw, 2rem)', paddingRight: 'clamp(1rem, 2vw, 2rem)' }}>
-        {/* Carrusel - Fluid */}
         <div className="relative">
-          {/* Botón anterior - Fluid */}
           <button
             onClick={prevSlide}
             className="absolute top-1/2 transform -translate-y-1/2 z-20 w-[clamp(40px,4vw,48px)] h-[clamp(40px,4vw,48px)] bg-black bg-opacity-20 rounded-full flex items-center justify-center text-white hover:bg-opacity-30 transition-all duration-200"
@@ -59,7 +57,6 @@ const TestimonialsSection = () => {
             </svg>
           </button>
 
-          {/* Botón siguiente - Fluid */}
           <button
             onClick={nextSlide}
             className="absolute top-1/2 transform -translate-y-1/2 z-20 w-[clamp(40px,4vw,48px)] h-[clamp(40px,4vw,48px)] bg-black bg-opacity-20 rounded-full flex items-center justify-center text-white hover:bg-opacity-30 transition-all duration-200"
@@ -71,7 +68,6 @@ const TestimonialsSection = () => {
             </svg>
           </button>
 
-          {/* Contenedor del carrusel - responsive */}
           <div className="overflow-hidden">
             <div
               className="flex transition-transform duration-500 ease-in-out"
@@ -100,10 +96,8 @@ const TestimonialsSection = () => {
                             </div>
                           </div>
 
-                          {/* Estrellas */}
                           <StarRating stars={currentTestimonial.stars} />
 
-                          {/* Texto - Fluid */}
                           <p className="text-white font-medium leading-relaxed max-w-xs mx-auto px-2" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.25rem)' }}>
                             "{currentTestimonial.text}"
                           </p>
