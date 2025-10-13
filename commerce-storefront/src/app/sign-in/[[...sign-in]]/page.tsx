@@ -8,29 +8,36 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-novapatch-bg-light to-blue-50 flex items-center justify-center py-12 px-4">
       <div className="w-full max-w-md">
-        {/* Header */}
         <div className="text-center mb-8">
-          {/* Agregar logo de NovaPatch */}
-          <Image src="../../../assets/nav/Logo.svg" alt="Logo de NovaPatch" width={100} height={100} />
-          <Image src="../../../assets/nav/Name.svg" alt="Logo de NovaPatch" width={100} height={100} />
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Image 
+              src="/assets/nav/Logo.svg" 
+              alt="Logo de NovaPatch" 
+              width={60} 
+              height={60}
+              priority
+            />
+            <h1 className="text-4xl font-bold text-novapatch-title">
+              NovaPatch
+            </h1>
+          </div>
         </div>
 
-        {/* Clerk SignIn Component */}
         <SignIn 
           appearance={{
             elements: {
-              formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 rounded-lg',
+              formButtonPrimary: 'bg-novapatch-button hover:bg-novapatch-footer text-white font-medium transition-colors duration-200 rounded-lg',
               card: 'bg-white shadow-xl border border-gray-200 rounded-lg',
-              headerTitle: 'text-blue-600 font-bold text-xl',
+              headerTitle: 'text-novapatch-title font-bold text-xl',
               headerSubtitle: 'text-gray-600',
               socialButtonsBlockButton: 'border border-gray-300 hover:bg-gray-50 transition-colors duration-200',
-              formFieldInput: 'border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-blue-500',
-              footerActionLink: 'text-blue-600 hover:text-blue-700',
+              formFieldInput: 'border border-gray-300 rounded-lg focus:border-novapatch-button focus:ring-novapatch-button',
+              footerActionLink: 'text-novapatch-button hover:text-novapatch-footer',
             },
             variables: {
-              colorPrimary: '#2563eb',
+              colorPrimary: '#4e83bb',
               colorBackground: '#ffffff',
               colorInputBackground: '#ffffff',
               colorInputText: '#374151',
@@ -43,7 +50,7 @@ export default function Page() {
         <div className="text-center mt-8">
           <p className="text-sm text-gray-500">
             ¿Problemas para iniciar sesión?{' '}
-            <a href="/info" className="text-blue-600 hover:text-blue-700 font-medium">
+            <a href="/info" className="text-novapatch-button hover:text-novapatch-footer font-medium">
               Contáctanos
             </a>
           </p>
