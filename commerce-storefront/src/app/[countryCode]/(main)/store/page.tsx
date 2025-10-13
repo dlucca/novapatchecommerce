@@ -1,11 +1,11 @@
 import { Metadata } from "next"
 
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-import StoreTemplate from "@modules/store/templates"
+import StoreGridTemplate from "@modules/store/templates/store-grid-template"
 
 export const metadata: Metadata = {
-  title: "Store",
-  description: "Explore all of our products.",
+  title: "Productos - NovaPatch",
+  description: "Explora nuestra colección de parches terapéuticos.",
 }
 
 type Params = {
@@ -22,11 +22,12 @@ export default async function StorePage(props: Params) {
   const params = await props.params;
   const searchParams = await props.searchParams;
   const { sortBy, page } = searchParams
+  const pageNumber = page ? parseInt(page) : 1
 
   return (
-    <StoreTemplate
+    <StoreGridTemplate
       sortBy={sortBy}
-      page={page}
+      page={pageNumber}
       countryCode={params.countryCode}
     />
   )

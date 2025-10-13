@@ -2,20 +2,19 @@ import { retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
 import CartTemplate from "@modules/cart/templates"
 import { Metadata } from "next"
-import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
-  title: "Cart",
-  description: "View your cart",
+  title: "Carrito",
+  description: "Ver tu carrito de compras",
 }
 
 export default async function Cart() {
   const cart = await retrieveCart().catch((error) => {
-    console.error(error)
-    return notFound()
+    console.error("Error retrieving cart:", error)
+    return null
   })
 
-  const customer = await retrieveCustomer()
+  const customer = await retrieveCustomer().catch(() => null)
 
   return <CartTemplate cart={cart} customer={customer} />
 }
