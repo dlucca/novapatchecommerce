@@ -11,7 +11,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 9000
+        value: 10000
       - key: DATABASE_URL
         fromDatabase:
           name: novapatch-postgres
@@ -20,6 +20,8 @@ services:
         generateValue: true
       - key: COOKIE_SECRET
         generateValue: true
+      - key: MEDUSA_ADMIN_SERVE 
+        value: false         
       - key: STORE_CORS
         sync: false
       - key: ADMIN_CORS
