@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "build": "medusa build",
-    "start": "medusa start",
+    "start": "MEDUSA_ADMIN_SERVE=false medusa start",
     "dev": "medusa develop",
     "db:setup": "npx medusa db:setup",
     "db:migrate": "npx medusa db:migrate",
