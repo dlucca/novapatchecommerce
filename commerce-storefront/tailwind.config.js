@@ -35,12 +35,14 @@ module.exports = {
           90: "#111827",
         },
         novapatch: {
-          title: "#3d6a96",      
-          button: "#4e83bb",     
-          footer: "#005088",     
-          band: "#83b5f4",       
-          "bg-light": "#EFF6FF", 
-          testimonial: "#dac70a" 
+          title: "#3d6a96",
+          button: "#4e83bb",
+          footer: "#005088",
+          band: "#83b5f4",
+          "bg-light": "#EFF6FF",
+          testimonial: "#dac70a",
+          primary: "#1EB1BC",        
+          "bg-cream": "#FEF7ED",     
         },
       },
       borderRadius: {
