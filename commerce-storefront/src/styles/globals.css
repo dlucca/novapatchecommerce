@@ -1,0 +1,373 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Novapatch Color Scheme */
+:root {
+  --nova-blue-primary: #2C5697;
+  --nova-blue-secondary: #B7D3E9;
+  --nova-blue-light: #E5F0F9;
+  
+  --nova-teal-primary: #1A8F89;
+  --nova-teal-secondary: #66C0B3;
+  
+  --nova-yellow-primary: #FFD766;
+  --nova-yellow-secondary: #FFF4D6;
+  
+  --nova-gray-dark: #333333;
+  --nova-gray-medium: #777777;
+  --nova-gray-light: #F5F5F5;
+  
+  /* Product Colors */
+  --nova-product-teal: #1A8F89;
+  --nova-product-blue: #2C5697;
+  --nova-product-red: #E85D5D;
+  --nova-product-yellow: #FFCA28;
+  --nova-product-purple: #9C59B6;
+  --nova-product-pink: #E84393;
+  
+  /* Animations & Transitions */
+  --nova-transition-fast: 200ms ease;
+  --nova-transition-medium: 300ms ease;
+  --nova-transition-slow: 500ms ease;
+  
+  /* Focus styles for accessibility */
+  --nova-focus-ring-color: rgba(42, 143, 137, 0.5);
+  --nova-focus-ring-width: 3px;
+}
+
+/* Base Focus Styles for Accessibility */
+*:focus-visible {
+  outline: var(--nova-focus-ring-width) solid var(--nova-focus-ring-color);
+  outline-offset: 2px;
+}
+
+/* Skip to content link for keyboard users */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 1em;
+  z-index: 999;
+  background: white;
+  color: var(--nova-blue-primary);
+  padding: 1em;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform var(--nova-transition-fast);
+}
+
+.skip-to-content:focus {
+  left: 1em;
+  transform: translateY(0);
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}  
+
+@layer components {
+  /* Typography */
+  .nova-heading-1 {
+    font-size: 2.25rem; /* text-4xl */
+    font-weight: 700; /* font-bold */
+    line-height: 1.2; /* leading-tight */
+    color: var(--nova-blue-primary);
+  }
+  
+  @media (min-width: 768px) {
+    .nova-heading-1 {
+      font-size: 3rem; /* md:text-5xl */
+    }
+  }
+  
+  .nova-heading-2 {
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 700; /* font-bold */
+    line-height: 1.2; /* leading-tight */
+    color: var(--nova-blue-primary);
+  }
+  
+  @media (min-width: 768px) {
+    .nova-heading-2 {
+      font-size: 2.25rem; /* md:text-4xl */
+    }
+  }
+  
+  .nova-heading-3 {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 700; /* font-bold */
+    line-height: 1.2; /* leading-tight */
+    color: var(--nova-blue-primary);
+  }
+  
+  @media (min-width: 768px) {
+    .nova-heading-3 {
+      font-size: 1.875rem; /* md:text-3xl */
+    }
+  }
+  
+  .nova-heading-accent {
+    color: var(--nova-teal-primary);
+  }
+  
+  /* Buttons */
+  .nova-button-primary {
+    border-radius: 9999px; /* rounded-full */
+    padding: 0.75rem 1.5rem; /* px-6 py-3 */
+    font-weight: 500; /* font-medium */
+    transition: all 200ms ease; /* transition-all duration-200 */
+    background-color: var(--nova-teal-primary);
+    color: white;
+  }
+  
+  .nova-button-primary:hover {
+    background-color: var(--nova-blue-primary);
+  }
+  
+  .nova-button-secondary {
+    border-radius: 9999px; /* rounded-full */
+    padding: 0.75rem 1.5rem; /* px-6 py-3 */
+    font-weight: 500; /* font-medium */
+    transition: all 200ms ease; /* transition-all duration-200 */
+    background-color: white;
+    color: var(--nova-teal-primary);
+    border: 1px solid var(--nova-teal-primary);
+  }
+  
+  .nova-button-secondary:hover {
+    background-color: var(--nova-blue-light);
+  }
+  
+  /* Background Colors */
+  .nova-bg-blue-light {
+    background-color: var(--nova-blue-light);
+  }
+  
+  .nova-bg-yellow-light {
+    background-color: var(--nova-yellow-secondary);
+  }
+  
+  /* Product Cards */
+  .nova-product-teal {
+    background-color: var(--nova-product-teal);
+  }
+  
+  .nova-product-blue {
+    background-color: var(--nova-product-blue);
+  }
+  
+  .nova-product-red {
+    background-color: var(--nova-product-red);
+  }
+  
+  .nova-product-yellow {
+    background-color: var(--nova-product-yellow);
+  }
+  
+  .nova-product-purple {
+    background-color: var(--nova-product-purple);
+  }
+  
+  .nova-product-pink {
+    background-color: var(--nova-product-pink);
+  }
+  
+  /* Hero Section */
+  .nova-hero {
+    /* Removing gradient as we'll use the image as background */
+    background-color: transparent;
+  }
+  
+  /* Comparison Table */
+  .nova-check {
+    text-align: center; /* text-center */
+    font-size: 1.125rem; /* text-lg */
+    color: var(--nova-teal-primary);
+  }
+  
+  .nova-x {
+    text-align: center; /* text-center */
+    font-size: 1.125rem; /* text-lg */
+    color: var(--nova-product-red);
+  }
+  
+  /* Mobile Optimization */
+  .nova-mobile-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* grid-cols-2 */
+    gap: 1rem; /* gap-4 */
+  }
+  
+  .nova-mobile-hidden {
+    display: none; /* hidden */
+  }
+}
+
+@layer utilities {
+  input:focus ~ label,
+  input:not(:placeholder-shown) ~ label {
+    @apply -translate-y-2 text-xsmall-regular;
+  }
+
+  input:focus ~ label {
+    @apply left-0;
+  }
+  
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    border: 1px solid #212121;
+    -webkit-text-fill-color: #212121;
+    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+  }
+}
+
+@layer components {
+  .content-container {
+    @apply max-w-[1440px] w-full mx-auto px-6;
+  }
+
+  .contrast-btn {
+    @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
+  }
+
+  .text-xsmall-regular {
+    @apply text-[10px] leading-4 font-normal;
+  }
+
+  .text-small-regular {
+    @apply text-xs leading-5 font-normal;
+  }
+
+  .text-small-semi {
+    @apply text-xs leading-5 font-semibold;
+  }
+
+  .text-base-regular {
+    @apply text-sm leading-6 font-normal;
+  }
+
+  .text-base-semi {
+    @apply text-sm leading-6 font-semibold;
+  }
+
+  .text-large-regular {
+    @apply text-base leading-6 font-normal;
+  }
+
+  .text-large-semi {
+    @apply text-base leading-6 font-semibold;
+  }
+
+  .text-xl-regular {
+    @apply text-2xl leading-[36px] font-normal;
+  }
+
+  .text-xl-semi {
+    @apply text-2xl leading-[36px] font-semibold;
+  }
+
+  .text-2xl-regular {
+    @apply text-[30px] leading-[48px] font-normal;
+  }
+
+  .text-2xl-semi {
+    @apply text-[30px] leading-[48px] font-semibold;
+  }
+
+  .text-3xl-regular {
+    @apply text-[32px] leading-[44px] font-normal;
+  }
+
+  .text-3xl-semi {
+    @apply text-[32px] leading-[44px] font-semibold;
+  }
+
+  /* NovaPatch Custom Styles */
+  .nova-header {
+    @apply bg-white border-b border-gray-200 shadow-sm;
+  }
+
+  .nova-logo {
+    @apply text-blue-600 hover:text-blue-700 transition-colors duration-200;
+  }
+
+  .nova-nav-link {
+    @apply text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium;
+  }
+
+  .nova-button-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+
+  .nova-gradient {
+    @apply bg-gradient-to-br from-blue-50 to-green-50;
+  }
+
+  /* Custom scrollbar styles */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f3f4f6;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 10px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+
+  .scrollbar-thumb-gray-300 {
+    scrollbar-color: #d1d5db #f3f4f6;
+  }
+
+  .scrollbar-track-gray-100 {
+    scrollbar-color: #d1d5db #f3f4f6;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+}
