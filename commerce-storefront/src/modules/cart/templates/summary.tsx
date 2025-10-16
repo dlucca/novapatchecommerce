@@ -41,14 +41,14 @@ const Summary = ({ cart }: SummaryProps) => {
         href={"/checkout?step=" + step}
         data-testid="checkout-button"
       >
-        <button className="w-full bg-[#00BCD4] hover:bg-[#00ACC1] text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-md hover:shadow-lg">
+        <button className="w-full bg-novapatch-primary hover:bg-novapatch-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-md hover:shadow-lg">
           Proceder al pago
         </button>
       </LocalizedClientLink>
 
       <LocalizedClientLink
         href="/store"
-        className="text-center text-sm text-gray-600 hover:text-[#00BCD4] transition-colors"
+        className="text-center text-sm text-gray-600 hover:text-novapatch-primary transition-colors"
       >
         ← Continuar comprando
       </LocalizedClientLink>

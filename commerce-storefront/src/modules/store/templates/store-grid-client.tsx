@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 import ProductGridItem from "@modules/products/components/product-grid-item"
 import ProductActions from "@modules/products/components/product-actions"
+import ProductInfoAccordion from "@modules/products/components/product-info-accordion"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { Pagination } from "@modules/store/components/pagination"
+import TestimonialsSection from "@modules/home/components/testimonials-section"
 import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react"
 import Image from "next/image"
 
@@ -29,7 +31,6 @@ export default function StoreGridClient({
 }: StoreGridClientProps) {
   const router = useRouter()
   
-  // Preseleccionar el producto basado en el handle de la URL
   const initialProduct = selectedHandle
     ? products.find(p => p.handle === selectedHandle) || products[0]
     : products[0]
@@ -38,13 +39,27 @@ export default function StoreGridClient({
     initialProduct || null
   )
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [isZoomed, setIsZoomed] = useState(false)
+  const [showMagnifier, setShowMagnifier] = useState(false)
+  const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0, xPx: 0, yPx: 0 })
 
   const handleProductClick = (product: HttpTypes.StoreProduct) => {
     setSelectedProduct(product)
     setCurrentImageIndex(0) 
-    setIsZoomed(false)
+    setShowMagnifier(false)
     router.push(`/${countryCode}/store/${product.handle}`, { scroll: false })
+  }
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const elem = e.currentTarget
+    const { top, left, width, height } = elem.getBoundingClientRect()
+    
+    const xPercent = ((e.clientX - left) / width) * 100
+    const yPercent = ((e.clientY - top) / height) * 100
+    
+    const xPx = e.clientX
+    const yPx = e.clientY
+    
+    setMagnifierPosition({ x: xPercent, y: yPercent, xPx, yPx })
   }
 
   const handlePrevImage = () => {
@@ -63,33 +78,43 @@ export default function StoreGridClient({
 
   if (!selectedProduct) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-novapatch-bg-cream flex items-center justify-center">
         <p className="text-gray-500 text-lg">No hay productos disponibles</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-novapatch-bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
           <div className="space-y-8">
 
-            <div className="bg-gradient-to-br from-[#b3dde8] to-[#d4eef5] rounded-3xl p-8 relative">
-              <div 
-                className="relative w-full max-w-md mx-auto cursor-pointer group"
-                onClick={() => setIsZoomed(!isZoomed)}
+            <div className="bg-[#b3dbde] rounded-3xl p-8 relative overflow-hidden">
+              <div className="absolute bottom-0 left-0 w-full h-full z-0 pointer-events-none">
+                <Image
+                  src="/assets/products/flower-big.webp"
+                  alt="Background"
+                  fill
+                  className="object-contain object-left-bottom scale-90 translate-y-12 -translate-x-8"
+                  priority
+                />
+              </div>
+
+              <div
+                className="relative w-full max-w-md mx-auto cursor-crosshair group z-10"
+                onMouseEnter={() => setShowMagnifier(true)}
+                onMouseLeave={() => setShowMagnifier(false)}
+                onMouseMove={handleMouseMove}
               >
-                <div className="relative aspect-[3/4] overflow-hidden">
+                <div className="relative aspect-[3/4] overflow-visible rounded-lg">
                   {selectedProduct.images && selectedProduct.images.length > 0 ? (
                     <Image
                       src={selectedProduct.images[currentImageIndex]?.url || selectedProduct.thumbnail || ''}
                       alt={selectedProduct.title}
                       fill
-                      className={`object-contain transition-transform duration-300 ${
-                        isZoomed ? 'scale-150' : 'group-hover:scale-110'
-                      }`}
+                      className="object-contain"
                       sizes="(max-width: 768px) 100vw, 500px"
                     />
                   ) : (
@@ -97,21 +122,34 @@ export default function StoreGridClient({
                       src={selectedProduct.thumbnail || ''}
                       alt={selectedProduct.title}
                       fill
-                      className={`object-contain transition-transform duration-300 ${
-                        isZoomed ? 'scale-150' : 'group-hover:scale-110'
-                      }`}
+                      className="object-contain"
                       sizes="(max-width: 768px) 100vw, 500px"
                     />
                   )}
                 </div>
 
-                {/* Indicador de zoom */}
+                {showMagnifier && (
+                  <div
+                    className="fixed border-4 border-white shadow-2xl rounded-lg pointer-events-none overflow-hidden z-50 bg-white"
+                    style={{
+                      width: '300px',
+                      height: '300px',
+                      left: `${magnifierPosition.xPx}px`,
+                      top: `${magnifierPosition.yPx}px`,
+                      transform: 'translate(-50%, -50%)',
+                      backgroundImage: `url(${selectedProduct.images?.[currentImageIndex]?.url || selectedProduct.thumbnail})`,
+                      backgroundPosition: `${magnifierPosition.x}% ${magnifierPosition.y}%`,
+                      backgroundSize: '250%',
+                      backgroundRepeat: 'no-repeat',
+                    }}
+                  />
+                )}
+
                 <div className="absolute top-4 right-4 bg-white/90 rounded-full p-2">
                   <ZoomIn className="w-5 h-5 text-novapatch-title" />
                 </div>
               </div>
 
-              {/* Controles de navegación de imágenes */}
               {selectedProduct.images && selectedProduct.images.length > 1 && (
                 <>
                   <button
@@ -129,7 +167,6 @@ export default function StoreGridClient({
                     <ChevronRight className="w-6 h-6 text-novapatch-title" />
                   </button>
 
-                  {/* Indicadores de imágenes (dots) */}
                   <div className="flex justify-center gap-2 mt-4">
                     {selectedProduct.images.map((_, index) => (
                       <button
@@ -148,63 +185,21 @@ export default function StoreGridClient({
               )}
             </div>
 
-            {/* Descripción y beneficios */}
-            <div className="space-y-6">
-              {selectedProduct.description && (
-                <div>
-                  <h2 className="text-2xl font-bold text-novapatch-title mb-4">
-                    Descripción
-                  </h2>
-                  <div 
-                    className="prose prose-lg max-w-none text-gray-700"
-                    dangerouslySetInnerHTML={{ __html: selectedProduct.description }}
-                  />
-                </div>
-              )}
-
-              {(() => {
-                const benefits = selectedProduct.metadata?.benefits
-                if (benefits && typeof benefits === 'string') {
-                  return (
-                    <div>
-                      <h2 className="text-2xl font-bold text-novapatch-title mb-4">
-                        Beneficios
-                      </h2>
-                      <div 
-                        className="prose prose-lg max-w-none text-gray-700"
-                        dangerouslySetInnerHTML={{ __html: benefits }}
-                      />
-                    </div>
-                  )
-                }
-                return null
-              })()}
-
-              {(() => {
-                const ingredients = selectedProduct.metadata?.ingredients
-                if (ingredients && typeof ingredients === 'string') {
-                  return (
-                    <div>
-                      <h2 className="text-2xl font-bold text-novapatch-title mb-4">
-                        Ingredientes
-                      </h2>
-                      <div 
-                        className="prose prose-lg max-w-none text-gray-700"
-                        dangerouslySetInnerHTML={{ __html: ingredients }}
-                      />
-                    </div>
-                  )
-                }
-                return null
-              })()}
+            <div className="lg:hidden">
+              <h1 className="text-3xl font-bold text-novapatch-primary mb-2">
+                {selectedProduct.title}
+              </h1>
+              <p className="text-lg text-gray-600 mb-4">
+                {selectedProduct.subtitle || "30 parches transparentes"}
+              </p>
             </div>
+
+            <ProductInfoAccordion product={selectedProduct} />
           </div>
 
-          {/* COLUMNA DERECHA: Título + Grid + Opciones de compra */}
           <div className="space-y-6">
-            {/* Título del producto */}
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-novapatch-title mb-2">
+              <h1 className="text-3xl md:text-4xl font-bold text-novapatch-primary mb-2">
                 {selectedProduct.title}
               </h1>
               <p className="text-lg text-gray-600">
@@ -212,7 +207,6 @@ export default function StoreGridClient({
               </p>
             </div>
 
-            {/* Grid de productos con scroll condicional */}
             <div className="border-b border-gray-200 pb-6">
               <div className={`${products.length > 6 ? 'max-h-[580px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100' : ''}`}>
                 <div className="grid grid-cols-3 gap-4">
@@ -229,7 +223,6 @@ export default function StoreGridClient({
               </div>
             </div>
 
-            {/* Opciones de compra simplificadas */}
             <div>
               <ProductActions
                 product={selectedProduct}
@@ -238,7 +231,6 @@ export default function StoreGridClient({
               />
             </div>
 
-            {/* Paginación */}
             {totalPages > 1 && (
               <div className="mt-8">
                 <Pagination
@@ -250,6 +242,10 @@ export default function StoreGridClient({
             )}
           </div>
         </div>
+      </div>
+
+      <div className="mt-24 mb-24">
+        <TestimonialsSection />
       </div>
     </div>
   )

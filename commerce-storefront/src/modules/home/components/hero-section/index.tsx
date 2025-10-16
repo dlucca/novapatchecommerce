@@ -99,7 +99,9 @@ const HeroSection = () => {
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
+          // src="/assets/hero/women.webp"
           src="/assets/hero/Girls.svg"
+
           alt="Mujeres disfrutando con Novapatch"
           fill
           style={{ objectFit: 'cover', objectPosition: '65% center' }}

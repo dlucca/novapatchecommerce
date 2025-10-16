@@ -92,7 +92,7 @@ const CartDropdown = ({
             <div className="relative">
               <ShoppingCart className="w-6 h-6" />
               {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
+                <span className="absolute -top-2 -right-2 bg-novapatch-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
                   {totalItems}
                 </span>
               )}
@@ -205,7 +205,7 @@ const CartDropdown = ({
                   <div className="space-y-2">
                     <LocalizedClientLink
                       href="/cart"
-                      className="block w-full text-center bg-white border-2 border-teal-500 text-teal-600 font-semibold py-2.5 px-4 rounded-lg hover:bg-teal-50 transition-colors duration-200"
+                      className="block w-full text-center bg-white border-2 border-novapatch-primary text-novapatch-primary font-semibold py-2.5 px-4 rounded-lg hover:bg-novapatch-primary/10 transition-colors duration-200"
                       onClick={close}
                       data-testid="go-to-cart-button"
                     >
@@ -213,7 +213,7 @@ const CartDropdown = ({
                     </LocalizedClientLink>
                     <LocalizedClientLink
                       href="/checkout"
-                      className="block w-full text-center bg-teal-500 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-teal-600 transition-colors duration-200"
+                      className="block w-full text-center bg-novapatch-primary text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-novapatch-primary/90 transition-colors duration-200"
                       onClick={close}
                     >
                       Checkout
@@ -226,7 +226,7 @@ const CartDropdown = ({
                 <p className="text-gray-500 text-sm mb-4">Tu carrito está vacío</p>
                 <LocalizedClientLink
                   href="/store"
-                  className="inline-block bg-teal-500 text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-teal-600 transition-colors duration-200"
+                  className="inline-block bg-novapatch-primary text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-novapatch-primary/90 transition-colors duration-200"
                   onClick={close}
                 >
                   Explorar productos

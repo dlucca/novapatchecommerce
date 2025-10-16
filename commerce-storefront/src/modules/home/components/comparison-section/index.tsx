@@ -69,10 +69,10 @@ const ComparisonSection = () => {
           style={{ backgroundColor: "#f7edeb" }}
         >
           {/* Círculos decorativos blancos */}
-          <div className="absolute -top-5 left-5 flex items-center">
-            <div className="h-6 w-6 md:h-9 md:w-9 bg-white rounded-full mr-1"></div>
-            <div className="h-6 w-6 md:h-9 md:w-9 bg-white rounded-full mr-1"></div>
-            <div className="h-6 w-6 md:h-9 md:w-9 bg-white rounded-full"></div>
+          <div className="absolute -top-7 left-5 flex items-center">
+            <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full mr-1"></div>
+            <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full mr-1"></div>
+            <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full"></div>
           </div>
           {/* Tabla para pantallas grandes */}
           <div className="hidden md:block overflow-x-auto">

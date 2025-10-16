@@ -37,22 +37,26 @@ export default function ProductGridItem({
   onClick,
 }: ProductGridItemProps) {
   const thumbnail = product.thumbnail || product.images?.[0]?.url || "/placeholder.png"
-  const bgColor = getProductColor(product.title || "")
+
+  // Obtener el color de fondo desde la metadata o usar el color por defecto
+  const bgColor = product.metadata?.bg_color
+    ? `bg-[${product.metadata.bg_color}]`
+    : getProductColor(product.title || "")
 
   return (
     <div
       onClick={onClick}
       className={`
         relative cursor-pointer transition-all duration-200
-        rounded-2xl overflow-hidden flex flex-col
+        rounded-3xl overflow-hidden flex flex-col
         ${isSelected
-          ? "ring-2 ring-[#00BCD4] shadow-lg scale-105"
+          ? "ring-2 ring-novapatch-primary shadow-lg scale-105"
           : "hover:shadow-md"
         }
       `}
     >
       {isSelected && (
-        <div className="absolute top-3 right-3 z-10 w-6 h-6 bg-[#00BCD4] rounded-full flex items-center justify-center shadow-md">
+        <div className="absolute top-3 right-3 z-10 w-6 h-6 bg-novapatch-primary rounded-full flex items-center justify-center shadow-md">
           <svg
             className="w-4 h-4 text-white"
             fill="none"
@@ -67,7 +71,12 @@ export default function ProductGridItem({
         </div>
       )}
 
-      <div className={`aspect-square ${bgColor} relative overflow-hidden flex items-center justify-center p-12`}>
+      <div
+        className={`aspect-square relative overflow-hidden flex items-center justify-center p-8 rounded-3xl`}
+        style={{
+          backgroundColor: product.metadata?.bg_color as string || undefined
+        }}
+      >
         <div className="relative w-full h-full">
           <Image
             src={thumbnail}
@@ -79,8 +88,8 @@ export default function ProductGridItem({
         </div>
       </div>
 
-      <div className="bg-white p-5 text-center">
-        <h3 className="font-medium text-gray-900 text-lg leading-tight">
+      <div className="py-3 text-center">
+        <h3 className="font-medium text-gray-900 text-base leading-tight">
           {product.title}
         </h3>
       </div>

@@ -43,8 +43,19 @@ const TestimonialsSection = () => {
   )
 
   return (
-    <section className="bg-novapatch-testimonial" style={{ paddingTop: 'clamp(3rem, 4vw, 4rem)', paddingBottom: 'clamp(3rem, 4vw, 4rem)' }}>
-      <div className="max-w-7xl mx-auto" style={{ paddingLeft: 'clamp(1rem, 2vw, 2rem)', paddingRight: 'clamp(1rem, 2vw, 2rem)' }}>
+    <section className="bg-novapatch-testimonial relative overflow-hidden" style={{ paddingTop: 'clamp(3rem, 4vw, 4rem)', paddingBottom: 'clamp(3rem, 4vw, 4rem)' }}>
+      {/* Círculos decorativos blancos */}
+      <div className="absolute -top-7 left-5 flex items-center">
+        <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full mr-1"></div>
+        <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full mr-1"></div>
+        <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full"></div>
+      </div>
+      <div className="absolute -bottom-7 right-5 flex items-center">
+        <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full mr-1"></div>
+        <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full mr-1"></div>
+        <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full"></div>
+      </div>
+      <div className="max-w-7xl mx-auto relative z-10" style={{ paddingLeft: 'clamp(1rem, 2vw, 2rem)', paddingRight: 'clamp(1rem, 2vw, 2rem)' }}>
         <div className="relative">
           <button
             onClick={prevSlide}

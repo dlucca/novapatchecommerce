@@ -322,7 +322,7 @@ export default function ProductActions({
           <button
             onClick={handleAddToCart}
             disabled={!selectedVariant || !inStock || isAdding || !!disabled}
-            className="flex-1 bg-teal-600 text-white font-semibold py-3 px-6 rounded-full hover:bg-teal-700 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-500 flex items-center justify-center gap-2"
+            className="flex-1 bg-novapatch-primary text-white font-semibold py-3 px-6 rounded-full hover:bg-novapatch-primary/90 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-500 flex items-center justify-center gap-2"
             data-testid="add-product-button"
           >
             {isAdding ? (
@@ -345,18 +345,18 @@ export default function ProductActions({
 
         {/* Mensaje de éxito y botón ir al carrito */}
         {showSuccess && (
-          <div className="bg-teal-50 border-2 border-teal-500 rounded-2xl p-4 flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="bg-novapatch-primary/10 border-2 border-novapatch-primary rounded-2xl p-4 flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center gap-3">
-              <div className="bg-teal-500 rounded-full p-1">
+              <div className="bg-novapatch-primary rounded-full p-1">
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
               </div>
-              <span className="text-teal-800 font-medium">¡Producto agregado al carrito!</span>
+              <span className="text-novapatch-primary font-medium">¡Producto agregado al carrito!</span>
             </div>
             <LocalizedClientLink
               href="/cart"
-              className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-200"
+              className="bg-novapatch-primary hover:bg-novapatch-primary/90 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-200"
             >
               Ver carrito
             </LocalizedClientLink>

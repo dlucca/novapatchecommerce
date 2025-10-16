@@ -31,7 +31,7 @@ const EmptyCartMessage = () => {
 
         <LocalizedClientLink
           href="/store"
-          className="inline-block bg-[#00BCD4] hover:bg-[#00ACC1] text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md hover:shadow-lg"
+          className="inline-block bg-novapatch-primary hover:bg-novapatch-primary/90 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-md hover:shadow-lg"
         >
           Explorar productos
         </LocalizedClientLink>
