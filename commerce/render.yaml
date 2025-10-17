@@ -5,8 +5,8 @@ services:
     runtime: node
     region: oregon
     plan: free
-    buildCommand: npm install && npm run build
-    startCommand: npm run start
+    buildCommand: npm install -g pnpm && pnpm install --shamefully-hoist=true && pnpm run build
+    startCommand: MEDUSA_ADMIN_SERVE=true pnpm run start
     envVars:
       - key: NODE_ENV
         value: production
