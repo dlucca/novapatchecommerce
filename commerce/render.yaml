@@ -6,7 +6,7 @@ services:
     region: oregon
     plan: free
     buildCommand: npm install -g pnpm && pnpm install --shamefully-hoist=true && pnpm run build
-    startCommand: MEDUSA_ADMIN_SERVE=true pnpm run start
+    startCommand: MEDUSA_ADMIN_SERVE=false pnpm run start
     envVars:
       - key: NODE_ENV
         value: production
@@ -21,7 +21,7 @@ services:
       - key: COOKIE_SECRET
         generateValue: true
       - key: MEDUSA_ADMIN_SERVE
-        value: true
+        value: false
       - key: STORE_CORS
         value: "*"
       - key: ADMIN_CORS
