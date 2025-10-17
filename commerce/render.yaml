@@ -20,14 +20,14 @@ services:
         generateValue: true
       - key: COOKIE_SECRET
         generateValue: true
-      - key: MEDUSA_ADMIN_SERVE 
-        value: false         
+      - key: MEDUSA_ADMIN_SERVE
+        value: true
       - key: STORE_CORS
-        sync: false
+        value: "*"
       - key: ADMIN_CORS
-        sync: false
+        value: "*"
       - key: AUTH_CORS
-        sync: false
+        value: "*"
       - key: RESEND_API_KEY
         sync: false
       - key: RESEND_FROM_EMAIL_DEFAULT
