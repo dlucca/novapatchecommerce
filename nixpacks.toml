@@ -8,4 +8,4 @@ cmds = ["cd commerce && npm install"]
 cmds = ["cd commerce && npm run build"]
 
 [start]
-cmd = "cd commerce && npx medusa migrations run && npm run start"
+cmd = "cd commerce && npx medusa db:migrate && npm run start"
