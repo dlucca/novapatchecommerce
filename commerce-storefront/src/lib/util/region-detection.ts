@@ -1,6 +1,6 @@
 export const SUPPORTED_COUNTRIES = {
-  MX: 'mx',
-  BR: 'br',
+  MX: 'MX',
+  BR: 'BR',
 } as const
 
 export type CountryCode = typeof SUPPORTED_COUNTRIES[keyof typeof SUPPORTED_COUNTRIES]
@@ -17,7 +17,7 @@ export function getCountryInfo(code: CountryCode) {
   }
   const countryInfo = {
     [SUPPORTED_COUNTRIES.MX]: {
-      code: 'mx',
+      code: 'MX',
       name: 'México',
       flag: '🇲🇽',
       language: 'es',
@@ -25,7 +25,7 @@ export function getCountryInfo(code: CountryCode) {
       locale: 'es-MX',
     },
     [SUPPORTED_COUNTRIES.BR]: {
-      code: 'br',
+      code: 'BR',
       name: 'Brasil',
       flag: '🇧🇷',
       language: 'pt',
