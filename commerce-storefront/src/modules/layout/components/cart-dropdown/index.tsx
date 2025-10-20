@@ -6,7 +6,7 @@ import {
   PopoverPanel,
   Transition,
 } from "@headlessui/react"
-import { ShoppingCart, Trash2 } from 'lucide-react'
+import { ShoppingCart, X } from 'lucide-react'
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -121,7 +121,7 @@ const CartDropdown = ({
                 className="text-gray-400 hover:text-gray-600 transition-colors"
                 aria-label="Cerrar carrito"
               >
-                <Trash2 className="w-5 h-5" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 

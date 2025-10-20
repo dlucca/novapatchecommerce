@@ -6,11 +6,15 @@ import { HttpTypes } from "@medusajs/types"
 import ProductGridItem from "@modules/products/components/product-grid-item"
 import ProductActions from "@modules/products/components/product-actions"
 import ProductInfoAccordion from "@modules/products/components/product-info-accordion"
-import Thumbnail from "@modules/products/components/thumbnail"
 import { Pagination } from "@modules/store/components/pagination"
 import TestimonialsSection from "@modules/home/components/testimonials-section"
 import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react"
 import Image from "next/image"
+
+const isValidImageUrl = (url: string | null | undefined): boolean => {
+  if (!url) return false
+  return true
+}
 
 type StoreGridClientProps = {
   products: HttpTypes.StoreProduct[]
@@ -30,11 +34,11 @@ export default function StoreGridClient({
   selectedHandle,
 }: StoreGridClientProps) {
   const router = useRouter()
-  
+
   const initialProduct = selectedHandle
     ? products.find(p => p.handle === selectedHandle) || products[0]
     : products[0]
-    
+
   const [selectedProduct, setSelectedProduct] = useState<HttpTypes.StoreProduct | null>(
     initialProduct || null
   )
@@ -76,7 +80,7 @@ export default function StoreGridClient({
     )
   }
 
-  if (!selectedProduct) {
+  if (!selectedProduct || products.length === 0) {
     return (
       <div className="min-h-screen bg-novapatch-bg-cream flex items-center justify-center">
         <p className="text-gray-500 text-lg">No hay productos disponibles</p>
@@ -91,7 +95,12 @@ export default function StoreGridClient({
 
           <div className="space-y-8">
 
-            <div className="bg-[#b3dbde] rounded-3xl p-8 relative overflow-hidden">
+            <div 
+              className="rounded-3xl p-8 relative overflow-hidden"
+              style={{
+                backgroundColor: (selectedProduct.metadata?.bg_color as string) || '#b3dbde'
+              }}
+            >
               <div className="absolute bottom-0 left-0 w-full h-full z-0 pointer-events-none">
                 <Image
                   src="/assets/products/flower-big.webp"
@@ -109,26 +118,30 @@ export default function StoreGridClient({
                 onMouseMove={handleMouseMove}
               >
                 <div className="relative aspect-[3/4] overflow-visible rounded-lg">
-                  {selectedProduct.images && selectedProduct.images.length > 0 ? (
+                  {selectedProduct.images && selectedProduct.images.length > 0 && isValidImageUrl(selectedProduct.images[currentImageIndex]?.url) ? (
                     <Image
-                      src={selectedProduct.images[currentImageIndex]?.url || selectedProduct.thumbnail || ''}
+                      src={selectedProduct.images[currentImageIndex].url!}
+                      alt={selectedProduct.title}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 100vw, 500px"
+                    />
+                  ) : isValidImageUrl(selectedProduct.thumbnail) ? (
+                    <Image
+                      src={selectedProduct.thumbnail!}
                       alt={selectedProduct.title}
                       fill
                       className="object-contain"
                       sizes="(max-width: 768px) 100vw, 500px"
                     />
                   ) : (
-                    <Image
-                      src={selectedProduct.thumbnail || ''}
-                      alt={selectedProduct.title}
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 768px) 100vw, 500px"
-                    />
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      <span>Sin imagen disponible</span>
+                    </div>
                   )}
                 </div>
 
-                {showMagnifier && (
+                {showMagnifier && (isValidImageUrl(selectedProduct.images?.[currentImageIndex]?.url) || isValidImageUrl(selectedProduct.thumbnail)) && (
                   <div
                     className="fixed border-4 border-white shadow-2xl rounded-lg pointer-events-none overflow-hidden z-50 bg-white"
                     style={{
@@ -137,7 +150,7 @@ export default function StoreGridClient({
                       left: `${magnifierPosition.xPx}px`,
                       top: `${magnifierPosition.yPx}px`,
                       transform: 'translate(-50%, -50%)',
-                      backgroundImage: `url(${selectedProduct.images?.[currentImageIndex]?.url || selectedProduct.thumbnail})`,
+                      backgroundImage: `url(${isValidImageUrl(selectedProduct.images?.[currentImageIndex]?.url) ? selectedProduct.images?.[currentImageIndex]?.url : selectedProduct.thumbnail})`,
                       backgroundPosition: `${magnifierPosition.x}% ${magnifierPosition.y}%`,
                       backgroundSize: '250%',
                       backgroundRepeat: 'no-repeat',

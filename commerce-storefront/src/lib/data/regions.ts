@@ -11,7 +11,7 @@ export const listRegions = async () => {
   }
 
   return sdk.client
-    .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions`, {
+    .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions?fields=*countries`, {
       method: "GET",
       next,
       cache: "force-cache",
@@ -59,7 +59,7 @@ export const getRegion = async (countryCode: string) => {
       ? regionMap.get(countryCode)
       : regionMap.get("us")
 
-    return region
+    return region || null
   } catch (e: any) {
     return null
   }

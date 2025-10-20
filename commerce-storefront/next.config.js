@@ -33,6 +33,15 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "localhost",
+        port: "9000",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+      {
+        protocol: "https",
+        hostname: "novapatchecommerce-production.up.railway.app",
       },
       {
         protocol: "https",
