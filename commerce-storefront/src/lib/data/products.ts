@@ -53,6 +53,9 @@ export const listProducts = async ({
     ...(await getCacheOptions("products")),
   }
 
+  const defaultFields =
+    "+metadata,+tags,*variants,*variants.calculated_price,+variants.inventory_quantity,+variants.manage_inventory,+variants.allow_backorder,*images"
+
   return sdk.client
     .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
       `/store/products`,
@@ -62,8 +65,7 @@ export const listProducts = async ({
           limit,
           offset,
           region_id: region?.id,
-          fields:
-            "+metadata,+tags,*variants,*variants.calculated_price,+variants.inventory_quantity,+variants.manage_inventory,+variants.allow_backorder",
+          fields: queryParams?.fields || defaultFields,
           ...queryParams,
         },
         headers,

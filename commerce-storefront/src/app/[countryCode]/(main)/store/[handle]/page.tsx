@@ -31,7 +31,7 @@ export async function generateStaticParams() {
       })
 
       return {
-        country,
+        countryCode: country,
         products: response.products,
       }
     })
@@ -41,7 +41,7 @@ export async function generateStaticParams() {
     return countryProducts
       .flatMap((countryData) =>
         countryData.products.map((product) => ({
-          countryCode: countryData.country,
+          countryCode: countryData.countryCode,
           handle: product.handle,
         }))
       )
