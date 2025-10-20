@@ -32,5 +32,5 @@ export default async function Nav() {
 
   const cart = await retrieveCart().catch(() => null)
 
-  return <NavClient regions={regions} user={user} cart={cart} />
+  return <NavClient user={user} cart={cart} />
 }

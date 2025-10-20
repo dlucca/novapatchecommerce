@@ -13,7 +13,8 @@ import Image from "next/image"
 
 const isValidImageUrl = (url: string | null | undefined): boolean => {
   if (!url) return false
-  if (url.includes("localhost")) return false
+  // En desarrollo, permitir localhost
+  // En producción, deberías usar URLs de CDN (S3, Cloudinary, etc.)
   return true
 }
 
@@ -96,7 +97,12 @@ export default function StoreGridClient({
 
           <div className="space-y-8">
 
-            <div className="bg-[#b3dbde] rounded-3xl p-8 relative overflow-hidden">
+            <div 
+              className="rounded-3xl p-8 relative overflow-hidden"
+              style={{
+                backgroundColor: (selectedProduct.metadata?.bg_color as string) || '#b3dbde'
+              }}
+            >
               <div className="absolute bottom-0 left-0 w-full h-full z-0 pointer-events-none">
                 <Image
                   src="/assets/products/flower-big.webp"
@@ -113,7 +119,7 @@ export default function StoreGridClient({
                 onMouseLeave={() => setShowMagnifier(false)}
                 onMouseMove={handleMouseMove}
               >
-                <div className="relative aspect-[3/4] overflow-visible rounded-lg bg-gray-100">
+                <div className="relative aspect-[3/4] overflow-visible rounded-lg">
                   {selectedProduct.images && selectedProduct.images.length > 0 && isValidImageUrl(selectedProduct.images[currentImageIndex]?.url) ? (
                     <Image
                       src={selectedProduct.images[currentImageIndex].url!}

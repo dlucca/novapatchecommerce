@@ -9,7 +9,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 
 import SideMenu from "@modules/layout/components/side-menu"
 import AuthUserButton from "@components/auth/user-button"
-import CountrySelectorClient from "@modules/layout/components/country-selector/country-selector-client"
+// import CountrySelectorClient from "@modules/layout/components/country-selector/country-selector-client"
 import CartDropdown from "@modules/layout/components/cart-dropdown"
 import SearchBox from "@modules/search/components/search-box"
 import { useScroll } from "../../../../hooks/use-scroll"
@@ -28,71 +28,53 @@ interface SerializedUser {
 }
 
 interface NavClientProps {
-  regions: StoreRegion[]
   user: SerializedUser | null
   cart: HttpTypes.StoreCart | null
 }
 
-export default function NavClient({ regions, user, cart }: NavClientProps) {
+export default function NavClient({ user, cart }: NavClientProps) {
   const scrolled = useScroll(50)
   const [searchOpen, setSearchOpen] = useState(false)
   const params = useParams()
-  const countryCode = (params?.countryCode as string) || "mx" // Detecta scroll después de 50px
+  const countryCode = (params?.countryCode as string) || "mx"
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
       <header
-        className={`relative h-12 sm:h-14 lg:h-16 xl:h-14 2xl:h-12 mx-auto duration-300 transition-all ${
-          scrolled
+        className={`relative h-12 sm:h-14 lg:h-16 xl:h-14 2xl:h-12 mx-auto duration-300 transition-all ${scrolled
             ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200'
             : 'bg-white/95 backdrop-blur-sm shadow-sm'
-        }`}
+          }`}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between w-full h-full relative">
 
-          {/* Navegación Izquierda - Solo desktop */}
           <div className="hidden md:flex items-center space-x-8 flex-1">
             <LocalizedClientLink
               href="/store"
-              className={`text-sm font-bold transition-colors duration-200 ${
-                scrolled
+              className={`text-sm font-bold transition-colors duration-200 ${scrolled
                   ? 'text-gray-700 hover:text-blue-600'
                   : 'text-gray-600 hover:text-blue-600'
-              }`}
+                }`}
               data-testid="nav-store-link"
             >
-              Comprar
-            </LocalizedClientLink>
-
-            <LocalizedClientLink
-              href="/store"
-              className={`text-sm font-bold transition-colors duration-200 ${
-                scrolled
-                  ? 'text-gray-700 hover:text-blue-600'
-                  : 'text-gray-600 hover:text-blue-600'
-              }`}
-              data-testid="nav-products-link"
-            >
-              Productos
+              Tienda
             </LocalizedClientLink>
 
             {user ? (
               <LocalizedClientLink
                 href="/collections"
-                className={`text-sm font-bold transition-colors duration-200 ${
-                  scrolled
+                className={`text-sm font-bold transition-colors duration-200 ${scrolled
                     ? 'text-gray-700 hover:text-blue-600'
                     : 'text-gray-600 hover:text-blue-600'
-                }`}
+                  }`}
                 data-testid="nav-collections-link"
               >
                 Suscripción
               </LocalizedClientLink>
             ) : (
               <span
-                className={`text-sm font-bold cursor-not-allowed ${
-                  scrolled ? 'text-gray-400' : 'text-gray-400'
-                }`}
+                className={`text-sm font-bold cursor-not-allowed ${scrolled ? 'text-gray-400' : 'text-gray-400'
+                  }`}
                 title="Inicia sesión para acceder a suscripciones"
               >
                 Suscripción
@@ -100,7 +82,6 @@ export default function NavClient({ regions, user, cart }: NavClientProps) {
             )}
           </div>
 
-          {/* Logo Centrado */}
           <div className="flex items-center justify-center flex-1 md:flex-none">
             <LocalizedClientLink
               href="/"
@@ -120,34 +101,27 @@ export default function NavClient({ regions, user, cart }: NavClientProps) {
             </LocalizedClientLink>
           </div>
 
-          {/* Elementos de la Derecha */}
           <div className="hidden md:flex items-center space-x-4 flex-1 justify-end">
-            {/* Selector de País */}
-            <CountrySelectorClient />
 
-            {/* Icono de Búsqueda */}
             <button
               onClick={() => setSearchOpen(true)}
-              className={`p-2 transition-colors duration-200 ${
-                scrolled
+              className={`p-2 transition-colors duration-200 ${scrolled
                   ? 'text-gray-700 hover:text-blue-600'
                   : 'text-gray-600 hover:text-blue-600'
-              }`}
+                }`}
               aria-label="Buscar productos"
               data-testid="nav-search-button"
             >
               <Search className="w-5 h-5" />
             </button>
 
-            {/* Carrito con Dropdown */}
             <Suspense
               fallback={
                 <LocalizedClientLink
-                  className={`relative p-2 transition-colors duration-200 ${
-                    scrolled
+                  className={`relative p-2 transition-colors duration-200 ${scrolled
                       ? 'text-gray-700 hover:text-blue-600'
                       : 'text-gray-600 hover:text-blue-600'
-                  }`}
+                    }`}
                   href="/cart"
                   data-testid="nav-cart-link"
                 >
@@ -161,15 +135,13 @@ export default function NavClient({ regions, user, cart }: NavClientProps) {
               <CartDropdown cart={cart} scrolled={scrolled} />
             </Suspense>
 
-            {/* Icono de login para no logueados */}
             {!user && (
               <SignInButton mode="redirect">
                 <button
-                  className={`p-2 transition-colors duration-200 ${
-                    scrolled
+                  className={`p-2 transition-colors duration-200 ${scrolled
                       ? 'text-gray-700 hover:text-blue-600'
                       : 'text-gray-600 hover:text-blue-600'
-                  }`}
+                    }`}
                   aria-label="Iniciar Sesión"
                   title="Iniciar Sesión"
                 >
@@ -178,16 +150,9 @@ export default function NavClient({ regions, user, cart }: NavClientProps) {
               </SignInButton>
             )}
 
-            {/* Avatar/menú para usuarios logueados */}
             {user && <AuthUserButton />}
           </div>
 
-          {/* Mobile Menu - Solo visible en móvil */}
-          <div className="flex items-center md:hidden">
-            <SideMenu regions={regions} />
-          </div>
-
-          {/* Search Box - Inline */}
           <SearchBox
             isOpen={searchOpen}
             close={() => setSearchOpen(false)}

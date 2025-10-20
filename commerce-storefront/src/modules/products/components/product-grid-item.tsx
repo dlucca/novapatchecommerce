@@ -28,7 +28,7 @@ const getProductColor = (title: string): string => {
       return color
     }
   }
-  return "bg-gray-100" // Color por defecto
+  return "bg-gray-100" 
 }
 
 export default function ProductGridItem({
@@ -36,12 +36,9 @@ export default function ProductGridItem({
   isSelected,
   onClick,
 }: ProductGridItemProps) {
-  const thumbnail = product.thumbnail || product.images?.[0]?.url || "/placeholder.png"
-
-  // Obtener el color de fondo desde la metadata o usar el color por defecto
-  const bgColor = product.metadata?.bg_color
-    ? `bg-[${product.metadata.bg_color}]`
-    : getProductColor(product.title || "")
+  const thumbnail = product.thumbnail || product.images?.[0]?.url
+  
+  const bgColor = product.metadata?.bg_color as string | undefined
 
   return (
     <div
@@ -74,18 +71,24 @@ export default function ProductGridItem({
       <div
         className={`aspect-square relative overflow-hidden flex items-center justify-center p-8 rounded-3xl`}
         style={{
-          backgroundColor: product.metadata?.bg_color as string || undefined
+          backgroundColor: bgColor || '#f3f4f6' 
         }}
       >
-        <div className="relative w-full h-full">
-          <Image
-            src={thumbnail}
-            alt={product.title || "Product"}
-            fill
-            className="object-contain"
-            sizes="(max-width: 768px) 50vw, 400px"
-          />
-        </div>
+        {thumbnail ? (
+          <div className="relative w-full h-full">
+            <Image
+              src={thumbnail}
+              alt={product.title || "Product"}
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 50vw, 400px"
+            />
+          </div>
+        ) : (
+          <div className="flex items-center justify-center w-full h-full text-gray-400">
+            <span className="text-sm">Sin imagen</span>
+          </div>
+        )}
       </div>
 
       <div className="py-3 text-center">
