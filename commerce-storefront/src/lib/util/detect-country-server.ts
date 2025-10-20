@@ -14,7 +14,7 @@ export async function detectUserCountry(): Promise<CountryCode> {
     return cookieCountry as CountryCode
   }
   
-  const cfCountry = headersList.get('cf-ipcountry')?.toLowerCase()
+  const cfCountry = headersList.get('cf-ipcountry')?.toUpperCase()
   if (cfCountry && isValidCountryCode(cfCountry)) {
     return cfCountry as CountryCode
   }
@@ -37,7 +37,7 @@ function detectCountryFromLanguage(acceptLanguage: string): CountryCode | null {
     // Formato: es-MX, pt-BR, etc.
     const match = lang.match(/([a-z]{2})-([a-z]{2})/)
     if (match) {
-      const countryCode = match[2]
+      const countryCode = match[2].toUpperCase()
       if (isValidCountryCode(countryCode)) {
         return countryCode as CountryCode
       }
