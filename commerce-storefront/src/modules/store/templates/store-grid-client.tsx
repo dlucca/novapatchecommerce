@@ -13,8 +13,6 @@ import Image from "next/image"
 
 const isValidImageUrl = (url: string | null | undefined): boolean => {
   if (!url) return false
-  // En desarrollo, permitir localhost
-  // En producción, deberías usar URLs de CDN (S3, Cloudinary, etc.)
   return true
 }
 
