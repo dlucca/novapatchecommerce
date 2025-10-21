@@ -5,6 +5,7 @@ import { getRegion, listRegions } from "@lib/data/regions"
 import { logger } from "@lib/util/logger"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import StoreGridTemplate from "@modules/store/templates/store-grid-template"
+import { transformMediaUrl } from "@lib/util/transform-url"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
@@ -72,13 +73,15 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     }
   }
 
+  const thumbnailUrl = transformMediaUrl(product.thumbnail)
+  
   return {
     title: `${product.title} | NovaPatch`,
     description: `${product.title}`,
     openGraph: {
       title: `${product.title} | NovaPatch`,
       description: `${product.title}`,
-      images: product.thumbnail ? [product.thumbnail] : [],
+      images: thumbnailUrl ? [thumbnailUrl] : [],
     },
   }
 }

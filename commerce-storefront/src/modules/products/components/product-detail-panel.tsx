@@ -8,6 +8,7 @@ import { logger } from "@lib/util/logger"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
 import { useState } from "react"
+import { transformMediaUrl } from "@lib/util/transform-url"
 
 type ProductDetailPanelProps = {
   product: HttpTypes.StoreProduct
@@ -26,7 +27,7 @@ export default function ProductDetailPanel({
   const [itemAdded, setItemAdded] = useState(false)
 
   const images = product.images || []
-  const mainImage = images[0]?.url || product.thumbnail || "/placeholder.png"
+  const mainImage = transformMediaUrl(images[0]?.url || product.thumbnail) || "/placeholder.png"
   const { cheapestPrice } = getProductPrice({ product })
 
   const oneTimePrice = cheapestPrice?.calculated_price_number

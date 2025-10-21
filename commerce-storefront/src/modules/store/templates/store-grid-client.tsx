@@ -10,6 +10,7 @@ import { Pagination } from "@modules/store/components/pagination"
 import TestimonialsSection from "@modules/home/components/testimonials-section"
 import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react"
 import Image from "next/image"
+import { transformMediaUrl } from "@lib/util/transform-url"
 
 const isValidImageUrl = (url: string | null | undefined): boolean => {
   if (!url) return false
@@ -120,7 +121,7 @@ export default function StoreGridClient({
                 <div className="relative aspect-[3/4] overflow-visible rounded-lg">
                   {selectedProduct.images && selectedProduct.images.length > 0 && isValidImageUrl(selectedProduct.images[currentImageIndex]?.url) ? (
                     <Image
-                      src={selectedProduct.images[currentImageIndex].url!}
+                      src={transformMediaUrl(selectedProduct.images[currentImageIndex].url) || ''}
                       alt={selectedProduct.title}
                       fill
                       className="object-contain"
@@ -128,7 +129,7 @@ export default function StoreGridClient({
                     />
                   ) : isValidImageUrl(selectedProduct.thumbnail) ? (
                     <Image
-                      src={selectedProduct.thumbnail!}
+                      src={transformMediaUrl(selectedProduct.thumbnail) || ''}
                       alt={selectedProduct.title}
                       fill
                       className="object-contain"
@@ -150,7 +151,7 @@ export default function StoreGridClient({
                       left: `${magnifierPosition.xPx}px`,
                       top: `${magnifierPosition.yPx}px`,
                       transform: 'translate(-50%, -50%)',
-                      backgroundImage: `url(${isValidImageUrl(selectedProduct.images?.[currentImageIndex]?.url) ? selectedProduct.images?.[currentImageIndex]?.url : selectedProduct.thumbnail})`,
+                      backgroundImage: `url(${isValidImageUrl(selectedProduct.images?.[currentImageIndex]?.url) ? transformMediaUrl(selectedProduct.images?.[currentImageIndex]?.url) : transformMediaUrl(selectedProduct.thumbnail)})`,
                       backgroundPosition: `${magnifierPosition.x}% ${magnifierPosition.y}%`,
                       backgroundSize: '250%',
                       backgroundRepeat: 'no-repeat',

@@ -2,6 +2,7 @@
 
 import { HttpTypes } from "@medusajs/types"
 import Image from "next/image"
+import { transformMediaUrl } from "@lib/util/transform-url"
 
 type ProductGridItemProps = {
   product: HttpTypes.StoreProduct
@@ -36,7 +37,7 @@ export default function ProductGridItem({
   isSelected,
   onClick,
 }: ProductGridItemProps) {
-  const thumbnail = product.thumbnail || product.images?.[0]?.url
+  const thumbnail = transformMediaUrl(product.thumbnail || product.images?.[0]?.url)
   
   const bgColor = product.metadata?.bg_color as string | undefined
 
