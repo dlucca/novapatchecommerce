@@ -42,8 +42,8 @@ export default function NavClient({ user, cart }: NavClientProps) {
     <div className="sticky top-0 inset-x-0 z-50 group">
       <header
         className={`relative h-12 sm:h-14 lg:h-16 xl:h-14 2xl:h-12 mx-auto duration-300 transition-all ${scrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200'
-            : 'bg-white/95 backdrop-blur-sm shadow-sm'
+          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200'
+          : 'bg-white/95 backdrop-blur-sm shadow-sm'
           }`}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between w-full h-full relative">
@@ -52,8 +52,8 @@ export default function NavClient({ user, cart }: NavClientProps) {
             <LocalizedClientLink
               href="/store"
               className={`text-sm font-bold transition-colors duration-200 ${scrolled
-                  ? 'text-gray-700 hover:text-blue-600'
-                  : 'text-gray-600 hover:text-blue-600'
+                ? 'text-gray-700 hover:text-blue-600'
+                : 'text-gray-600 hover:text-blue-600'
                 }`}
               data-testid="nav-store-link"
             >
@@ -64,8 +64,8 @@ export default function NavClient({ user, cart }: NavClientProps) {
               <LocalizedClientLink
                 href="/collections"
                 className={`text-sm font-bold transition-colors duration-200 ${scrolled
-                    ? 'text-gray-700 hover:text-blue-600'
-                    : 'text-gray-600 hover:text-blue-600'
+                  ? 'text-gray-700 hover:text-blue-600'
+                  : 'text-gray-600 hover:text-blue-600'
                   }`}
                 data-testid="nav-collections-link"
               >
@@ -89,15 +89,12 @@ export default function NavClient({ user, cart }: NavClientProps) {
               data-testid="nav-home-link"
             >
               <Image
-                src="/assets/nav/Logo.svg"
-                alt="Novapatch Logo"
-                width={32}
-                height={32}
-                className="h-8 w-8"
+                src="/assets/nav/LOGO-1.svg"
+                alt="Logo de NovaPatch"
+                width={150}
+                height={150}
+                priority
               />
-              <span className="text-xl font-bold text-novapatch-title">
-                NovaPatch
-              </span>
             </LocalizedClientLink>
           </div>
 
@@ -106,8 +103,8 @@ export default function NavClient({ user, cart }: NavClientProps) {
             <button
               onClick={() => setSearchOpen(true)}
               className={`p-2 transition-colors duration-200 ${scrolled
-                  ? 'text-gray-700 hover:text-blue-600'
-                  : 'text-gray-600 hover:text-blue-600'
+                ? 'text-gray-700 hover:text-blue-600'
+                : 'text-gray-600 hover:text-blue-600'
                 }`}
               aria-label="Buscar productos"
               data-testid="nav-search-button"
@@ -119,8 +116,8 @@ export default function NavClient({ user, cart }: NavClientProps) {
               fallback={
                 <LocalizedClientLink
                   className={`relative p-2 transition-colors duration-200 ${scrolled
-                      ? 'text-gray-700 hover:text-blue-600'
-                      : 'text-gray-600 hover:text-blue-600'
+                    ? 'text-gray-700 hover:text-blue-600'
+                    : 'text-gray-600 hover:text-blue-600'
                     }`}
                   href="/cart"
                   data-testid="nav-cart-link"
@@ -139,8 +136,8 @@ export default function NavClient({ user, cart }: NavClientProps) {
               <SignInButton mode="redirect">
                 <button
                   className={`p-2 transition-colors duration-200 ${scrolled
-                      ? 'text-gray-700 hover:text-blue-600'
-                      : 'text-gray-600 hover:text-blue-600'
+                    ? 'text-gray-700 hover:text-blue-600'
+                    : 'text-gray-600 hover:text-blue-600'
                     }`}
                   aria-label="Iniciar Sesión"
                   title="Iniciar Sesión"
