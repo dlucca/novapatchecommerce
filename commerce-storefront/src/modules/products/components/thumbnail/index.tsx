@@ -3,6 +3,7 @@ import Image from "next/image"
 import React from "react"
 
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
+import { transformMediaUrl } from "@lib/util/transform-url"
 
 type ThumbnailProps = {
   thumbnail?: string | null
@@ -22,7 +23,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   className,
   "data-testid": dataTestid,
 }) => {
-  const initialImage = thumbnail || images?.[0]?.url
+  const initialImage = transformMediaUrl(thumbnail || images?.[0]?.url)
 
   return (
     <Container
@@ -49,7 +50,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
 const ImageOrPlaceholder = ({
   image,
   size,
-}: Pick<ThumbnailProps, "size"> & { image?: string }) => {
+}: Pick<ThumbnailProps, "size"> & { image?: string | null }) => {
   return image ? (
     <Image
       src={image}
