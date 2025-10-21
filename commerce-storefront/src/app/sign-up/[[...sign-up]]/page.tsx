@@ -40,6 +40,7 @@ export default function Page() {
                 colorInputBackground: '#ffffff',
                 colorInputText: '#374151',
                 borderRadius: '0.5rem',
+                fontFamily: 'var(--font-outfit), Outfit, -apple-system, BlinkMacSystemFont, sans-serif',
               },
             }}
           />

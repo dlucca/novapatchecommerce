@@ -2,7 +2,14 @@ import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
 import { ClerkProvider } from '@clerk/nextjs'
 import ClerkMedusaSyncProvider from "../components/providers/clerk-medusa-sync"
+import { Outfit } from 'next/font/google'
 import "../styles/globals.css"
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-outfit',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -35,11 +42,12 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         },
         variables: {
           colorPrimary: '#2C5697',
+          fontFamily: 'var(--font-outfit), Outfit, -apple-system, BlinkMacSystemFont, sans-serif',
         },
       }}
     >
-      <html lang="es" data-mode="light" suppressHydrationWarning>
-        <body suppressHydrationWarning>
+      <html lang="es" data-mode="light" className={outfit.variable} suppressHydrationWarning>
+        <body className={outfit.className} suppressHydrationWarning>
           <ClerkMedusaSyncProvider>
             <a href="#main-content" className="skip-to-content">
               Saltar al contenido principal
