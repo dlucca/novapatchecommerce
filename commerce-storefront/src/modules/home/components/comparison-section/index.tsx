@@ -90,7 +90,7 @@ const ComparisonSection = () => {
                       <div className="flex flex-col items-center gap-3">
                         <div className="h-12 flex items-center justify-center">
                           <Image
-                            src="/assets/comparison/namelogo.svg"
+                            src="/assets/nav/LOGO-1.svg"
                             width={120}
                             height={48}
                             alt="Novapatch"
@@ -196,7 +196,7 @@ const ComparisonSection = () => {
                   </div>
                   <div className="flex justify-center">
                     <Image
-                      src="/assets/comparison/namelogo.svg"
+                      src="/assets/nav/LOGO-1.svg"
                       width={24}
                       height={24}
                       alt="Novapatch"
