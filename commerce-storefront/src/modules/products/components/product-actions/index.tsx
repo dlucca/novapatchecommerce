@@ -167,7 +167,7 @@ export default function ProductActions({
   const decrementQuantity = () => {
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
   }
-
+  // TODO: Dinamizar el descuento
   // Calculate discounted price for subscription (20% off)
   const getDiscountedPrice = (price: number) => {
     return Math.round(price * 0.8) // 20% discount
@@ -239,6 +239,7 @@ export default function ProductActions({
                 <div className="flex items-center gap-2">
                   <span className="font-medium text-gray-900">Suscríbete y ahorra</span>
                   <span className="bg-novapatch-button text-white text-xs font-bold px-2 py-0.5 rounded">
+                    {/* TODO: Hacerlo dinamico */}
                     Ahorra 20%
                   </span>
                 </div>

@@ -47,7 +47,7 @@ const ComparisonSection = () => {
 
   return (
     <section>
-      <div className="">
+      <div className="overflow-hidden">
         <div className="text-center mb-12">
           <h2
             className="font-normal leading-tight text-novapatch-title"
