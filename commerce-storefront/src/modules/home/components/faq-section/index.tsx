@@ -42,7 +42,7 @@ const FAQSection = () => {
         <div className="text-center" style={{ marginBottom: 'clamp(2.5rem, 3vw, 3rem)' }}>
           <h2
             className="font-bold text-novapatch-title"
-            style={{ fontSize: 'clamp(1.25rem, 2.5vw + 0.5rem, 2.25rem)', marginBottom: 'clamp(0.75rem, 1vw, 1rem)' }}
+            // style={{ fontSize: 'clamp(1.25rem, 2.5vw + 0.5rem, 2.25rem)' }}
           >
             ¿Tienes dudas?
           </h2>
