@@ -6,20 +6,8 @@ const HowItWorksSection = () => {
     <section className="bg-white" style={{ paddingTop: 'clamp(3rem, 5vw, 5rem)', paddingBottom: 'clamp(3rem, 5vw, 5rem)' }}>
       <div className="max-w-7xl mx-auto" style={{ paddingLeft: 'clamp(1rem, 2vw, 2rem)', paddingRight: 'clamp(1rem, 2vw, 2rem)' }}>
         <div className="flex flex-col lg:flex-row items-center justify-center" style={{ gap: 'clamp(2rem, 4vw, 4rem)' }}>
-          <div className="flex-1 flex justify-center items-center w-full">
-            <div className="w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
-              <Image
-                src="/assets/work/howwork.svg"
-                alt="Cómo funciona - Parches inteligentes"
-                width={500}
-                height={400}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </div>
-
-          <div className="flex-1 text-center lg:text-left w-full">
+          
+          <div className="flex-1 text-center lg:text-left w-full order-1 lg:order-2">
             <div className="max-w-xl mx-auto lg:mx-0">
               <h2
                 className="font-bold leading-tight text-novapatch-title"
@@ -47,6 +35,19 @@ const HowItWorksSection = () => {
                   Ver ahora
                 </button>
               </div>
+            </div>
+          </div>
+
+          <div className="flex-1 flex justify-center items-center w-full order-2 lg:order-1">
+            <div className="w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
+              <Image
+                src="/assets/work/howwork.svg"
+                alt="Cómo funciona - Parches inteligentes"
+                width={500}
+                height={400}
+                className="w-full h-auto"
+                priority
+              />
             </div>
           </div>
         </div>
