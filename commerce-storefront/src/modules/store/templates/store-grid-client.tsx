@@ -91,8 +91,8 @@ export default function StoreGridClient({
 
   return (
     <div className="min-h-screen bg-novapatch-bg-cream">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 xl:px-8 py-8">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
 
           <div className="space-y-8">
 
@@ -199,7 +199,7 @@ export default function StoreGridClient({
               )}
             </div>
 
-            <div className="lg:hidden">
+            <div className="xl:hidden">
               <h1 className="text-3xl font-bold text-novapatch-primary mb-2">
                 {selectedProduct.title}
               </h1>
@@ -208,7 +208,7 @@ export default function StoreGridClient({
               </p>
             </div>
 
-            <div className="block md:hidden">
+            <div className="block xl:hidden">
               <ProductActions
                 product={selectedProduct}
                 region={region}
@@ -245,7 +245,7 @@ export default function StoreGridClient({
               </div>
             </div>
 
-            <div className="hidden md:block">
+            <div className="hidden xl:block">
               <ProductActions
                 product={selectedProduct}
                 region={region}

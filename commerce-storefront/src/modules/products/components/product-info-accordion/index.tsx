@@ -15,7 +15,7 @@ type ProductInfoAccordionProps = {
 }
 
 export default function ProductInfoAccordion({ product }: ProductInfoAccordionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   const accordionItems: AccordionItem[] = []
 
@@ -107,4 +107,3 @@ export default function ProductInfoAccordion({ product }: ProductInfoAccordionPr
     </div>
   )
 }
-
