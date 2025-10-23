@@ -208,6 +208,14 @@ export default function StoreGridClient({
               </p>
             </div>
 
+            <div className="block md:hidden">
+              <ProductActions
+                product={selectedProduct}
+                region={region}
+                disabled={false}
+              />
+            </div>
+
             <ProductInfoAccordion product={selectedProduct} />
           </div>
 
@@ -237,7 +245,7 @@ export default function StoreGridClient({
               </div>
             </div>
 
-            <div>
+            <div className="hidden md:block">
               <ProductActions
                 product={selectedProduct}
                 region={region}
