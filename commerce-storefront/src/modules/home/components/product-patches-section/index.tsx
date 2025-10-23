@@ -12,6 +12,9 @@ const ProductPatchesSection = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true)
+        } else {
+          // Reset animación cuando sale del viewport
+          setIsVisible(false)
         }
       },
       { threshold: 0.2 }
@@ -127,7 +130,7 @@ const ProductPatchesSection = () => {
                           ? 'opacity-100 translate-y-0'
                           : 'opacity-0 translate-y-8'
                       } ${
-                        index === 0 ? '' : '-ml-[25px] sm:-ml-[30px] md:-ml-[35px] lg:-ml-[40px]'
+                        index === 0 ? '' : '-ml-[45px] sm:-ml-[35px] md:-ml-[35px] lg:-ml-[40px]'
                       } ${
                         isEven ? 'mt-0' : 'mt-[30px] sm:mt-[40px] md:mt-[50px] lg:mt-[60px]'
                       }`}
