@@ -10,8 +10,8 @@ const HowItWorksSection = () => {
           <div className="flex-1 text-center lg:text-left w-full order-1 lg:order-2">
             <div className="max-w-xl mx-auto lg:mx-0">
               <h2
-                className="font-bold leading-tight text-novapatch-title"
-                style={{ fontSize: 'clamp(1.25rem, 2.5vw + 0.5rem, 2.25rem)', marginBottom: 'clamp(0.75rem, 1vw, 1rem)' }}
+                className="font-normal leading-tight text-novapatch-title"
+                style={{ color: "#3d6a96" }}
               >
                 Cómo funciona
               </h2>
@@ -29,7 +29,7 @@ const HowItWorksSection = () => {
 
               <div className="text-center lg:text-left">
                 <button
-                  className="text-white font-semibold rounded-lg transition-colors duration-200 hover:opacity-90 shadow-md bg-novapatch-button"
+                  className="text-white font-medium rounded-lg transition-colors duration-200 hover:opacity-90 shadow-md bg-novapatch-button"
                   style={{ padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}
                 >
                   Ver ahora

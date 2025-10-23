@@ -50,14 +50,14 @@ const ComparisonSection = () => {
       <div className="">
         <div className="text-center mb-12">
           <h2
-            className="text-2xl md:text-4xl lg:text-4xl mb-4"
+            className="font-normal leading-tight text-novapatch-title"
             style={{ color: "#3d6a96" }}
           >
             La forma más <span className="font-bold">limpia</span> y{" "}
             <span className="font-bold">práctica</span>
           </h2>
           <h2
-            className="text-2xl md:text-4xl lg:text-4xl mb-4"
+            className="font-normal leading-tight text-novapatch-title"
             style={{ color: "#3d6a96" }}
           >
             de <span className="font-bold">tomar vitaminas</span>
@@ -81,7 +81,7 @@ const ComparisonSection = () => {
                 <thead>
                   <tr>
                     <th
-                      className="text-left py-6 px-4 font-bold text-3xl"
+                      className="text-left py-6 px-4 font-normal text-3xl"
                       style={{ color: "#3d6a96", minWidth: 200 }}
                     >
                       Característica
@@ -98,7 +98,7 @@ const ComparisonSection = () => {
                           />
                         </div>
                         <span
-                          className="text-sm font-bold whitespace-nowrap"
+                          className="text-sm font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Nuestros parches
@@ -117,7 +117,7 @@ const ComparisonSection = () => {
                           />
                         </div>
                         <span
-                          className="text-sm font-bold whitespace-nowrap"
+                          className="text-sm font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Cápsulas comunes
@@ -136,7 +136,7 @@ const ComparisonSection = () => {
                           />
                         </div>
                         <span
-                          className="text-sm font-bold whitespace-nowrap"
+                          className="text-sm font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Gomitas comunes
@@ -158,7 +158,7 @@ const ComparisonSection = () => {
                       style={{ borderBottom: "1px solid #000000ff" }}
                     >
                       <td
-                        className="py-4 px-4 font-bold text-sm"
+                        className="py-4 px-4 font-medium text-sm"
                         style={{ color: "#3d6a96" }}
                       >
                         {feature.name}
@@ -196,7 +196,7 @@ const ComparisonSection = () => {
                 <thead>
                   <tr>
                     <th
-                      className="text-left py-4 px-2 font-bold text-sm"
+                      className="text-left py-4 px-2 font-normal text-sm"
                       style={{ color: "#3d6a96" }}
                     >
                       Característica
@@ -255,7 +255,7 @@ const ComparisonSection = () => {
                       style={{ borderBottom: "1px solid #000000ff" }}
                     >
                       <td
-                        className="py-3 px-2 font-bold text-xs"
+                        className="py-3 px-2 font-medium text-xs"
                         style={{ color: "#3d6a96" }}
                       >
                         {feature.name}

@@ -74,8 +74,8 @@ const ProductPatchesSection = () => {
           >
             <div className="w-full">
               <h2
-                className="leading-tight text-novapatch-title"
-                style={{ fontSize: 'clamp(1.25rem, 2.5vw + 0.5rem, 2.25rem)', marginBottom: 'clamp(1rem, 1.25vw, 1.25rem)' }}
+                className="font-normal leading-tight text-novapatch-title"
+                style={{marginBottom: 'clamp(1rem, 1.25vw, 1.25rem)' }}
               >
                 Elegí el <span className="font-bold">parche</span> que
                 <br className="hidden sm:block" />
