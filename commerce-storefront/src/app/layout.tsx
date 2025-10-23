@@ -7,6 +7,7 @@ import "../styles/globals.css"
 
 const outfit = Outfit({
   subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
   variable: '--font-outfit',
 })
@@ -47,7 +48,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       }}
     >
       <html lang="es" data-mode="light" className={outfit.variable} suppressHydrationWarning>
-        <body className={outfit.className} suppressHydrationWarning>
+        <body className={`${outfit.variable} ${outfit.className}`} suppressHydrationWarning>
           <ClerkMedusaSyncProvider>
             <a href="#main-content" className="skip-to-content">
               Saltar al contenido principal
