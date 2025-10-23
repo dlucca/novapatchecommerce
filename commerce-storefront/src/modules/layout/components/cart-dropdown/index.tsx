@@ -69,8 +69,9 @@ const CartDropdown = ({
     if (itemRef.current !== totalItems && !pathname.includes("/cart")) {
       timedOpen()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalItems, itemRef.current])
+
+    itemRef.current = totalItems
+  }, [pathname, totalItems])
 
   return (
     <div
