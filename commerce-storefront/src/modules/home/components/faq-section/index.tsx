@@ -37,12 +37,12 @@ const FAQSection = () => {
   }
 
   return (
-    <section className="bg-white" style={{ paddingTop: 'clamp(3rem, 4vw, 4rem)', paddingBottom: 'clamp(3rem, 4vw, 4rem)' }}>
+    <section className="bg-white" style={{paddingBottom: 'clamp(5rem, 6vw, 6rem)' }}>
       <div className="max-w-7xl mx-auto" style={{ paddingLeft: 'clamp(1rem, 2vw, 2rem)', paddingRight: 'clamp(1rem, 2vw, 2rem)' }}>
         <div className="text-center" style={{ marginBottom: 'clamp(2.5rem, 3vw, 3rem)' }}>
           <h2
-            className="font-bold text-novapatch-title"
-            style={{ fontSize: 'clamp(1.25rem, 2.5vw + 0.5rem, 2.25rem)', marginBottom: 'clamp(0.75rem, 1vw, 1rem)' }}
+            className="font-bold leading-tight text-novapatch-title"
+            style={{ marginBottom: 'clamp(0.75rem, 1vw, 1rem)' }}
           >
             ¿Tienes dudas?
           </h2>

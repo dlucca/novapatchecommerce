@@ -47,17 +47,17 @@ const ComparisonSection = () => {
 
   return (
     <section>
-      <div className="">
+      <div className="overflow-hidden">
         <div className="text-center mb-12">
           <h2
-            className="text-2xl md:text-4xl lg:text-4xl mb-4"
+            className="font-normal leading-tight text-novapatch-title"
             style={{ color: "#3d6a96" }}
           >
             La forma más <span className="font-bold">limpia</span> y{" "}
             <span className="font-bold">práctica</span>
           </h2>
           <h2
-            className="text-2xl md:text-4xl lg:text-4xl mb-4"
+            className="font-normal leading-tight text-novapatch-title"
             style={{ color: "#3d6a96" }}
           >
             de <span className="font-bold">tomar vitaminas</span>
@@ -81,7 +81,7 @@ const ComparisonSection = () => {
                 <thead>
                   <tr>
                     <th
-                      className="text-left py-6 px-4 font-bold text-3xl"
+                      className="text-left py-6 px-4 font-normal text-3xl"
                       style={{ color: "#3d6a96", minWidth: 200 }}
                     >
                       Característica
@@ -98,7 +98,7 @@ const ComparisonSection = () => {
                           />
                         </div>
                         <span
-                          className="text-sm font-bold whitespace-nowrap"
+                          className="text-sm font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Nuestros parches
@@ -117,7 +117,7 @@ const ComparisonSection = () => {
                           />
                         </div>
                         <span
-                          className="text-sm font-bold whitespace-nowrap"
+                          className="text-sm font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Cápsulas comunes
@@ -136,7 +136,7 @@ const ComparisonSection = () => {
                           />
                         </div>
                         <span
-                          className="text-sm font-bold whitespace-nowrap"
+                          className="text-sm font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Gomitas comunes
@@ -144,15 +144,21 @@ const ComparisonSection = () => {
                       </div>
                     </th>
                   </tr>
+                  <tr>
+                    <td
+                      colSpan={4}
+                      style={{ borderBottom: "1px solid #000000ff" }}
+                    ></td>
+                  </tr>
                 </thead>
                 <tbody>
                   {features.map((feature, index) => (
                     <tr
                       key={index}
-                      style={{ borderBottom: "1px solid #e0e0e0" }}
+                      style={{ borderBottom: "1px solid #000000ff" }}
                     >
                       <td
-                        className="py-4 px-4 font-bold text-sm"
+                        className="py-4 px-4 font-medium text-sm"
                         style={{ color: "#3d6a96" }}
                       >
                         {feature.name}
@@ -184,66 +190,89 @@ const ComparisonSection = () => {
           </div>
 
           {/* Versión para móvil */}
-          <div className="md:hidden">
-            <div className="rounded-lg shadow-lg overflow-hidden bg-white">
-              <div className="p-4 bg-gray-50 border-b border-gray-200">
-                <div className="grid grid-cols-4 items-center text-center">
-                  <div
-                    className="font-bold text-left"
-                    style={{ color: "#3d6a96" }}
-                  >
-                    Comparativa
-                  </div>
-                  <div className="flex justify-center">
-                    <Image
-                      src="/assets/nav/LOGO-1.svg"
-                      width={24}
-                      height={24}
-                      alt="Novapatch"
-                    />
-                  </div>
-                  <div className="flex justify-center">
-                    <Image
-                      src="/assets/comparison/parche.svg"
-                      width={24}
-                      height={24}
-                      alt="Parche"
-                    />
-                  </div>
-                  <div className="flex justify-center">
-                    <Image
-                      src="/assets/comparison/bear.svg"
-                      width={24}
-                      height={24}
-                      alt="Osito"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="divide-y divide-gray-200">
-                {features.map((feature, index) => (
-                  <div key={index} className="p-4">
-                    <h4
-                      className="font-medium mb-3"
+          <div className="md:hidden px-4">
+            <div className="shadow-lg overflow-hidden">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr>
+                    <th
+                      className="text-left py-4 px-2 font-normal text-sm"
                       style={{ color: "#3d6a96" }}
                     >
-                      {feature.name}
-                    </h4>
-                    <div className="grid grid-cols-4 items-center text-center">
-                      <div>
+                      Característica
+                    </th>
+                    <th className="text-center py-4 px-1 w-16">
+                      <div className="flex flex-col items-center gap-1">
+                        <div className="h-8 flex items-center justify-center">
+                          <Image
+                            src="/assets/nav/LOGO-1.svg"
+                            width={40}
+                            height={32}
+                            alt="Novapatch"
+                            className="object-contain"
+                          />
+                        </div>
+                      </div>
+                    </th>
+                    <th className="text-center py-4 px-1 w-16">
+                      <div className="flex flex-col items-center gap-1">
+                        <div className="h-8 flex items-center justify-center">
+                          <Image
+                            src="/assets/comparison/parche.svg"
+                            width={20}
+                            height={32}
+                            alt="Parche"
+                            className="object-contain"
+                          />
+                        </div>
+                      </div>
+                    </th>
+                    <th className="text-center py-4 px-1 w-16">
+                      <div className="flex flex-col items-center gap-1">
+                        <div className="h-8 flex items-center justify-center">
+                          <Image
+                            src="/assets/comparison/bear.svg"
+                            width={16}
+                            height={32}
+                            alt="Osito"
+                            className="object-contain"
+                          />
+                        </div>
+                      </div>
+                    </th>
+                  </tr>
+                  <tr>
+                    <td
+                      colSpan={4}
+                      style={{ borderBottom: "1px solid #000000ff" }}
+                    ></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {features.map((feature, index) => (
+                    <tr
+                      key={index}
+                      style={{ borderBottom: "1px solid #000000ff" }}
+                    >
+                      <td
+                        className="py-3 px-2 font-medium text-xs"
+                        style={{ color: "#3d6a96" }}
+                      >
+                        {feature.name}
+                      </td>
+                      <td className="py-3 px-1 text-center">
                         <CheckIcon isCheck={feature.novapatch} />
-                      </div>
-                      <div>
+                      </td>
+                      <td className="py-3 px-1 text-center">
                         <CheckIcon isCheck={feature.pills} />
-                      </div>
-                      <div>
+                      </td>
+                      <td className="py-3 px-1 text-center">
                         <CheckIcon isCheck={feature.gummies} />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

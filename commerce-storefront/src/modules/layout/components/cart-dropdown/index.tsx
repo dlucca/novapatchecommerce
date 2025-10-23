@@ -69,8 +69,9 @@ const CartDropdown = ({
     if (itemRef.current !== totalItems && !pathname.includes("/cart")) {
       timedOpen()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalItems, itemRef.current])
+
+    itemRef.current = totalItems
+  }, [pathname, totalItems])
 
   return (
     <div
@@ -111,7 +112,7 @@ const CartDropdown = ({
         >
           <PopoverPanel
             static
-            className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-white rounded-lg shadow-2xl border border-gray-200 w-[380px]"
+            className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-white rounded-lg shadow-2xl border border-gray-200 w-[380px] z-50"
             data-testid="nav-cart-dropdown"
           >
             <div className="p-4 border-b border-gray-200 flex items-center justify-between">

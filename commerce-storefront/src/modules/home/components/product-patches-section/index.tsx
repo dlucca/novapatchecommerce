@@ -12,6 +12,9 @@ const ProductPatchesSection = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true)
+        } else {
+          // Reset animación cuando sale del viewport
+          setIsVisible(false)
         }
       },
       { threshold: 0.2 }
@@ -71,8 +74,8 @@ const ProductPatchesSection = () => {
           >
             <div className="w-full">
               <h2
-                className="leading-tight text-novapatch-title"
-                style={{ fontSize: 'clamp(1.25rem, 2.5vw + 0.5rem, 2.25rem)', marginBottom: 'clamp(1rem, 1.25vw, 1.25rem)' }}
+                className="font-normal leading-tight text-novapatch-title"
+                style={{marginBottom: 'clamp(1rem, 1.25vw, 1.25rem)' }}
               >
                 Elegí el <span className="font-bold">parche</span> que
                 <br className="hidden sm:block" />
@@ -127,7 +130,7 @@ const ProductPatchesSection = () => {
                           ? 'opacity-100 translate-y-0'
                           : 'opacity-0 translate-y-8'
                       } ${
-                        index === 0 ? '' : '-ml-[25px] sm:-ml-[30px] md:-ml-[35px] lg:-ml-[40px]'
+                        index === 0 ? '' : '-ml-[45px] sm:-ml-[35px] md:-ml-[35px] lg:-ml-[40px]'
                       } ${
                         isEven ? 'mt-0' : 'mt-[30px] sm:mt-[40px] md:mt-[50px] lg:mt-[60px]'
                       }`}

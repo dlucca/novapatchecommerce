@@ -80,7 +80,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 <div className="flex items-end gap-x-2 text-ui-fg-base">
                   {selectedPrice.price_type === "sale" && (
                     <p>
-                      <span className="line-through text-small-regular">
+                      <span className=" text-small-regular">
                         {selectedPrice.original_price}
                       </span>
                     </p>
@@ -111,7 +111,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                   <span>
                     {variant
                       ? Object.values(options).join(" / ")
-                      : "Select Options"}
+                      : "Seleccionar opciones"}
                   </span>
                   <ChevronDown />
                 </div>
@@ -119,15 +119,16 @@ const MobileActions: React.FC<MobileActionsProps> = ({
               <Button
                 onClick={handleAddToCart}
                 disabled={!inStock || !variant}
-                className="w-full"
+                className="w-full bg-novapatch-primary text-white font-semibold py-2 px-4 text-sm rounded-full hover:bg-novapatch-primary/90 transition-colors duration-200 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-500 flex items-center justify-center gap-1 !border-0 focus-visible:ring-0 focus:ring-0 focus:ring-offset-0 ring-0 outline-none focus:outline-none focus-visible:outline-none shadow-none"
+                style={{ border: "none", outline: "none", boxShadow: "none" }}
                 isLoading={isAdding}
                 data-testid="mobile-cart-button"
               >
                 {!variant
                   ? "Select variant"
                   : !inStock
-                  ? "Out of stock"
-                  : "Add to cart"}
+                  ? "Sin stock"
+                  : "Agregar al carrito"}
               </Button>
             </div>
           </div>
