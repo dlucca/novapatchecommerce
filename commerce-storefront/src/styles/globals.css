@@ -1,10 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800&display=swap');
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
 /* Outfit Font - Default Font */
+:root {
+  --font-outfit: 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
 html {
-  font-family: var(--font-outfit), 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Ubuntu', sans-serif;
+  font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Ubuntu', sans-serif;
+}
+
+/* Global font weights - Outfit */
+body,
+p,
+span,
+div {
+  font-weight: 200; /* ExtraLight - Para todo el texto normal/descripciones */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 400; /* Regular - Para todos los títulos */
+}
+
+/* Global title sizes - Títulos más grandes */
+h1 {
+  font-size: clamp(2.5rem, 4vw + 1rem, 4.5rem);
+  line-height: 1.1;
+  color: var(--nova-blue-primary);
+}
+
+h2 {
+  font-size: clamp(2rem, 3vw + 0.75rem, 3.5rem);
+  line-height: 1.2;
+  color: var(--nova-blue-primary);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.5rem);
+  line-height: 1.2;
+  color: var(--nova-blue-primary);
 }
 
 /* Novapatch Color Scheme */
@@ -83,140 +124,7 @@ html {
 }  
 
 @layer components {
-  /* Typography */
-  .nova-heading-1 {
-    font-size: 2.25rem; /* text-4xl */
-    font-weight: 700; /* font-bold */
-    line-height: 1.2; /* leading-tight */
-    color: var(--nova-blue-primary);
-  }
-  
-  @media (min-width: 768px) {
-    .nova-heading-1 {
-      font-size: 3rem; /* md:text-5xl */
-    }
-  }
-  
-  .nova-heading-2 {
-    font-size: 1.875rem; /* text-3xl */
-    font-weight: 700; /* font-bold */
-    line-height: 1.2; /* leading-tight */
-    color: var(--nova-blue-primary);
-  }
-  
-  @media (min-width: 768px) {
-    .nova-heading-2 {
-      font-size: 2.25rem; /* md:text-4xl */
-    }
-  }
-  
-  .nova-heading-3 {
-    font-size: 1.5rem; /* text-2xl */
-    font-weight: 700; /* font-bold */
-    line-height: 1.2; /* leading-tight */
-    color: var(--nova-blue-primary);
-  }
-  
-  @media (min-width: 768px) {
-    .nova-heading-3 {
-      font-size: 1.875rem; /* md:text-3xl */
-    }
-  }
-  
-  .nova-heading-accent {
-    color: var(--nova-teal-primary);
-  }
-  
-  /* Buttons */
-  .nova-button-primary {
-    border-radius: 9999px; /* rounded-full */
-    padding: 0.75rem 1.5rem; /* px-6 py-3 */
-    font-weight: 500; /* font-medium */
-    transition: all 200ms ease; /* transition-all duration-200 */
-    background-color: var(--nova-teal-primary);
-    color: white;
-  }
-  
-  .nova-button-primary:hover {
-    background-color: var(--nova-blue-primary);
-  }
-  
-  .nova-button-secondary {
-    border-radius: 9999px; /* rounded-full */
-    padding: 0.75rem 1.5rem; /* px-6 py-3 */
-    font-weight: 500; /* font-medium */
-    transition: all 200ms ease; /* transition-all duration-200 */
-    background-color: white;
-    color: var(--nova-teal-primary);
-    border: 1px solid var(--nova-teal-primary);
-  }
-  
-  .nova-button-secondary:hover {
-    background-color: var(--nova-blue-light);
-  }
-  
-  /* Background Colors */
-  .nova-bg-blue-light {
-    background-color: var(--nova-blue-light);
-  }
-  
-  .nova-bg-yellow-light {
-    background-color: var(--nova-yellow-secondary);
-  }
-  
-  /* Product Cards */
-  .nova-product-teal {
-    background-color: var(--nova-product-teal);
-  }
-  
-  .nova-product-blue {
-    background-color: var(--nova-product-blue);
-  }
-  
-  .nova-product-red {
-    background-color: var(--nova-product-red);
-  }
-  
-  .nova-product-yellow {
-    background-color: var(--nova-product-yellow);
-  }
-  
-  .nova-product-purple {
-    background-color: var(--nova-product-purple);
-  }
-  
-  .nova-product-pink {
-    background-color: var(--nova-product-pink);
-  }
-  
-  /* Hero Section */
-  .nova-hero {
-    /* Removing gradient as we'll use the image as background */
-    background-color: transparent;
-  }
-  
-  /* Comparison Table */
-  .nova-check {
-    text-align: center; /* text-center */
-    font-size: 1.125rem; /* text-lg */
-    color: var(--nova-teal-primary);
-  }
-  
-  .nova-x {
-    text-align: center; /* text-center */
-    font-size: 1.125rem; /* text-lg */
-    color: var(--nova-product-red);
-  }
-  
-  /* Mobile Optimization */
-  .nova-mobile-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)); /* grid-cols-2 */
-    gap: 1rem; /* gap-4 */
-  }
-  
-  .nova-mobile-hidden {
-    display: none; /* hidden */
-  }
+  /* Solo mantener clases que no se pueden hacer fácilmente con Tailwind */
 }
 
 @layer utilities {
@@ -255,10 +163,6 @@ html {
 @layer components {
   .content-container {
     @apply max-w-[1440px] w-full mx-auto px-6;
-  }
-
-  .contrast-btn {
-    @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
   }
 
   .text-xsmall-regular {
@@ -313,28 +217,7 @@ html {
     @apply text-[32px] leading-[44px] font-semibold;
   }
 
-  /* NovaPatch Custom Styles */
-  .nova-header {
-    @apply bg-white border-b border-gray-200 shadow-sm;
-  }
-
-  .nova-logo {
-    @apply text-blue-600 hover:text-blue-700 transition-colors duration-200;
-  }
-
-  .nova-nav-link {
-    @apply text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium;
-  }
-
-  .nova-button-primary {
-    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all duration-200 shadow-md hover:shadow-lg;
-  }
-
-  .nova-gradient {
-    @apply bg-gradient-to-br from-blue-50 to-green-50;
-  }
-
-  /* Custom scrollbar styles */
+  /* Custom scrollbar styles - No se pueden hacer con Tailwind puro */
   .scrollbar-thin {
     scrollbar-width: thin;
     scrollbar-color: #d1d5db #f3f4f6;
@@ -358,21 +241,12 @@ html {
     background: #9ca3af;
   }
 
-  .scrollbar-thumb-gray-300 {
-    scrollbar-color: #d1d5db #f3f4f6;
-  }
-
-  .scrollbar-track-gray-100 {
-    scrollbar-color: #d1d5db #f3f4f6;
-  }
-
-  /* Hide scrollbar but keep functionality */
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   .scrollbar-hide::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari and Opera */
+    display: none;
   }
 }

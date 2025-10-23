@@ -81,6 +81,16 @@ module.exports = {
           "sans-serif",
         ],
       },
+      fontWeight: {
+        thin: "100",
+        extralight: "200",  // Para descripciones/párrafos
+        light: "300",
+        normal: "400",      // Para títulos
+        medium: "500",      // Para botones
+        semibold: "600",
+        bold: "700",
+        extrabold: "800",
+      },
       keyframes: {
         ring: {
           "0%": { transform: "rotate(0deg)" },
