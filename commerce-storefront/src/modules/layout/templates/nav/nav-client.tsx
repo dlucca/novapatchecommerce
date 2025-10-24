@@ -83,26 +83,27 @@ export default function NavClient({ user, cart }: NavClientProps) {
               Tienda
             </LocalizedClientLink>
 
-            {user ? (
-              <LocalizedClientLink
-                href="/collections"
-                className={`text-sm font-bold transition-colors duration-200 ${scrolled
-                  ? 'text-gray-700 hover:text-blue-600'
-                  : 'text-gray-600 hover:text-blue-600'
-                  }`}
-                data-testid="nav-collections-link"
-              >
-                Suscripción
-              </LocalizedClientLink>
-            ) : (
-              <span
-                className={`text-sm font-bold cursor-not-allowed ${scrolled ? 'text-gray-400' : 'text-gray-400'
-                  }`}
-                title="Inicia sesión para acceder a suscripciones"
-              >
-                Suscripción
-              </span>
-            )}
+            <LocalizedClientLink
+              href="/subscriptions"
+              className={`text-sm font-bold transition-colors duration-200 ${scrolled
+                ? 'text-gray-700 hover:text-blue-600'
+                : 'text-gray-600 hover:text-blue-600'
+                }`}
+              data-testid="nav-subscriptions-link"
+            >
+              Suscripciones
+            </LocalizedClientLink>
+
+            <LocalizedClientLink
+              href="/about"
+              className={`text-sm font-bold transition-colors duration-200 ${scrolled
+                ? 'text-gray-700 hover:text-blue-600'
+                : 'text-gray-600 hover:text-blue-600'
+                }`}
+              data-testid="nav-about-link"
+            >
+              Nosotros
+            </LocalizedClientLink>
           </div>
 
           <div className="flex items-center justify-center flex-1 md:flex-none">
