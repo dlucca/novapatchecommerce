@@ -63,18 +63,15 @@ const ComparisonSection = () => {
             de <span className="font-bold">tomar vitaminas</span>
           </h2>
         </div>
-        {/* El fondo cubre todos los bordes */}
         <div
           className="py-12 md:py-16 w-full relative"
           style={{ backgroundColor: "#f7edeb" }}
         >
-          {/* Círculos decorativos blancos */}
           <div className="absolute -top-7 left-5 flex items-center">
             <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full mr-1"></div>
             <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full mr-1"></div>
             <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full"></div>
           </div>
-          {/* Tabla para pantallas grandes */}
           <div className="hidden md:block overflow-x-auto">
             <div className="shadow-lg overflow-hidden">
               <table className="mx-auto border-collapse">
@@ -177,7 +174,6 @@ const ComparisonSection = () => {
                 </tbody>
               </table>
             </div>
-            {/* Flor decorativa en la esquina izquierda */}
             <div className="absolute -right-12 -top-28 z-10">
               <Image
                 src="/assets/features/flower.svg"
@@ -191,7 +187,7 @@ const ComparisonSection = () => {
 
           {/* Versión para móvil */}
           <div className="md:hidden px-4">
-            <div className="shadow-lg overflow-hidden">
+            <div className="overflow-hidden">
               <table className="w-full border-collapse">
                 <thead>
                   <tr>
