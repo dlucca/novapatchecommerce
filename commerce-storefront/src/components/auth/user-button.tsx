@@ -13,13 +13,13 @@ export default function AuthUserButton() {
 
   if (!isLoaded) {
     return (
-      <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
+      <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" suppressHydrationWarning />
     )
   }
 
   if (isSignedIn && user) {
     return (
-      <Popover className="relative h-full">
+      <Popover className="relative h-full" suppressHydrationWarning>
         {() => (
           <>
             <PopoverButton className="h-full outline-none">
