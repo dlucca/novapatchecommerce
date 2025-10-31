@@ -77,13 +77,11 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   }
 
   try {
-    const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+    const pgConnection = req.scope.resolve(ContainerRegistrationKeys.PG_CONNECTION)
 
-    const { data: subscriptions } = await query.graph({
-      entity: "subscription",
-      fields: ["*"],
-      filters: { customer_id },
-    })
+    const subscriptions = await pgConnection("subscription")
+      .where({ customer_id })
+      .orderBy("created_at", "desc")
 
     return res.status(200).json({
       subscriptions: subscriptions || [],

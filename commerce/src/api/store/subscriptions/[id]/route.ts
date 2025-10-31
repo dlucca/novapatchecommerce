@@ -16,20 +16,18 @@ export async function GET(
   }
 
   try {
-    const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+    const pgConnection = req.scope.resolve(ContainerRegistrationKeys.PG_CONNECTION)
 
-    const { data: subscriptions } = await query.graph({
-      entity: "subscription",
-      fields: ["*"],
-      filters: { id },
-    })
+    const subscription = await pgConnection("subscription")
+      .where({ id })
+      .first()
 
-    if (!subscriptions || subscriptions.length === 0) {
+    if (!subscription) {
       return res.status(404).json({ error: "Subscription not found" })
     }
 
     return res.status(200).json({
-      subscription: subscriptions[0],
+      subscription,
     })
   } catch (error: any) {
     console.error("Error fetching subscription:", error)

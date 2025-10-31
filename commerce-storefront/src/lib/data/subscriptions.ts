@@ -4,7 +4,7 @@ import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
 import { getAuthHeaders } from "./cookies"
 
-export type SubscriptionPlan = "monthly" | "bimonthly" | "quarterly"
+export type SubscriptionPlan = string
 
 export type Subscription = {
   id: string
@@ -20,24 +20,26 @@ export type Subscription = {
   updated_at: string
 }
 
-export type SubscriptionPlanInfo = {
+export type SubscriptionPlanConfig = {
   id: string
+  code: string
   name: string
-  discount_percentage: number
   interval_days: number
   free_shipping_threshold: number | null
   description: string
   promotion_code: string
+  is_active: boolean
+  sort_order: number
 }
 
 /**
- * Get available subscription plans
+ * Get available subscription plans (active only)
  */
 export async function getSubscriptionPlans(): Promise<{
-  plans: SubscriptionPlanInfo[]
+  subscription_plans: SubscriptionPlanConfig[]
 }> {
   return sdk.client
-    .fetch<{ plans: SubscriptionPlanInfo[] }>("/store/subscriptions/plans", {
+    .fetch<{ subscription_plans: SubscriptionPlanConfig[] }>("/store/subscription-plans", {
       method: "GET",
     })
     .then((data) => data)
@@ -71,7 +73,7 @@ export async function getCustomerSubscriptions(
  */
 export async function getSubscription(
   subscriptionId: string
-): Promise<{ subscription: Subscription }> {
+): Promise<{ subscription: Subscription | null }> {
   const headers = {
     ...(await getAuthHeaders()),
   }
@@ -97,7 +99,7 @@ export async function createSubscription(data: {
   product_variants: Array<{ variant_id: string; quantity: number }>
   shipping_address_id?: string
   region_id: string
-}): Promise<{ subscription: Subscription; message: string }> {
+}): Promise<{ subscription: Subscription | null; message: string }> {
   const headers = {
     ...(await getAuthHeaders()),
   }
@@ -127,7 +129,7 @@ export async function updateSubscription(
     shipping_address_id?: string
     status?: "active" | "paused" | "cancelled"
   }
-): Promise<{ subscription: Subscription; message: string }> {
+): Promise<{ subscription: Subscription | null; message: string }> {
   const headers = {
     ...(await getAuthHeaders()),
   }
@@ -151,7 +153,7 @@ export async function updateSubscription(
 export async function pauseSubscription(
   subscriptionId: string,
   customerId: string
-): Promise<{ subscription: Subscription; message: string }> {
+): Promise<{ subscription: Subscription | null; message: string }> {
   const headers = {
     ...(await getAuthHeaders()),
   }
@@ -175,7 +177,7 @@ export async function pauseSubscription(
 export async function cancelSubscription(
   subscriptionId: string,
   customerId: string
-): Promise<{ subscription: Subscription; message: string }> {
+): Promise<{ subscription: Subscription | null; message: string }> {
   const headers = {
     ...(await getAuthHeaders()),
   }
