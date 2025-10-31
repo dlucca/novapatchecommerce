@@ -52,7 +52,6 @@ const heroSlides = [
     titleLine2: "se siente",
     titleLine3: "sentirse bien.",
     highlightedWord: "bien",
-    highlightColor: "bg-blue-400",
     waveColor: "#5686BC", // Energy
     subtitle: "Activa tu bienestar natural",
     link: "/store",
@@ -63,7 +62,6 @@ const heroSlides = [
     titleLine2: "radiante",
     titleLine3: "al instante.",
     highlightedWord: "instante",
-    highlightColor: "bg-red-400",
     waveColor: "#f35c55", // Glow
     subtitle: "Activa tu bienestar natural",
     link: "/store",
@@ -74,7 +72,6 @@ const heroSlides = [
     titleLine2: "plus único",
     titleLine3: "a tu día a día.",
     highlightedWord: "día a día",
-    highlightColor: "bg-orange-400",
     waveColor: "#FFA849", // Shield
     subtitle: "Activa tu bienestar natural",
     link: "/store",
@@ -85,7 +82,6 @@ const heroSlides = [
     titleLine2: "profundo",
     titleLine3: "asegurado.",
     highlightedWord: "asegurado",
-    highlightColor: "bg-cyan-400",
     waveColor: "#1EB1BB", // Sleep
     subtitle: "Activa tu bienestar natural",
     link: "/store",
@@ -96,7 +92,6 @@ const heroSlides = [
     titleLine2: "hormonal",
     titleLine3: "al natural.",
     highlightedWord: "natural",
-    highlightColor: "bg-pink-400",
     waveColor: "#C89EC6", // Woman
     subtitle: "Activa tu bienestar natural",
     link: "/store",
@@ -107,7 +102,6 @@ const heroSlides = [
     titleLine2: "en calma",
     titleLine3: "inmediata.",
     highlightedWord: "inmediata",
-    highlightColor: "bg-blue-400",
     waveColor: "#4E82BC", // Zen
     subtitle: "Activa tu bienestar natural",
     link: "/store",
@@ -206,7 +200,10 @@ const HeroSection = () => {
               {currentSlideData.titleLine2} <br />
               <span className="relative inline-block">
                 {currentSlideData.titleLine3.split(currentSlideData.highlightedWord)[0]}
-                <span className={`${currentSlideData.highlightColor} text-white px-2`}>
+                <span 
+                  className="text-white px-2 transition-colors duration-[2000ms]"
+                  style={{ backgroundColor: currentSlideData.waveColor }}
+                >
                   {currentSlideData.highlightedWord}
                 </span>
                 {currentSlideData.titleLine3.split(currentSlideData.highlightedWord)[1]}
