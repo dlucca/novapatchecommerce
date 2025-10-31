@@ -28,7 +28,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
     const subscription = subscriptions[0]
 
-    let customer = null
+    let customer: any = null
     try {
       customer = await customerModuleService.retrieveCustomer(
         subscription.customer_id
