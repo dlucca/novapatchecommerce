@@ -6,7 +6,7 @@ import {
   PopoverPanel,
   Transition,
 } from "@headlessui/react"
-import { ShoppingCart, X } from 'lucide-react'
+import Image from "next/image"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -16,10 +16,8 @@ import { Fragment, useEffect, useRef, useState } from "react"
 
 const CartDropdown = ({
   cart: cartState,
-  scrolled = false,
 }: {
   cart?: HttpTypes.StoreCart | null
-  scrolled?: boolean
 }) => {
   const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
     undefined
@@ -53,7 +51,6 @@ const CartDropdown = ({
     open()
   }
 
-  // Clean up the timer when the component unmounts
   useEffect(() => {
     return () => {
       if (activeTimer) {
@@ -64,7 +61,6 @@ const CartDropdown = ({
 
   const pathname = usePathname()
 
-  // open cart dropdown when modifying the cart items, but only if we're not on the cart page
   useEffect(() => {
     if (itemRef.current !== totalItems && !pathname.includes("/cart")) {
       timedOpen()
@@ -82,16 +78,18 @@ const CartDropdown = ({
       <Popover className="relative h-full">
         <PopoverButton className="h-full">
           <LocalizedClientLink
-            className={`flex items-center transition-colors duration-200 ${
-              scrolled
-                ? 'text-gray-700 hover:text-blue-600'
-                : 'text-gray-600 hover:text-blue-600'
-            }`}
+            className="flex items-center text-gray-700 hover:text-blue-600 transition-all duration-200"
             href="/cart"
             data-testid="nav-cart-link"
           >
             <div className="relative">
-              <ShoppingCart className="w-6 h-6" />
+              <Image
+                src="/assets/nav/cart.svg"
+                alt="Carrito"
+                width={24}
+                height={24}
+                className="w-6 h-6 transition-all duration-200"
+              />
               {totalItems > 0 && (
                 <span className="absolute -top-2 -right-2 bg-novapatch-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
                   {totalItems}
@@ -122,7 +120,9 @@ const CartDropdown = ({
                 className="text-gray-400 hover:text-gray-600 transition-colors"
                 aria-label="Cerrar carrito"
               >
-                <X className="w-5 h-5" />
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
 

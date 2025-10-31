@@ -44,6 +44,25 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const maxQtyFromInventory = 10
   const maxQuantity = item.variant?.manage_inventory ? 10 : maxQtyFromInventory
 
+  // Calcular precio con descuento de suscripción si aplica
+  const getItemWithDiscount = () => {
+    if (!item.metadata?.is_subscription || !item.metadata?.subscription_discount) {
+      return item
+    }
+
+    const discount = item.metadata.subscription_discount as number
+    const originalTotal = item.total || 0
+    const discountedTotal = Math.round(originalTotal * (1 - discount / 100))
+
+    return {
+      ...item,
+      original_total: originalTotal,
+      total: discountedTotal,
+    }
+  }
+
+  const itemWithDiscount = getItemWithDiscount()
+
   return (
     <Table.Row className="w-full" data-testid="product-row">
       <Table.Cell className="!pl-0 p-4 w-24">
@@ -70,6 +89,25 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
           {item.product_title}
         </Text>
         <LineItemOptions variant={item.variant} data-testid="product-variant" />
+
+        {/* Mostrar badge de suscripción si el item tiene metadata de suscripción */}
+        {item.metadata?.is_subscription && (
+          <div className="flex items-center gap-2 mt-2">
+            <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-novapatch-button text-white">
+              🔄 Suscripción
+            </span>
+            {item.metadata?.subscription_plan && (
+              <span className="text-xs text-gray-600">
+                Plan: {
+                  item.metadata.subscription_plan === 'monthly' ? 'Mensual (15% OFF)' :
+                  item.metadata.subscription_plan === 'bimonthly' ? 'Bimestral (20% OFF)' :
+                  item.metadata.subscription_plan === 'quarterly' ? 'Trimestral (25% OFF)' :
+                  item.metadata.subscription_plan
+                }
+              </span>
+            )}
+          </div>
+        )}
       </Table.Cell>
 
       {type === "full" && (
@@ -107,7 +145,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       {type === "full" && (
         <Table.Cell className="hidden small:table-cell">
           <LineItemUnitPrice
-            item={item}
+            item={itemWithDiscount}
             style="tight"
             currencyCode={currencyCode}
           />
@@ -124,14 +162,14 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
             <span className="flex gap-x-1 ">
               <Text className="text-ui-fg-muted">{item.quantity}x </Text>
               <LineItemUnitPrice
-                item={item}
+                item={itemWithDiscount}
                 style="tight"
                 currencyCode={currencyCode}
               />
             </span>
           )}
           <LineItemPrice
-            item={item}
+            item={itemWithDiscount}
             style="tight"
             currencyCode={currencyCode}
           />

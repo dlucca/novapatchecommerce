@@ -12,7 +12,7 @@ import { useParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
-
+// TODO: Suscripciones - refactor
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
@@ -28,6 +28,29 @@ const optionsAsKeymap = (
   }, {})
 }
 
+type SubscriptionPlan = 'monthly' | 'bimonthly' | 'quarterly'
+
+const SUBSCRIPTION_PLANS = {
+  monthly: {
+    name: 'Mensual',
+    discount: 15,
+    interval: 'cada 30 días',
+    description: 'Envío cada 30 días'
+  },
+  bimonthly: {
+    name: 'Bimestral',
+    discount: 20,
+    interval: 'cada 60 días',
+    description: 'Envío cada 60 días, envío gratis en pedidos +$50'
+  },
+  quarterly: {
+    name: 'Trimestral',
+    discount: 25,
+    interval: 'cada 90 días',
+    description: 'Envío cada 90 días, envío gratis siempre'
+  }
+}
+
 export default function ProductActions({
   product,
   disabled,
@@ -37,6 +60,7 @@ export default function ProductActions({
   const [showSuccess, setShowSuccess] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const [purchaseType, setPurchaseType] = useState<'single' | 'subscription'>('single')
+  const [subscriptionPlan, setSubscriptionPlan] = useState<SubscriptionPlan>('bimonthly')
   const countryCode = useParams().countryCode as string
 
   // If there is only 1 variant, preselect the options
@@ -115,14 +139,16 @@ export default function ProductActions({
     return false
   }, [selectedVariant])
 
-  // Calculate discounted price for subscription (20% off)
+  // Calculate discounted price for subscription based on selected plan
   const getSubscriptionPrice = () => {
     if (!selectedVariant?.calculated_price) return null
-    
+
+    const plan = SUBSCRIPTION_PLANS[subscriptionPlan]
     const originalAmount = selectedVariant.calculated_price.calculated_amount || 0
-    const discountedAmount = Math.round(originalAmount * 0.8) // 20% off
+    const discountMultiplier = 1 - (plan.discount / 100)
+    const discountedAmount = Math.round(originalAmount * discountMultiplier)
     const currencyCode = selectedVariant.calculated_price.currency_code || 'MXN'
-    
+
     return {
       original: convertToLocale({
         amount: originalAmount,
@@ -132,6 +158,7 @@ export default function ProductActions({
         amount: discountedAmount,
         currency_code: currencyCode,
       }),
+      discount: plan.discount,
     }
   }
 
@@ -145,15 +172,25 @@ export default function ProductActions({
 
     setIsAdding(true)
 
+    const metadata: Record<string, any> = {}
+
+    // Add subscription metadata if subscription is selected
+    if (purchaseType === 'subscription') {
+      metadata.is_subscription = true
+      metadata.subscription_plan = subscriptionPlan
+      metadata.subscription_discount = SUBSCRIPTION_PLANS[subscriptionPlan].discount
+    }
+
     await addToCart({
       variantId: selectedVariant.id,
       quantity: quantity,
       countryCode,
+      metadata: Object.keys(metadata).length > 0 ? metadata : undefined,
     })
 
     setIsAdding(false)
     setShowSuccess(true)
-    
+
     // Hide success message after 5 seconds
     setTimeout(() => {
       setShowSuccess(false)
@@ -166,11 +203,6 @@ export default function ProductActions({
 
   const decrementQuantity = () => {
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
-  }
-  // TODO: Dinamizar el descuento
-  // Calculate discounted price for subscription (20% off)
-  const getDiscountedPrice = (price: number) => {
-    return Math.round(price * 0.8) // 20% discount
   }
 
   return (
@@ -223,8 +255,8 @@ export default function ProductActions({
           </label>
 
           <label className={`flex items-start gap-3 cursor-pointer p-3 border-2 rounded-lg transition-colors ${
-            purchaseType === 'subscription' 
-              ? 'border-novapatch-button bg-blue-50' 
+            purchaseType === 'subscription'
+              ? 'border-novapatch-button bg-blue-50'
               : 'border-gray-200 hover:border-gray-300'
           }`}>
             <input
@@ -239,15 +271,14 @@ export default function ProductActions({
                 <div className="flex items-center gap-2">
                   <span className="font-medium text-gray-900">Suscríbete y ahorra</span>
                   <span className="bg-novapatch-button text-white text-xs font-bold px-2 py-0.5 rounded">
-                    {/* TODO: Hacerlo dinamico */}
-                    Ahorra 20%
+                    Ahorra {SUBSCRIPTION_PLANS[subscriptionPlan].discount}%
                   </span>
                 </div>
                 <div className="text-right">
                   {(() => {
                     const subscriptionPrice = getSubscriptionPrice()
                     if (!subscriptionPrice) return null
-                    
+
                     return (
                       <>
                         <div className="text-gray-500 line-through text-sm">
@@ -261,6 +292,33 @@ export default function ProductActions({
                   })()}
                 </div>
               </div>
+
+              {/* Selector de plan de suscripción */}
+              {purchaseType === 'subscription' && (
+                <div className="mb-3">
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">
+                    Elige tu plan:
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {(Object.keys(SUBSCRIPTION_PLANS) as SubscriptionPlan[]).map((plan) => (
+                      <button
+                        key={plan}
+                        type="button"
+                        onClick={() => setSubscriptionPlan(plan)}
+                        className={`p-2 text-xs rounded-lg border-2 transition-colors ${
+                          subscriptionPlan === plan
+                            ? 'border-novapatch-button bg-novapatch-button text-white'
+                            : 'border-gray-300 hover:border-novapatch-button'
+                        }`}
+                      >
+                        <div className="font-semibold">{SUBSCRIPTION_PLANS[plan].name}</div>
+                        <div className="text-xs opacity-90">{SUBSCRIPTION_PLANS[plan].discount}% OFF</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <ul className="space-y-1 text-sm text-gray-700">
                 <li className="flex items-center gap-2">
                   <svg className="w-4 h-4 text-novapatch-button flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -272,13 +330,7 @@ export default function ProductActions({
                   <svg className="w-4 h-4 text-novapatch-button flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  Entrega cada 30 días
-                </li>
-                <li className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-novapatch-button flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  Envío gratuito a partir del segundo pedido
+                  {SUBSCRIPTION_PLANS[subscriptionPlan].description}
                 </li>
               </ul>
             </div>

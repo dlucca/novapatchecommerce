@@ -1,27 +1,29 @@
-import { auth } from '@clerk/nextjs/server'
+import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { Toaster } from "@medusajs/ui"
 import AccountLayout from "@modules/account/templates/account-layout"
 
 export default async function AccountPageLayout({
-  dashboard,
-  login,
+  children,
 }: {
-  dashboard?: React.ReactNode
-  login?: React.ReactNode
+  children: React.ReactNode
 }) {
-  const { userId } = auth()
+  const user = await currentUser()
 
-  // If user is not authenticated, redirect to sign-in
-  if (!userId) {
+  if (!user) {
     redirect('/sign-in')
   }
 
-  // For now, we'll pass null as customer since we're using Clerk
-  // In the future, we can sync Clerk user with Medusa customer
+  const customer = {
+    id: user.id,
+    first_name: user.firstName || '',
+    last_name: user.lastName || '',
+    email: user.emailAddresses[0]?.emailAddress || '',
+  }
+
   return (
-    <AccountLayout customer={null}>
-      {dashboard}
+    <AccountLayout customer={customer as any}>
+      {children}
       <Toaster />
     </AccountLayout>
   )
