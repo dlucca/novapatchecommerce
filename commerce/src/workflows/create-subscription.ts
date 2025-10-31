@@ -7,6 +7,7 @@ import {
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import {
   calculateNextOrderDate,
+  getSubscriptionPlanConfig,
   type SubscriptionPlan,
 } from "../lib/subscription-config"
 import { updateCustomerSubscriptionMetadataStep } from "./steps/update-customer-subscription-metadata"
@@ -22,7 +23,13 @@ type CreateSubscriptionInput = {
 const createSubscriptionStep = createStep(
   "create-subscription-step",
   async (input: CreateSubscriptionInput, { container }) => {
-    const nextOrderDate = calculateNextOrderDate(input.plan)
+    const planConfig = await getSubscriptionPlanConfig(input.plan, container)
+    
+    if (!planConfig) {
+      throw new Error(`Subscription plan ${input.plan} not found or inactive`)
+    }
+
+    const nextOrderDate = calculateNextOrderDate(planConfig.interval_days)
 
     const manager = container.resolve("manager") as any
     

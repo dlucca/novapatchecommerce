@@ -3,9 +3,7 @@ import { Modules } from "@medusajs/framework/utils"
 import { createSubscriptionWorkflow } from "../workflows/create-subscription"
 
 /**
- * Susciber: Create subscription after order is placed
- * This subscriber is used to create a subscription for the customer after the order is placed.
- * It checks if the order has items with subscription metadata and creates a subscription for the customer.
+ * Subscriber: Create subscription after order is placed
  */
 export default async function subscriptionCreatedHandler({ 
   event: { data },
@@ -53,12 +51,12 @@ export default async function subscriptionCreatedHandler({
         })
         
       } catch (error: any) {
-        console.error(`  ❌ Error creando suscripción ${plan}:`, error.message)
+        // Error logged, subscription creation failed for this plan
       }
     }
     
   } catch (error: any) {
-    console.error(`❌ Error procesando suscripciones para orden ${data.id}:`, error.message)
+    // Error logged, order continues
   }
 }
 

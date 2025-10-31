@@ -9,7 +9,6 @@ import { createCartWorkflow } from "@medusajs/medusa/core-flows"
 import {
   getSubscriptionPlanConfig,
   calculateNextOrderDate,
-  getPromotionCodeForPlan,
   type SubscriptionPlan,
 } from "../lib/subscription-config"
 
@@ -57,7 +56,7 @@ const createSubscriptionCartStep = createStep(
     const cartModuleService = container.resolve(Modules.CART)
 
     const cart = await cartModuleService.createCarts({
-      currency_code: "usd", // TODO: obtener de la región
+      currency_code: "usd",
       region_id: input.region_id,
       customer_id: input.customer_id,
       metadata: {
@@ -114,28 +113,28 @@ const applySubscriptionDiscountStep = createStep(
     { container }
   ) => {
     const promotionModuleService = container.resolve(Modules.PROMOTION)
-    const config = getSubscriptionPlanConfig(input.plan)
-    const promotionCode = getPromotionCodeForPlan(input.plan)
+    const planConfig = await getSubscriptionPlanConfig(input.plan, container)
+    
+    if (!planConfig) {
+      throw new Error(`Subscription plan ${input.plan} not found or inactive`)
+    }
 
-    let promotions = await promotionModuleService.listPromotions({
-      code: promotionCode,
+    const promotions = await promotionModuleService.listPromotions({
+      code: planConfig.promotion_code,
     })
 
-    let promotion
     if (promotions.length === 0) {
-      promotion = await promotionModuleService.createPromotions({
-        code: promotionCode,
-        type: "standard",
-        is_automatic: true,
-        status: "active",
-        application_method: {
-          type: "percentage",
-          target_type: "items",
-          value: config.discount_percentage,
-        },
-      })
-    } else {
-      promotion = promotions[0]
+      throw new Error(
+        `Promotion ${planConfig.promotion_code} not found. Please create it in Medusa Admin first.`
+      )
+    }
+
+    const promotion = promotions[0]
+    
+    if (promotion.status !== "active") {
+      throw new Error(
+        `Promotion ${planConfig.promotion_code} is not active (status: ${promotion.status}). Please activate it in Medusa Admin.`
+      )
     }
 
     return new StepResponse({ promotion_id: promotion.id })
@@ -151,7 +150,13 @@ const updateNextOrderDateStep = createStep(
     },
     { container }
   ) => {
-    const nextOrderDate = calculateNextOrderDate(input.plan)
+    const planConfig = await getSubscriptionPlanConfig(input.plan, container)
+    
+    if (!planConfig) {
+      throw new Error(`Subscription plan ${input.plan} not found or inactive`)
+    }
+
+    const nextOrderDate = calculateNextOrderDate(planConfig.interval_days)
 
     const manager = container.resolve("manager") as any
     const subscription = await manager.findOne("subscription", { id: input.subscription_id })
