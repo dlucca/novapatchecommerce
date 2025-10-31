@@ -4,17 +4,7 @@ import { Heading, Text } from "@medusajs/ui"
 import { HttpTypes } from "@medusajs/types"
 import SubscriptionCard from "../subscription-card"
 import { useRouter } from "next/navigation"
-
-// TODO: Suscripciones - refactor
-type Subscription = {
-  id: string
-  customer_id: string
-  plan: "monthly" | "bimonthly" | "quarterly"
-  status: "active" | "paused" | "cancelled"
-  next_order_date: string
-  created_at: string
-  updated_at: string
-}
+import { Subscription } from "@lib/data/subscriptions"
 
 type SubscriptionsListProps = {
   customer: HttpTypes.StoreCustomer

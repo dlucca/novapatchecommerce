@@ -2,18 +2,7 @@
 
 import { Badge, Button, Heading, Text } from "@medusajs/ui"
 import { useState } from "react"
-import { pauseSubscription, cancelSubscription } from "@lib/data/subscriptions"
-
-// TODO: Suscripciones - refactor
-type Subscription = {
-  id: string
-  customer_id: string
-  plan: "monthly" | "bimonthly" | "quarterly"
-  status: "active" | "paused" | "cancelled"
-  next_order_date: string
-  created_at: string
-  updated_at?: string
-}
+import { pauseSubscription, cancelSubscription, Subscription } from "@lib/data/subscriptions"
 
 type SubscriptionCardProps = {
   subscription: Subscription
