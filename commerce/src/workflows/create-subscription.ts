@@ -26,6 +26,7 @@ const createSubscriptionStep = createStep(
 
     const manager = container.resolve("manager") as any
     
+    const now = new Date()
     const subscription = manager.create("subscription", {
       customer_id: input.customer_id,
       plan: input.plan,
@@ -37,6 +38,8 @@ const createSubscriptionStep = createStep(
       metadata: {
         created_via: "api",
       },
+      created_at: now,
+      updated_at: now,
     })
 
     await manager.persistAndFlush(subscription)
