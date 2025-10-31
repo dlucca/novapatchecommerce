@@ -1,5 +1,8 @@
+"use client"
+
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { useState, useEffect } from "react"
 
 // Íconos de características
 const productFeatures = [
@@ -41,37 +44,183 @@ const productFeatures = [
   },
 ]
 
+// Slides del carrusel con textos personalizados
+const heroSlides = [
+  {
+    image: "/assets/hero/Energy.webp",
+    title: "Qué bien",
+    titleLine2: "se siente",
+    titleLine3: "sentirse bien.",
+    highlightedWord: "bien",
+    highlightColor: "bg-blue-400",
+    waveColor: "#5686BC", // Energy
+    subtitle: "Activa tu bienestar natural",
+    link: "/store",
+  },
+  {
+    image: "/assets/hero/Glow.webp",
+    title: "Juventud",
+    titleLine2: "radiante",
+    titleLine3: "al instante.",
+    highlightedWord: "instante",
+    highlightColor: "bg-red-400",
+    waveColor: "#f35c55", // Glow
+    subtitle: "Activa tu bienestar natural",
+    link: "/store",
+  },
+  {
+    image: "/assets/hero/Shield.webp",
+    title: "Súmale un",
+    titleLine2: "plus único",
+    titleLine3: "a tu día a día.",
+    highlightedWord: "día a día",
+    highlightColor: "bg-orange-400",
+    waveColor: "#FFA849", // Shield
+    subtitle: "Activa tu bienestar natural",
+    link: "/store",
+  },
+  {
+    image: "/assets/hero/Sleep.webp",
+    title: "Descanso",
+    titleLine2: "profundo",
+    titleLine3: "asegurado.",
+    highlightedWord: "asegurado",
+    highlightColor: "bg-cyan-400",
+    waveColor: "#1EB1BB", // Sleep
+    subtitle: "Activa tu bienestar natural",
+    link: "/store",
+  },
+  {
+    image: "/assets/hero/Woman.webp",
+    title: "Equilibrio",
+    titleLine2: "hormonal",
+    titleLine3: "al natural.",
+    highlightedWord: "natural",
+    highlightColor: "bg-pink-400",
+    waveColor: "#C89EC6", // Woman
+    subtitle: "Activa tu bienestar natural",
+    link: "/store",
+  },
+  {
+    image: "/assets/hero/Zen.webp",
+    title: "Tu mente",
+    titleLine2: "en calma",
+    titleLine3: "inmediata.",
+    highlightedWord: "inmediata",
+    highlightColor: "bg-blue-400",
+    waveColor: "#4E82BC", // Zen
+    subtitle: "Activa tu bienestar natural",
+    link: "/store",
+  },
+]
+
 const HeroSection = () => {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+
+  // Auto-advance carousel every 8 seconds (más lento)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIsTransitioning(true)
+      setTimeout(() => {
+        setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+        setIsTransitioning(false)
+      }, 800)
+    }, 8000)
+
+    return () => clearInterval(timer)
+  }, [])
+
+  // Función para ir al slide anterior
+  const goToPrevSlide = () => {
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
+      setIsTransitioning(false)
+    }, 800)
+  }
+
+  // Función para ir al siguiente slide
+  const goToNextSlide = () => {
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+      setIsTransitioning(false)
+    }, 800)
+  }
+
+  const currentSlideData = heroSlides[currentSlide]
+
   return (
     <section className="relative overflow-visible h-screen min-h-[600px]">
-      {/* Background image */}
+      {/* Background images with crossfade */}
       <div className="absolute inset-0">
-        <Image
-          src="/assets/hero/Girls.svg"
-          alt="Mujeres disfrutando con Novapatch"
-          fill
-          style={{ objectFit: "cover", objectPosition: "65% center" }}
-          priority
-        />
-        <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-white/85 via-white/60 to-transparent w-full sm:w-[85%] md:w-[65%] lg:w-[58%] xl:w-[52%]"></div>
+        {heroSlides.map((slide, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-[2000ms] ${index === currentSlide ? "opacity-100" : "opacity-0"
+              }`}
+          >
+            <Image
+              src={slide.image}
+              alt={slide.title}
+              fill
+              style={{ objectFit: "cover", objectPosition: "center" }}
+              priority={index === 0}
+            />
+          </div>
+        ))}
+        <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent w-full sm:w-[85%] md:w-[65%] lg:w-[58%] xl:w-[52%]"></div>
       </div>
+
+      {/* Flechas de navegación */}
+      <button
+        onClick={goToPrevSlide}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white p-2 rounded-full transition-all duration-200 hover:scale-110"
+        aria-label="Slide anterior"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <button
+        onClick={goToNextSlide}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white p-2 rounded-full transition-all duration-200 hover:scale-110"
+        aria-label="Slide siguiente"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
 
       {/* Content */}
       <div className="relative z-20 h-full flex items-center pt-32 xsmall:pt-40 md:pt-0">
         <div className="w-full px-8 xsmall:px-12 sm:px-16 md:px-24 lg:px-32 xl:px-40">
           <div className="max-w-2xl">
-            <h1 className="text-novapatch-title font-normal leading-[1.05] text-[clamp(2.75rem,4.5vw+0.5rem,4.25rem)] mb-[clamp(1rem,2vw,1.5rem)]">
-              Activa tu <br />
-              bienestar sin <br />
-              complicaciones
+            <h1
+              className={`text-white font-bold leading-[1.05] text-[clamp(2.75rem,4.5vw+0.5rem,4.25rem)] mb-[clamp(1rem,2vw,1.5rem)] transition-opacity duration-700 ${isTransitioning ? "opacity-0" : "opacity-100"
+                }`}
+            >
+              {currentSlideData.title} <br />
+              {currentSlideData.titleLine2} <br />
+              <span className="relative inline-block">
+                {currentSlideData.titleLine3.split(currentSlideData.highlightedWord)[0]}
+                <span className={`${currentSlideData.highlightColor} text-white px-2`}>
+                  {currentSlideData.highlightedWord}
+                </span>
+                {currentSlideData.titleLine3.split(currentSlideData.highlightedWord)[1]}
+              </span>
             </h1>
 
-            <p className="text-black font-extralight leading-relaxed text-[clamp(1rem,1.5vw+0.5rem,1.375rem)] mb-[clamp(1.5rem,2vw,2rem)] max-w-[clamp(280px,50vw,500px)]">
-              Olvídate de pastillas o polvos. Nuestros parches trabajan mientras
-              tú vives tu día... literalmente haciendo cualquier otra cosa.
+            <p
+              className={`text-white font-light leading-relaxed text-[clamp(1rem,1.5vw+0.5rem,1.375rem)] mb-[clamp(1.5rem,2vw,2rem)] max-w-[clamp(280px,50vw,500px)] transition-opacity duration-700 ${isTransitioning ? "opacity-0" : "opacity-100"
+                }`}
+            >
+              {currentSlideData.subtitle}
             </p>
 
-            <LocalizedClientLink href="/store/zencore-patch">
+            <LocalizedClientLink href={currentSlideData.link}>
               <button className="bg-novapatch-button text-white font-medium rounded-lg shadow-md hover:opacity-90 transition-opacity px-[clamp(1.5rem,2vw,2rem)] py-[clamp(0.625rem,1vw,0.75rem)] text-[clamp(0.875rem,1vw,1rem)]">
                 Comprar ahora
               </button>
@@ -81,19 +230,23 @@ const HeroSection = () => {
       </div>
 
       <div
-        className="absolute left-0 right-0 w-full z-30 overflow-visible"
+        className="absolute left-0 right-0 w-full z-30 overflow-visible h-40"
         style={{ bottom: "clamp(-12rem, -3rem - 2vw, -8rem)" }}
       >
-        <svg
-          viewBox="0 0 1501 212"
-          className="w-full"
-          preserveAspectRatio="none"
-          style={{ display: "block", height: "clamp(12rem, 8rem + 2vw, 14rem)" }}
-        >
-          <path
-            fill="#83b5f4"
-            d="m1500.19 211.5v-211.62h-16.75c-0.03 6.68-3.27 13.26-9.39 17.5-3.96 2.75-8.65 4.2-13.55 4.2-7.3 0-14.23-3.33-18.54-8.89-1.61-2.09-2.81-4.38-3.55-6.82-0.61-1.98-2.52-3.34-4.69-3.34h-0.01c-1.77 0.01-3.37 0.92-4.22 2.32-1.21 4.86-4.18 9.35-8.76 12.53q-2.65 1.83-5.65 2.87c-2.57 0.93-5.31 1.41-8.12 1.41-7.3 0-14.23-3.33-18.54-8.9-1.91-2.47-3.19-5.2-3.86-8.01-0.87-1.35-2.44-2.22-4.16-2.22h-0.02c-2.18 0.01-4.08 1.38-4.68 3.36-1.4 4.67-4.34 8.67-8.51 11.56-3.97 2.75-8.65 4.21-13.56 4.21-7.3 0-14.23-3.33-18.54-8.9-3-3.88-4.43-8.4-4.42-12.88h-1329.94v211.62z"
-          />
+        <svg width="100%" height="100%" fill={currentSlideData.waveColor}>
+          <defs>
+            <mask id="hole">
+              <rect width="100%" height="100%" fill="white" />
+              <svg width="170" x="87%">
+                <circle r="25" cx={25} cy="0%" fill="black" />
+                <circle r="25" cx={75+10} cy="0%" fill="black" />
+                <circle r="25" cx={125+20} cy="0%" fill="black" />
+              </svg>
+            </mask>
+          </defs>
+
+          <rect id="donut" width="100%" height="100%" mask="url(#hole)" />
+
         </svg>
 
         <div className="absolute left-0 right-0 w-full z-40 top-1/2 -translate-y-1/2 overflow-visible">
