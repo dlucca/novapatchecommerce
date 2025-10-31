@@ -1,8 +1,8 @@
 import { retrieveCart } from "@lib/data/cart"
-import { retrieveCustomer } from "@lib/data/customer"
 import { logger } from "@lib/util/logger"
 import CartTemplate from "@modules/cart/templates"
 import { Metadata } from "next"
+import { currentUser } from "@clerk/nextjs/server"
 
 export const metadata: Metadata = {
   title: "Carrito",
@@ -15,7 +15,14 @@ export default async function Cart() {
     return null
   })
 
-  const customer = await retrieveCustomer().catch(() => null)
+  const clerkUser = await currentUser()
 
-  return <CartTemplate cart={cart} customer={customer} />
+  const customer = clerkUser ? {
+    id: clerkUser.id,
+    email: clerkUser.emailAddresses[0]?.emailAddress || '',
+    first_name: clerkUser.firstName || '',
+    last_name: clerkUser.lastName || '',
+  } : null
+
+  return <CartTemplate cart={cart} customer={customer as any} />
 }
