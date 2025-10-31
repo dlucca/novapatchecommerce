@@ -1,10 +1,16 @@
 "use client"
 
+import { useState } from "react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import ContactModal from "@modules/layout/components/contact-modal"
 
 export default function Footer() {
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   return (
-    <footer className="w-full bg-novapatch-footer overflow-hidden">
+    <>
+      <ContactModal isOpen={isContactModalOpen} close={() => setIsContactModalOpen(false)} />
+
+      <footer className="w-full bg-novapatch-footer overflow-hidden">
       <div className="w-full px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32" style={{ paddingTop: 'clamp(2.5rem, 4vw, 4rem)', paddingBottom: 'clamp(2.5rem, 4vw, 4rem)' }}>
         <div className="hidden md:grid md:grid-cols-[1fr_1fr_1fr_auto] md:items-start" style={{ gap: 'clamp(2rem, 3vw, 3rem)' }}>
 
@@ -58,12 +64,12 @@ export default function Footer() {
             <h3 className="text-white font-semibold" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)', marginBottom: 'clamp(0.25rem, 0.75vw, 0.75rem)' }}>Ayuda</h3>
             <ul style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.375rem, 0.5vw, 0.5rem)' }}>
               <li>
-                <LocalizedClientLink
-                  href="/contact"
-                  className="text-white/90 hover:text-white transition-colors duration-200 text-xs sm:text-sm"
+                <button
+                  onClick={() => setIsContactModalOpen(true)}
+                  className="text-white/90 hover:text-white transition-colors duration-200 text-xs sm:text-sm text-left"
                 >
                   Contáctanos
-                </LocalizedClientLink>
+                </button>
               </li>
               <li>
                 <LocalizedClientLink
@@ -203,9 +209,12 @@ export default function Footer() {
             </h3>
             <ul className="flex flex-col" style={{ gap: 'clamp(0.5rem, 0.75vw, 0.75rem)' }}>
               <li>
-                <LocalizedClientLink href="/contact" className="text-white/90 hover:text-white transition-colors duration-200 text-sm">
+                <button
+                  onClick={() => setIsContactModalOpen(true)}
+                  className="text-white/90 hover:text-white transition-colors duration-200 text-sm text-left"
+                >
                   Contáctanos
-                </LocalizedClientLink>
+                </button>
               </li>
               <li>
                 <LocalizedClientLink href="/faq" className="text-white/90 hover:text-white transition-colors duration-200 text-sm">
@@ -297,5 +306,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    </>
   )
 }
