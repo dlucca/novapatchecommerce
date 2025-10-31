@@ -6,21 +6,15 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import FAQSection from "@modules/home/components/faq-section"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
+import { getSubscriptionPlans, SubscriptionPlanConfig } from "@lib/data/subscriptions"
 
-// TODO: Suscripciones - refactor
 // Componente para las cards de planes con animación
 function PricingCard({ 
-  title, 
-  subtitle, 
-  discount, 
-  features, 
+  plan,
   isPopular = false,
   delay = 0 
 }: { 
-  title: string
-  subtitle: string
-  discount: string
-  features: string[]
+  plan: SubscriptionPlanConfig
   isPopular?: boolean
   delay?: number
 }) {
@@ -73,23 +67,46 @@ function PricingCard({
       
       <div className="text-center mb-6">
         <Heading level="h3" className="text-2xl font-bold text-novapatch-title mb-2">
-          {title}
+          {plan.name}
         </Heading>
-        <Text className="text-gray-600">{subtitle}</Text>
+        <Text className="text-gray-600">{plan.description}</Text>
       </div>
       
       <div className="text-center mb-6">
-        <span className="text-5xl font-bold text-novapatch-button">{discount}</span>
-        <Text className="text-gray-600 mt-2">de descuento</Text>
+        <span className="text-3xl font-bold text-novapatch-button">
+          Cada {plan.interval_days} días
+        </span>
+        <Text className="text-gray-600 mt-2">
+          {plan.free_shipping_threshold === null && "Envío estándar"}
+          {plan.free_shipping_threshold === 0 && "Envío gratis siempre"}
+          {plan.free_shipping_threshold && plan.free_shipping_threshold > 0 && 
+            `Envío gratis en pedidos +$${plan.free_shipping_threshold / 100}`}
+        </Text>
       </div>
       
       <ul className="space-y-4 mb-8">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-start">
+        <li className="flex items-start">
+          <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+          <Text className="text-gray-700">Envío cada {plan.interval_days} días</Text>
+        </li>
+        <li className="flex items-start">
+          <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+          <Text className="text-gray-700">Cancela cuando quieras</Text>
+        </li>
+        <li className="flex items-start">
+          <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+          <Text className="text-gray-700">Modifica tu pedido fácilmente</Text>
+        </li>
+        {plan.free_shipping_threshold !== null && (
+          <li className="flex items-start">
             <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-            <Text className="text-gray-700">{feature}</Text>
+            <Text className="text-gray-700">
+              {plan.free_shipping_threshold === 0 
+                ? "Envío gratis incluido" 
+                : `Envío gratis en pedidos +$${plan.free_shipping_threshold / 100}`}
+            </Text>
           </li>
-        ))}
+        )}
       </ul>
       
       <LocalizedClientLink
@@ -104,6 +121,8 @@ function PricingCard({
 
 export default function SubscriptionsPage() {
   const [titleVisible, setTitleVisible] = useState(false)
+  const [plans, setPlans] = useState<SubscriptionPlanConfig[]>([])
+  const [loading, setLoading] = useState(true)
   const titleRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -127,6 +146,20 @@ export default function SubscriptionsPage() {
         observer.unobserve(titleRef.current)
       }
     }
+  }, [])
+
+  useEffect(() => {
+    async function loadPlans() {
+      try {
+        const data = await getSubscriptionPlans()
+        setPlans(data.subscription_plans)
+      } catch (error) {
+        console.error("Error loading subscription plans:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadPlans()
   }, [])
 
   // Íconos de características
@@ -438,44 +471,26 @@ export default function SubscriptionsPage() {
           Planes de Suscripción
         </Heading>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <PricingCard
-            title="Mensual"
-            subtitle="Perfecto para comenzar"
-            discount="15%"
-            features={[
-              "Envío cada 30 días",
-              "Cancela cuando quieras",
-              "Modifica tu pedido fácilmente"
-            ]}
-            delay={0}
-          />
-
-          <PricingCard
-            title="Bimestral"
-            subtitle="El favorito de nuestros clientes"
-            discount="20%"
-            features={[
-              "Envío cada 60 días",
-              "Mayor ahorro por pedido",
-              "Envío gratis en pedidos +$50"
-            ]}
-            isPopular={true}
-            delay={200}
-          />
-
-          <PricingCard
-            title="Trimestral"
-            subtitle="Máximo ahorro"
-            discount="25%"
-            features={[
-              "Envío cada 90 días",
-              "El mejor precio garantizado",
-              "Envío gratis siempre"
-            ]}
-            delay={400}
-          />
-        </div>
+        {loading ? (
+          <div className="text-center py-12">
+            <Text className="text-gray-600">Cargando planes...</Text>
+          </div>
+        ) : plans.length === 0 ? (
+          <div className="text-center py-12">
+            <Text className="text-gray-600">No hay planes disponibles en este momento.</Text>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {plans.map((plan, index) => (
+              <PricingCard
+                key={plan.id}
+                plan={plan}
+                isPopular={plan.code === "bimonthly"}
+                delay={index * 200}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <FAQSection />
