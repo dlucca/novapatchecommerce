@@ -63,7 +63,7 @@ export default function AuthUserButton() {
                     {/* Menu Items */}
                     <div className="py-1">
                       <LocalizedClientLink
-                        href="/account"
+                        href="/account/profile"
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       >
                         <UserCircle className="w-4 h-4 mr-3 text-gray-400" />
@@ -76,6 +76,14 @@ export default function AuthUserButton() {
                       >
                         <Settings className="w-4 h-4 mr-3 text-gray-400" />
                         Mis Pedidos
+                      </LocalizedClientLink>
+
+                      <LocalizedClientLink
+                        href="/account/subscriptions"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <Settings className="w-4 h-4 mr-3 text-gray-400" />
+                        Mis Suscripciones
                       </LocalizedClientLink>
 
                       <button
