@@ -4,10 +4,11 @@ import { HttpTypes } from "@medusajs/types"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { convertToLocale } from "@lib/util/money"
 import { addToCart } from "@lib/data/cart"
+import { getSubscriptionPlans, SubscriptionPlanConfig } from "@lib/data/subscriptions"
 import { logger } from "@lib/util/logger"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { transformMediaUrl } from "@lib/util/transform-url"
 
 type ProductDetailPanelProps = {
@@ -25,6 +26,20 @@ export default function ProductDetailPanel({
   const [quantity, setQuantity] = useState(1)
   const [isAdding, setIsAdding] = useState(false)
   const [itemAdded, setItemAdded] = useState(false)
+  const [defaultPlan, setDefaultPlan] = useState<SubscriptionPlanConfig | null>(null)
+
+  useEffect(() => {
+    const loadDefaultPlan = async () => {
+      try {
+        const { subscription_plans } = await getSubscriptionPlans()
+        const bimonthlyPlan = subscription_plans.find(p => p.code === 'bimonthly') || subscription_plans[0]
+        setDefaultPlan(bimonthlyPlan || null)
+      } catch (error) {
+        console.error('Error loading subscription plans:', error)
+      }
+    }
+    loadDefaultPlan()
+  }, [])
 
   const images = product.images || []
   const mainImage = transformMediaUrl(images[0]?.url || product.thumbnail) || "/placeholder.png"
@@ -37,15 +52,26 @@ export default function ProductDetailPanel({
       })
     : "N/A"
 
-  const subscriptionPrice = cheapestPrice?.calculated_price_number
-    ? convertToLocale({
-        amount: Math.round(cheapestPrice.calculated_price_number * 0.8), // 20% descuento
-        currency_code: region.currency_code,
-      })
+  const subscriptionPrice = cheapestPrice?.calculated_price_number && defaultPlan?.promotion
+    ? (() => {
+        const originalAmount = cheapestPrice.calculated_price_number
+        let discountedAmount = originalAmount
+
+        if (defaultPlan.promotion.type === 'percentage') {
+          const discountMultiplier = 1 - (defaultPlan.promotion.value / 100)
+          discountedAmount = Math.round(originalAmount * discountMultiplier)
+        } else if (defaultPlan.promotion.type === 'fixed') {
+          discountedAmount = Math.max(0, originalAmount - defaultPlan.promotion.value)
+        }
+
+        return convertToLocale({
+          amount: discountedAmount,
+          currency_code: region.currency_code,
+        })
+      })()
     : "N/A"
 
   const handleAddToCart = async () => {
-    // Obtener la primera variante disponible del producto
     const variant = product.variants?.[0]
 
     if (!variant?.id) {

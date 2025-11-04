@@ -41,22 +41,6 @@ export default function Footer() {
                   Protección de la piel
                 </LocalizedClientLink>
               </li>
-              <li>
-                <LocalizedClientLink
-                  href="/store"
-                  className="text-white/90 hover:text-white transition-colors duration-200 text-xs sm:text-sm"
-                >
-                  Tarjeta de regalo
-                </LocalizedClientLink>
-              </li>
-              <li>
-                <LocalizedClientLink
-                  href="/store"
-                  className="text-white/90 hover:text-white transition-colors duration-200 text-xs sm:text-sm"
-                >
-                  Al por mayor
-                </LocalizedClientLink>
-              </li>
             </ul>
           </div>
 
@@ -73,18 +57,10 @@ export default function Footer() {
               </li>
               <li>
                 <LocalizedClientLink
-                  href="/faq"
+                  href="/subscriptions"
                   className="text-white/90 hover:text-white transition-colors duration-200 text-xs sm:text-sm"
                 >
                   Preguntas frecuentes
-                </LocalizedClientLink>
-              </li>
-              <li>
-                <LocalizedClientLink
-                  href="/store-locator"
-                  className="text-white/90 hover:text-white transition-colors duration-200 text-xs sm:text-sm"
-                >
-                  Localizador de tienda
                 </LocalizedClientLink>
               </li>
             </ul>
@@ -103,7 +79,7 @@ export default function Footer() {
               </li>
               <li>
                 <LocalizedClientLink
-                  href="/why-choose-us"
+                  href="/about"
                   className="text-white/90 hover:text-white transition-colors duration-200 text-xs sm:text-sm"
                 >
                   Porque elegirnos
@@ -111,18 +87,10 @@ export default function Footer() {
               </li>
               <li>
                 <LocalizedClientLink
-                  href="/subscribe"
+                  href="/subscriptions"
                   className="text-white/90 hover:text-white transition-colors duration-200 text-xs sm:text-sm"
                 >
                   Suscríbete y ahorra
-                </LocalizedClientLink>
-              </li>
-              <li>
-                <LocalizedClientLink
-                  href="/ingredients"
-                  className="text-white/90 hover:text-white transition-colors duration-200 text-xs sm:text-sm"
-                >
-                  Ingredientes
                 </LocalizedClientLink>
               </li>
             </ul>

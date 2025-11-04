@@ -17,7 +17,8 @@ type CartTotalsProps = {
         is_subscription?: boolean
         subscription_discount?: number
       }
-      total?: number
+      unit_price?: number
+      quantity: number
     }>
   }
 }
@@ -37,15 +38,14 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   const subscriptionDiscount = items?.reduce((acc, item) => {
     if (item.metadata?.is_subscription && item.metadata?.subscription_discount) {
       const discount = item.metadata.subscription_discount as number
-      const itemTotal = item.total || 0
-      const discountAmount = Math.round(itemTotal * (discount / 100))
+      const originalUnitPrice = item.unit_price || 0
+      const discountAmount = Math.round(originalUnitPrice * (discount / 100)) * item.quantity
       return acc + discountAmount
     }
     return acc
   }, 0) || 0
 
-  // Calcular nuevo total con descuento de suscripción
-  const totalWithSubscriptionDiscount = (total || 0) - subscriptionDiscount
+
 
   return (
     <div>
@@ -62,22 +62,6 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
             {convertToLocale({ amount: shipping_subtotal ?? 0, currency_code })}
           </span>
         </div>
-        {!!discount_subtotal && (
-          <div className="flex items-center justify-between">
-            <span>Discount</span>
-            <span
-              className="text-ui-fg-interactive"
-              data-testid="cart-discount"
-              data-value={discount_subtotal || 0}
-            >
-              -{" "}
-              {convertToLocale({
-                amount: discount_subtotal ?? 0,
-                currency_code,
-              })}
-            </span>
-          </div>
-        )}
         {subscriptionDiscount > 0 && (
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-1">
@@ -97,6 +81,22 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
             </span>
           </div>
         )}
+        {!!discount_subtotal && subscriptionDiscount === 0 && (
+          <div className="flex items-center justify-between">
+            <span>Discount</span>
+            <span
+              className="text-ui-fg-interactive"
+              data-testid="cart-discount"
+              data-value={discount_subtotal || 0}
+            >
+              -{" "}
+              {convertToLocale({
+                amount: discount_subtotal ?? 0,
+                currency_code,
+              })}
+            </span>
+          </div>
+        )}
         <div className="flex justify-between">
           <span className="flex gap-x-1 items-center ">Taxes</span>
           <span data-testid="cart-taxes" data-value={tax_total || 0}>
@@ -110,10 +110,10 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
         <span
           className="txt-xlarge-plus"
           data-testid="cart-total"
-          data-value={subscriptionDiscount > 0 ? totalWithSubscriptionDiscount : total || 0}
+          data-value={(total || 0) - subscriptionDiscount}
         >
           {convertToLocale({
-            amount: subscriptionDiscount > 0 ? totalWithSubscriptionDiscount : total ?? 0,
+            amount: (total ?? 0) - subscriptionDiscount,
             currency_code
           })}
         </span>

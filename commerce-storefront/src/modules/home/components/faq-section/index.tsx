@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const FAQSection = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
@@ -37,7 +38,7 @@ const FAQSection = () => {
   }
 
   return (
-    <section className="bg-white" style={{paddingBottom: 'clamp(5rem, 6vw, 6rem)' }}>
+    <section className="bg-white" style={{ paddingBottom: 'clamp(5rem, 6vw, 6rem)' }}>
       <div className="max-w-7xl mx-auto" style={{ paddingLeft: 'clamp(1rem, 2vw, 2rem)', paddingRight: 'clamp(1rem, 2vw, 2rem)' }}>
         <div className="text-center" style={{ marginBottom: 'clamp(2.5rem, 3vw, 3rem)' }}>
           <h2
@@ -74,9 +75,8 @@ const FAQSection = () => {
               </button>
 
               <div
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  openFAQ === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                }`}
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${openFAQ === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
               >
                 <div className="bg-gray-50 shadow-inner animate-fade-in" style={{ marginTop: 'clamp(0.5rem, 0.75vw, 0.75rem)', padding: 'clamp(1rem, 1.25vw, 1.25rem)', borderRadius: 'clamp(0.5rem, 0.75vw, 0.75rem)' }}>
                   <p className="text-gray-700 leading-relaxed" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}>
@@ -89,16 +89,18 @@ const FAQSection = () => {
         </div>
 
         <div className="text-center" style={{ marginTop: 'clamp(2.5rem, 3vw, 3rem)' }}>
-          <button
-            className="text-white font-medium transition-colors duration-200 shadow-md hover:shadow-lg bg-novapatch-button hover:bg-novapatch-title"
-            style={{
-              padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(2rem, 2.5vw, 2.5rem)',
-              borderRadius: 'clamp(0.5rem, 0.75vw, 0.75rem)',
-              fontSize: 'clamp(0.875rem, 1vw, 1rem)'
-            }}
-          >
-            Suscríbete y ahorra
-          </button>
+          <LocalizedClientLink href="/subscriptions">
+            <button
+              className="text-white font-medium transition-colors duration-200 shadow-md hover:shadow-lg bg-novapatch-button hover:bg-novapatch-title"
+              style={{
+                padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(2rem, 2.5vw, 2.5rem)',
+                borderRadius: 'clamp(0.5rem, 0.75vw, 0.75rem)',
+                fontSize: 'clamp(0.875rem, 1vw, 1rem)'
+              }}
+            >
+              Suscríbete y ahorra
+            </button>
+          </LocalizedClientLink>
         </div>
       </div>
     </section>

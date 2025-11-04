@@ -1,4 +1,5 @@
 import Image from "next/image"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const HowItWorksSection = () => {
 
@@ -28,12 +29,14 @@ const HowItWorksSection = () => {
               </p>
 
               <div className="text-center lg:text-left">
-                <button
-                  className="text-white font-medium rounded-lg transition-colors duration-200 hover:opacity-90 shadow-md bg-novapatch-button"
-                  style={{ padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}
-                >
-                  Ver ahora
-                </button>
+                <LocalizedClientLink href="/about-patches">
+                  <button
+                    className="text-white font-medium rounded-lg transition-colors duration-200 hover:opacity-90 shadow-md bg-novapatch-button"
+                    style={{ padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}
+                  >
+                    Ver ahora
+                  </button>
+                </LocalizedClientLink>
               </div>
             </div>
           </div>

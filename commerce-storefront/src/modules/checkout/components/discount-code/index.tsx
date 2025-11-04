@@ -21,6 +21,10 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
   const [errorMessage, setErrorMessage] = React.useState("")
 
   const { promotions = [] } = cart
+
+  // Filter out subscription promotions (they are managed automatically)
+  const subscriptionPromoCodes = ['MONTHLY_SUB', 'BIMONTHLY_SUB', 'QUARTERLY_SUB']
+  const visiblePromotions = promotions.filter(p => !subscriptionPromoCodes.includes(p.code || ''))
   const removePromotionCode = async (code: string) => {
     const validPromotions = promotions.filter(
       (promotion) => promotion.code !== code
@@ -101,14 +105,14 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
           )}
         </form>
 
-        {promotions.length > 0 && (
+        {visiblePromotions.length > 0 && (
           <div className="w-full flex items-center">
             <div className="flex flex-col w-full">
               <Heading className="txt-medium mb-2">
                 Promotion(s) applied:
               </Heading>
 
-              {promotions.map((promotion) => {
+              {visiblePromotions.map((promotion) => {
                 return (
                   <div
                     key={promotion.id}

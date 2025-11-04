@@ -51,13 +51,16 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
     }
 
     const discount = item.metadata.subscription_discount as number
-    const originalTotal = item.total || 0
-    const discountedTotal = Math.round(originalTotal * (1 - discount / 100))
+    const originalUnitPrice = item.unit_price || 0
+    const discountedUnitPrice = Math.round(originalUnitPrice * (1 - discount / 100))
+    const discountedTotal = discountedUnitPrice * item.quantity
 
     return {
       ...item,
-      original_total: originalTotal,
+      unit_price: discountedUnitPrice,
       total: discountedTotal,
+      original_unit_price: originalUnitPrice,
+      original_total: originalUnitPrice * item.quantity,
     }
   }
 
@@ -90,20 +93,15 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         </Text>
         <LineItemOptions variant={item.variant} data-testid="product-variant" />
 
-        {/* Mostrar badge de suscripción si el item tiene metadata de suscripción */}
-        {item.metadata?.is_subscription && (
+        {Boolean(item.metadata?.is_subscription) && (
           <div className="flex items-center gap-2 mt-2">
             <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-novapatch-button text-white">
               🔄 Suscripción
             </span>
-            {item.metadata?.subscription_plan && (
+            {Boolean(item.metadata?.subscription_plan) && (
               <span className="text-xs text-gray-600">
-                Plan: {
-                  item.metadata.subscription_plan === 'monthly' ? 'Mensual (15% OFF)' :
-                  item.metadata.subscription_plan === 'bimonthly' ? 'Bimestral (20% OFF)' :
-                  item.metadata.subscription_plan === 'quarterly' ? 'Trimestral (25% OFF)' :
-                  item.metadata.subscription_plan
-                }
+                Plan: {String(item.metadata?.subscription_plan)}
+                {Boolean(item.metadata?.subscription_discount) && ` (${String(item.metadata?.subscription_discount)}% OFF)`}
               </span>
             )}
           </div>
