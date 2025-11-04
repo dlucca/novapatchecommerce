@@ -7,6 +7,12 @@ export default async function customerCreatedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
+  // Early return if Resend is not configured
+  if (!process.env.RESEND_API_KEY) {
+    console.log('⚠️ RESEND_API_KEY no configurada, saltando envío de email de bienvenida')
+    return
+  }
+
   const customerModuleService = container.resolve(Modules.CUSTOMER)
   
   // TODO

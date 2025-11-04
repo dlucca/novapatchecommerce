@@ -9,15 +9,20 @@ export const retrieveCollection = async (id: string) => {
     ...(await getCacheOptions("collections")),
   }
 
-  return sdk.client
-    .fetch<{ collection: HttpTypes.StoreCollection }>(
-      `/store/collections/${id}`,
-      {
-        next,
-        cache: "force-cache",
-      }
-    )
-    .then(({ collection }) => collection)
+  try {
+    return await sdk.client
+      .fetch<{ collection: HttpTypes.StoreCollection }>(
+        `/store/collections/${id}`,
+        {
+          next,
+          cache: "force-cache",
+        }
+      )
+      .then(({ collection }) => collection)
+  } catch (error) {
+    console.error(`Error fetching collection ${id}:`, error)
+    throw error
+  }
 }
 
 export const listCollections = async (
@@ -49,11 +54,16 @@ export const getCollectionByHandle = async (
     ...(await getCacheOptions("collections")),
   }
 
-  return sdk.client
-    .fetch<HttpTypes.StoreCollectionListResponse>(`/store/collections`, {
-      query: { handle, fields: "*products" },
-      next,
-      cache: "force-cache",
-    })
-    .then(({ collections }) => collections[0])
+  try {
+    return await sdk.client
+      .fetch<HttpTypes.StoreCollectionListResponse>(`/store/collections`, {
+        query: { handle, fields: "*products" },
+        next,
+        cache: "force-cache",
+      })
+      .then(({ collections }) => collections[0])
+  } catch (error) {
+    console.error(`Error fetching collection by handle ${handle}:`, error)
+    throw error
+  }
 }
