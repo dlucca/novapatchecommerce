@@ -51,13 +51,16 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
     }
 
     const discount = item.metadata.subscription_discount as number
-    const originalTotal = item.total || 0
-    const discountedTotal = Math.round(originalTotal * (1 - discount / 100))
+    const originalUnitPrice = item.unit_price || 0
+    const discountedUnitPrice = Math.round(originalUnitPrice * (1 - discount / 100))
+    const discountedTotal = discountedUnitPrice * item.quantity
 
     return {
       ...item,
-      original_total: originalTotal,
+      unit_price: discountedUnitPrice,
       total: discountedTotal,
+      original_unit_price: originalUnitPrice,
+      original_total: originalUnitPrice * item.quantity,
     }
   }
 

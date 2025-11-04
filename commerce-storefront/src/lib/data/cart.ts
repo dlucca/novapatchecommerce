@@ -278,6 +278,52 @@ export async function applyPromotions(codes: string[]) {
     .catch(medusaError)
 }
 
+/**
+ * Apply subscription promotion to cart, replacing any existing subscription promotions
+ */
+export async function applySubscriptionPromotion(promotionCode: string) {
+  const cart = await retrieveCart()
+
+  if (!cart) {
+    throw new Error("No existing cart found")
+  }
+
+  // Subscription promotion codes
+  const subscriptionPromoCodes = ['MONTHLY_SUB', 'BIMONTHLY_SUB', 'QUARTERLY_SUB']
+
+  // Get current promotion codes, excluding subscription promotions
+  const currentPromoCodes = cart.promotions?.map(p => p.code).filter(code =>
+    code && !subscriptionPromoCodes.includes(code)
+  ) || []
+
+  // Add the new subscription promotion
+  const newPromoCodes = [...currentPromoCodes, promotionCode]
+
+  return applyPromotions(newPromoCodes)
+}
+
+/**
+ * Remove all subscription promotions from cart
+ */
+export async function removeSubscriptionPromotions() {
+  const cart = await retrieveCart()
+
+  if (!cart) {
+    throw new Error("No existing cart found")
+  }
+
+  // Subscription promotion codes
+  const subscriptionPromoCodes = ['MONTHLY_SUB', 'BIMONTHLY_SUB', 'QUARTERLY_SUB']
+
+  // Get current promotion codes, excluding subscription promotions
+  const currentPromoCodes = cart.promotions?.map(p => p.code).filter(code =>
+    code && !subscriptionPromoCodes.includes(code)
+  ) || []
+
+  // Only apply non-subscription promotions
+  return applyPromotions(currentPromoCodes)
+}
+
 export async function applyGiftCard(code: string) {
   //   const cartId = getCartId()
   //   if (!cartId) return "No cartId cookie found"
