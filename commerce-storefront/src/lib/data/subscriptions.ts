@@ -30,6 +30,15 @@ export type SubscriptionPlanConfig = {
   promotion_code: string
   is_active: boolean
   sort_order: number
+  promotion?: {
+    id: string
+    code: string
+    type: string
+    value: number
+    currency_code?: string
+    is_automatic: boolean
+    status: string
+  } | null
 }
 
 /**
