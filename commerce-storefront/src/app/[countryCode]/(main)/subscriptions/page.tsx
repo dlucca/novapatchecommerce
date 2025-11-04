@@ -69,7 +69,11 @@ function PricingCard({
         <Heading level="h3" className="text-2xl font-bold text-novapatch-title mb-2">
           {plan.name}
         </Heading>
-        <Text className="text-gray-600">{plan.description}</Text>
+        <Text className="text-gray-600">
+          {plan.promotion 
+            ? `Envío cada ${plan.interval_days} días con ${plan.promotion.value}% de descuento`
+            : plan.description}
+        </Text>
       </div>
       
       <div className="text-center mb-6">
