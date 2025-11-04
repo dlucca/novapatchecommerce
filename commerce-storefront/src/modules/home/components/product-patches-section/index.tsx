@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const ProductPatchesSection = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -75,7 +76,7 @@ const ProductPatchesSection = () => {
             <div className="w-full">
               <h2
                 className="font-normal leading-tight text-novapatch-title"
-                style={{marginBottom: 'clamp(1rem, 1.25vw, 1.25rem)' }}
+                style={{ marginBottom: 'clamp(1rem, 1.25vw, 1.25rem)' }}
               >
                 Elegí el <span className="font-bold">parche</span> que
                 <br className="hidden sm:block" />
@@ -86,13 +87,14 @@ const ProductPatchesSection = () => {
                 Cada uno está formulado para activar un aspecto diferente de tu
                 bienestar natural.
               </p>
-
-              <button
-                className="text-white font-medium rounded-lg shadow-md hover:opacity-90 transition-opacity bg-novapatch-button"
-                style={{ padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}
-              >
-                Suscríbete y ahorra
-              </button>
+              <LocalizedClientLink href="/store">
+                <button
+                  className="text-white font-medium rounded-lg shadow-md hover:opacity-90 transition-opacity bg-novapatch-button"
+                  style={{ padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}
+                >
+                  Suscríbete y ahorra
+                </button>
+              </LocalizedClientLink>
             </div>
           </div>
 
@@ -125,15 +127,12 @@ const ProductPatchesSection = () => {
                   return (
                     <div
                       key={index}
-                      className={`relative transition-all duration-1000 ease-out ${
-                        isVisible
+                      className={`relative transition-all duration-1000 ease-out ${isVisible
                           ? 'opacity-100 translate-y-0'
                           : 'opacity-0 translate-y-8'
-                      } ${
-                        index === 0 ? '' : '-ml-[45px] sm:-ml-[35px] md:-ml-[35px] lg:-ml-[40px]'
-                      } ${
-                        isEven ? 'mt-0' : 'mt-[30px] sm:mt-[40px] md:mt-[50px] lg:mt-[60px]'
-                      }`}
+                        } ${index === 0 ? '' : '-ml-[45px] sm:-ml-[35px] md:-ml-[35px] lg:-ml-[40px]'
+                        } ${isEven ? 'mt-0' : 'mt-[30px] sm:mt-[40px] md:mt-[50px] lg:mt-[60px]'
+                        }`}
                       style={{
                         zIndex: stackOrder,
                         transitionDelay: `${index * 150}ms`
