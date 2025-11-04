@@ -1,8 +1,8 @@
 "use client"
 
 import { addToCart } from "@lib/data/cart"
+import { getSubscriptionPlans, SubscriptionPlanConfig } from "@lib/data/subscriptions"
 import { useIntersection } from "@lib/hooks/use-in-view"
-import { getProductPrice } from "@lib/util/get-product-price"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -12,7 +12,7 @@ import { useParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
-// TODO: Suscripciones - refactor
+
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
@@ -28,29 +28,6 @@ const optionsAsKeymap = (
   }, {})
 }
 
-type SubscriptionPlan = 'monthly' | 'bimonthly' | 'quarterly'
-
-const SUBSCRIPTION_PLANS = {
-  monthly: {
-    name: 'Mensual',
-    discount: 15,
-    interval: 'cada 30 días',
-    description: 'Envío cada 30 días'
-  },
-  bimonthly: {
-    name: 'Bimestral',
-    discount: 20,
-    interval: 'cada 60 días',
-    description: 'Envío cada 60 días, envío gratis en pedidos +$50'
-  },
-  quarterly: {
-    name: 'Trimestral',
-    discount: 25,
-    interval: 'cada 90 días',
-    description: 'Envío cada 90 días, envío gratis siempre'
-  }
-}
-
 export default function ProductActions({
   product,
   disabled,
@@ -60,10 +37,35 @@ export default function ProductActions({
   const [showSuccess, setShowSuccess] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const [purchaseType, setPurchaseType] = useState<'single' | 'subscription'>('single')
-  const [subscriptionPlan, setSubscriptionPlan] = useState<SubscriptionPlan>('bimonthly')
+  const [subscriptionPlans, setSubscriptionPlans] = useState<SubscriptionPlanConfig[]>([])
+  const [selectedPlanCode, setSelectedPlanCode] = useState<string>('')
+  const [isLoadingPlans, setIsLoadingPlans] = useState(true)
   const countryCode = useParams().countryCode as string
 
-  // If there is only 1 variant, preselect the options
+  useEffect(() => {
+    const loadPlans = async () => {
+      try {
+        const { subscription_plans } = await getSubscriptionPlans()
+        console.log('📦 Subscription plans loaded:', subscription_plans)
+        console.log('📦 First plan promotion:', subscription_plans[0]?.promotion)
+        setSubscriptionPlans(subscription_plans)
+        const defaultPlan = subscription_plans.find(p => p.code === 'bimonthly') || subscription_plans[0]
+        if (defaultPlan) {
+          setSelectedPlanCode(defaultPlan.code)
+        }
+      } catch (error) {
+        console.error('Error loading subscription plans:', error)
+      } finally {
+        setIsLoadingPlans(false)
+      }
+    }
+    loadPlans()
+  }, [])
+
+  const selectedPlan = useMemo(() => {
+    return subscriptionPlans.find(p => p.code === selectedPlanCode)
+  }, [subscriptionPlans, selectedPlanCode])
+
   useEffect(() => {
     if (product.variants?.length === 1) {
       const variantOptions = optionsAsKeymap(product.variants[0].options)
@@ -76,19 +78,16 @@ export default function ProductActions({
       return
     }
 
-    // If there's only one variant, return it directly
     if (product.variants.length === 1) {
       return product.variants[0]
     }
 
-    // For multiple variants, find the one matching selected options
     return product.variants.find((v) => {
       const variantOptions = optionsAsKeymap(v.options)
       return isEqual(variantOptions, options)
     })
   }, [product.variants, options])
 
-  // update the options when a variant is selected
   const setOptionValue = (optionId: string, value: string) => {
     setOptions((prev) => ({
       ...prev,
@@ -96,58 +95,41 @@ export default function ProductActions({
     }))
   }
 
-  //check if the selected options produce a valid variant
-  const isValidVariant = useMemo(() => {
-    // If there's only one variant, it's always valid
-    if (product.variants?.length === 1) {
-      return true
-    }
-    
-    // For multiple variants, check if the selected options match a variant
-    if (!product.variants || Object.keys(options).length === 0) {
-      return false
-    }
-    
-    return product.variants.some((v) => {
-      const variantOptions = optionsAsKeymap(v.options)
-      return isEqual(variantOptions, options)
-    })
-  }, [product.variants, options])
-
-  // check if the selected variant is in stock
   const inStock = useMemo(() => {
     if (!selectedVariant) {
       return false
     }
 
-    // If we don't manage inventory, we can always add to cart
     if (!selectedVariant.manage_inventory) {
       return true
     }
 
-    // If we allow back orders on the variant, we can add to cart
     if (selectedVariant.allow_backorder) {
       return true
     }
 
-    // If there is inventory available, we can add to cart
     if ((selectedVariant.inventory_quantity ?? 0) > 0) {
       return true
     }
 
-    // Otherwise, we can't add to cart
     return false
   }, [selectedVariant])
 
-  // Calculate discounted price for subscription based on selected plan
   const getSubscriptionPrice = () => {
-    if (!selectedVariant?.calculated_price) return null
+    if (!selectedVariant?.calculated_price || !selectedPlan?.promotion) return null
 
-    const plan = SUBSCRIPTION_PLANS[subscriptionPlan]
     const originalAmount = selectedVariant.calculated_price.calculated_amount || 0
-    const discountMultiplier = 1 - (plan.discount / 100)
-    const discountedAmount = Math.round(originalAmount * discountMultiplier)
     const currencyCode = selectedVariant.calculated_price.currency_code || 'MXN'
+
+    const promotion = selectedPlan.promotion
+    let discountedAmount = originalAmount
+
+    if (promotion.type === 'percentage') {
+      const discountMultiplier = 1 - (promotion.value / 100)
+      discountedAmount = Math.round(originalAmount * discountMultiplier)
+    } else if (promotion.type === 'fixed') {
+      discountedAmount = Math.max(0, originalAmount - promotion.value)
+    }
 
     return {
       original: convertToLocale({
@@ -158,7 +140,7 @@ export default function ProductActions({
         amount: discountedAmount,
         currency_code: currencyCode,
       }),
-      discount: plan.discount,
+      discount: promotion.type === 'percentage' ? promotion.value : null,
     }
   }
 
@@ -166,7 +148,6 @@ export default function ProductActions({
 
   const inView = useIntersection(actionsRef, "0px")
 
-  // add the selected variant to the cart
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) return null
 
@@ -174,11 +155,12 @@ export default function ProductActions({
 
     const metadata: Record<string, any> = {}
 
-    // Add subscription metadata if subscription is selected
-    if (purchaseType === 'subscription') {
+    if (purchaseType === 'subscription' && selectedPlan) {
       metadata.is_subscription = true
-      metadata.subscription_plan = subscriptionPlan
-      metadata.subscription_discount = SUBSCRIPTION_PLANS[subscriptionPlan].discount
+      metadata.subscription_plan = selectedPlanCode
+      if (selectedPlan.promotion?.type === 'percentage') {
+        metadata.subscription_discount = selectedPlan.promotion.value
+      }
     }
 
     await addToCart({
@@ -191,7 +173,6 @@ export default function ProductActions({
     setIsAdding(false)
     setShowSuccess(true)
 
-    // Hide success message after 5 seconds
     setTimeout(() => {
       setShowSuccess(false)
     }, 5000)
@@ -270,9 +251,11 @@ export default function ProductActions({
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <span className="font-medium text-gray-900">Suscríbete y ahorra</span>
-                  <span className="bg-novapatch-button text-white text-xs font-bold px-2 py-0.5 rounded">
-                    Ahorra {SUBSCRIPTION_PLANS[subscriptionPlan].discount}%
-                  </span>
+                  {selectedPlan?.promotion?.type === 'percentage' && (
+                    <span className="bg-novapatch-button text-white text-xs font-bold px-2 py-0.5 rounded">
+                      Ahorra {selectedPlan.promotion.value}%
+                    </span>
+                  )}
                 </div>
                 <div className="text-right">
                   {(() => {
@@ -294,25 +277,27 @@ export default function ProductActions({
               </div>
 
               {/* Selector de plan de suscripción */}
-              {purchaseType === 'subscription' && (
+              {purchaseType === 'subscription' && !isLoadingPlans && (
                 <div className="mb-3">
                   <label className="text-sm font-medium text-gray-700 mb-2 block">
                     Elige tu plan:
                   </label>
                   <div className="grid grid-cols-3 gap-2">
-                    {(Object.keys(SUBSCRIPTION_PLANS) as SubscriptionPlan[]).map((plan) => (
+                    {subscriptionPlans.map((plan) => (
                       <button
-                        key={plan}
+                        key={plan.code}
                         type="button"
-                        onClick={() => setSubscriptionPlan(plan)}
+                        onClick={() => setSelectedPlanCode(plan.code)}
                         className={`p-2 text-xs rounded-lg border-2 transition-colors ${
-                          subscriptionPlan === plan
+                          selectedPlanCode === plan.code
                             ? 'border-novapatch-button bg-novapatch-button text-white'
                             : 'border-gray-300 hover:border-novapatch-button'
                         }`}
                       >
-                        <div className="font-semibold">{SUBSCRIPTION_PLANS[plan].name}</div>
-                        <div className="text-xs opacity-90">{SUBSCRIPTION_PLANS[plan].discount}% OFF</div>
+                        <div className="font-semibold">{plan.name}</div>
+                        {plan.promotion?.type === 'percentage' && (
+                          <div className="text-xs opacity-90">{plan.promotion.value}% OFF</div>
+                        )}
                       </button>
                     ))}
                   </div>
@@ -330,7 +315,7 @@ export default function ProductActions({
                   <svg className="w-4 h-4 text-novapatch-button flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  {SUBSCRIPTION_PLANS[subscriptionPlan].description}
+                  {selectedPlan?.description || 'Envío automático según tu plan'}
                 </li>
               </ul>
             </div>

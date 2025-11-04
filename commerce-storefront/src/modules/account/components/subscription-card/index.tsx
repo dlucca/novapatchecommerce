@@ -1,8 +1,14 @@
 "use client"
 
 import { Badge, Button, Heading, Text } from "@medusajs/ui"
-import { useState } from "react"
-import { pauseSubscription, cancelSubscription, Subscription } from "@lib/data/subscriptions"
+import { useState, useEffect } from "react"
+import {
+  pauseSubscription,
+  cancelSubscription,
+  Subscription,
+  getSubscriptionPlans,
+  SubscriptionPlanConfig
+} from "@lib/data/subscriptions"
 
 type SubscriptionCardProps = {
   subscription: Subscription
@@ -11,32 +17,55 @@ type SubscriptionCardProps = {
 
 const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => {
   const [loading, setLoading] = useState(false)
+  const [planConfig, setPlanConfig] = useState<SubscriptionPlanConfig | null>(null)
 
-  const getPlanInfo = (plan: string) => {
-    const plans: Record<
-      string,
-      { name: string; discount: string; interval: string; shipping: string }
-    > = {
-      monthly: {
-        name: "Plan Mensual",
-        discount: "15% de descuento",
-        interval: "Cada 30 días",
-        shipping: "Envío estándar",
-      },
-      bimonthly: {
-        name: "Plan Bimestral",
-        discount: "20% de descuento",
-        interval: "Cada 60 días",
-        shipping: "Envío gratis si gastas más de $50",
-      },
-      quarterly: {
-        name: "Plan Trimestral",
-        discount: "25% de descuento",
-        interval: "Cada 90 días",
-        shipping: "Envío gratis siempre",
-      },
+  useEffect(() => {
+    const loadPlanConfig = async () => {
+      try {
+        const { subscription_plans } = await getSubscriptionPlans()
+        const plan = subscription_plans.find(p => p.code === subscription.plan)
+        setPlanConfig(plan || null)
+      } catch (error) {
+        console.error('Error loading plan config:', error)
+      }
     }
-    return plans[plan] || plans.monthly
+    loadPlanConfig()
+  }, [subscription.plan])
+
+  const getPlanInfo = () => {
+    if (planConfig) {
+      const intervalDays = planConfig.interval_days
+      const intervalText =
+        intervalDays === 30 ? "Cada 30 días" :
+        intervalDays === 60 ? "Cada 60 días" :
+        intervalDays === 90 ? "Cada 90 días" :
+        `Cada ${intervalDays} días`
+
+      const shippingText =
+        planConfig.free_shipping_threshold === 0 ? "Envío gratis siempre" :
+        planConfig.free_shipping_threshold ? `Envío gratis si gastas más de $${planConfig.free_shipping_threshold}` :
+        "Envío estándar"
+
+      const discountText = planConfig.promotion?.type === 'percentage'
+        ? `${planConfig.promotion.value}% de descuento`
+        : planConfig.promotion?.type === 'fixed'
+        ? `$${planConfig.promotion.value} de descuento`
+        : "Sin descuento"
+
+      return {
+        name: planConfig.name,
+        discount: discountText,
+        interval: intervalText,
+        shipping: shippingText,
+      }
+    }
+
+    return {
+      name: "Plan de Suscripción",
+      discount: "Descuento aplicado",
+      interval: "Envío automático",
+      shipping: "Según plan",
+    }
   }
 
   const getStatusColor = (status: string) => {
@@ -95,7 +124,7 @@ const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => 
     }
   }
 
-  const planInfo = getPlanInfo(subscription.plan)
+  const planInfo = getPlanInfo()
 
   return (
     <div className="border border-gray-200 rounded-lg p-6 bg-white shadow-sm">
