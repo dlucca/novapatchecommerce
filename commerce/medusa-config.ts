@@ -19,6 +19,17 @@ module.exports = defineConfig({
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     },
     databaseLogging: !isProduction,
+    databaseDriverOptions: isProduction ? {
+      connection: {
+        ssl: false,
+      },
+      pool: {
+        min: 2,
+        max: 10,
+        acquireTimeoutMillis: 60000,
+        idleTimeoutMillis: 30000,
+      },
+    } : undefined,
   },
   modules: isProduction && hasRedis ? [
     { resolve: "@medusajs/medusa/cache-redis", options: { redisUrl: process.env.REDIS_URL } },
