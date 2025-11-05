@@ -46,8 +46,6 @@ export default function ProductActions({
     const loadPlans = async () => {
       try {
         const { subscription_plans } = await getSubscriptionPlans()
-        console.log('📦 Subscription plans loaded:', subscription_plans)
-        console.log('📦 First plan promotion:', subscription_plans[0]?.promotion)
         setSubscriptionPlans(subscription_plans)
         const defaultPlan = subscription_plans.find(p => p.code === 'bimonthly') || subscription_plans[0]
         if (defaultPlan) {

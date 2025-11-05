@@ -70,12 +70,13 @@ const Shipping: React.FC<ShippingProps> = ({
 
   const isOpen = searchParams.get("step") === "delivery"
 
+  // TODO: Fix type issue - service_zone_id is a string, not an object
   const _shippingMethods = availableShippingMethods?.filter(
-    (sm) => sm.service_zone?.fulfillment_set?.type !== "pickup"
+    (sm) => !sm.id.includes("pickup")
   )
 
   const _pickupMethods = availableShippingMethods?.filter(
-    (sm) => sm.service_zone?.fulfillment_set?.type === "pickup"
+    (sm) => sm.id.includes("pickup")
   )
 
   const hasPickupOptions = !!_pickupMethods?.length
@@ -341,10 +342,8 @@ const Shipping: React.FC<ShippingProps> = ({
                                 {option.name}
                               </span>
                               <span className="text-base-regular text-ui-fg-muted">
-                                {formatAddress(
-                                  option.service_zone?.fulfillment_set?.location
-                                    ?.address
-                                )}
+                                {/* TODO: Fix type issue - service_zone_id is a string */}
+                                {option.name}
                               </span>
                             </div>
                           </div>

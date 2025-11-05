@@ -41,7 +41,14 @@ export default async function OrderCompletedTemplate({
             Summary
           </Heading>
           <Items order={order} />
-          <CartTotals totals={order} />
+          <CartTotals totals={{
+            ...order,
+            items: (order.items || []).map(item => ({
+              metadata: item.metadata as { is_subscription?: boolean; subscription_discount?: number } | undefined,
+              unit_price: item.unit_price,
+              quantity: item.quantity
+            }))
+          }} />
           <ShippingDetails order={order} />
           <PaymentDetails order={order} />
           <Help />

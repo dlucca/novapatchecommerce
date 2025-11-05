@@ -25,6 +25,16 @@ function getCheckoutStep(cart: HttpTypes.StoreCart) {
 const Summary = ({ cart }: SummaryProps) => {
   const step = getCheckoutStep(cart)
 
+  const transformedCart = {
+    ...cart,
+    items: (cart.items || []).map(item => ({
+      ...item,
+      metadata: item.metadata || { is_subscription: false },
+      unit_price: item.unit_price ?? 0,
+      quantity: item.quantity,
+    })),
+  }
+
   return (
     <div className="flex flex-col gap-y-6">
       <h2 className="text-2xl font-bold text-gray-900">
@@ -35,7 +45,7 @@ const Summary = ({ cart }: SummaryProps) => {
 
       <Divider />
 
-      <CartTotals totals={cart} />
+      <CartTotals totals={transformedCart} />
 
       <LocalizedClientLink
         href={"/checkout?step=" + step}

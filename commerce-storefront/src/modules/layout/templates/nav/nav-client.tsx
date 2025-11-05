@@ -27,7 +27,7 @@ interface NavClientProps {
   cart: HttpTypes.StoreCart | null
 }
 
-export default function NavClient({ user, cart }: NavClientProps) {
+export default function NavClient({ cart }: NavClientProps) {
   const [searchOpen, setSearchOpen] = useState(false)
   const params = useParams()
   const countryCode = (params?.countryCode as string) || "mx"

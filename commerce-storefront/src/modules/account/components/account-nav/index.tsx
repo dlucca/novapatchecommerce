@@ -98,7 +98,7 @@ const AccountNav = ({
                   >
                     <>
                       <div className="flex items-center gap-x-2">
-                        <ShoppingBag size={20} />
+                        <ShoppingBag className="w-5 h-5" />
                         <span>Mis Suscripciones</span>
                       </div>
                       <ChevronDown className="transform -rotate-90" />

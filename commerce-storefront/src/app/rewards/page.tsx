@@ -109,7 +109,7 @@ export default async function NovaRewards() {
               <div className="w-16 h-16 bg-gray-400 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold">N</span>
               </div>
-              <Heading level="h4" className="font-semibold mb-2">Novato</Heading>
+              <Heading level="h3" className="text-lg font-semibold mb-2">Novato</Heading>
               <Text className="text-gray-600 text-sm mb-4">0 - 99 puntos</Text>
               <Text className="text-blue-600 font-semibold">¡Tu nivel actual!</Text>
             </div>
@@ -118,7 +118,7 @@ export default async function NovaRewards() {
               <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold">B</span>
               </div>
-              <Heading level="h4" className="font-semibold mb-2">Bronce</Heading>
+              <Heading level="h3" className="text-lg font-semibold mb-2">Bronce</Heading>
               <Text className="text-gray-600 text-sm mb-4">100 - 499 puntos</Text>
               <Text className="text-gray-500">5% descuento extra</Text>
             </div>
@@ -127,7 +127,7 @@ export default async function NovaRewards() {
               <div className="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold">P</span>
               </div>
-              <Heading level="h4" className="font-semibold mb-2">Plata</Heading>
+              <Heading level="h3" className="text-lg font-semibold mb-2">Plata</Heading>
               <Text className="text-gray-600 text-sm mb-4">500 - 999 puntos</Text>
               <Text className="text-gray-500">10% descuento extra</Text>
             </div>
@@ -136,7 +136,7 @@ export default async function NovaRewards() {
               <div className="w-16 h-16 bg-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white font-bold">O</span>
               </div>
-              <Heading level="h4" className="font-semibold mb-2">Oro</Heading>
+              <Heading level="h3" className="text-lg font-semibold mb-2">Oro</Heading>
               <Text className="text-gray-600 text-sm mb-4">1000+ puntos</Text>
               <Text className="text-gray-500">15% descuento extra</Text>
             </div>

@@ -34,7 +34,6 @@ const ComparisonSection = () => {
     },
   ]
 
-  // TODO: CAMBIAR ICONOS DE CHECK Y X
   const CheckIcon = ({ isCheck }: { isCheck: boolean }) => (
     <span
       className={`text-2xl font-bold ${

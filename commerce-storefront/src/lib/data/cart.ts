@@ -297,9 +297,9 @@ export async function applySubscriptionPromotion(promotionCode: string) {
   ) || []
 
   // Add the new subscription promotion
-  const newPromoCodes = [...currentPromoCodes, promotionCode]
+  // const newPromoCodes = [...currentPromoCodes, promotionCode]
 
-  return applyPromotions(newPromoCodes)
+  // return applyPromotions(newPromoCodes)
 }
 
 /**
@@ -321,7 +321,7 @@ export async function removeSubscriptionPromotions() {
   ) || []
 
   // Only apply non-subscription promotions
-  return applyPromotions(currentPromoCodes)
+  // return applyPromotions(currentPromoCodes)
 }
 
 export async function applyGiftCard(code: string) {

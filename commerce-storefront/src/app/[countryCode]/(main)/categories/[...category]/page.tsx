@@ -20,7 +20,6 @@ export async function generateStaticParams() {
     const product_categories = await listCategories()
 
     if (!product_categories || product_categories.length === 0) {
-      console.log('⚠️ No categories found during build, skipping static generation')
       return []
     }
 
