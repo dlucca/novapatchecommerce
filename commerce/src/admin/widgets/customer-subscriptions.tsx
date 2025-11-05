@@ -17,7 +17,7 @@ const CustomerSubscriptionsWidget = ({ data }: { data: any }) => {
   const customerId = data?.id
 
   useEffect(() => {
-    if (!customerId) return
+    if (!customerId) {return}
 
     const fetchSubscriptions = async () => {
       try {

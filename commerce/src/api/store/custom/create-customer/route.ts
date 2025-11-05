@@ -25,14 +25,12 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     })
 
     if (existingCustomers.length > 0) {
-      console.log(`ℹ️ Customer ya existe: ${email}`)
       return res.status(200).json({
         message: "Customer already exists",
         customer: existingCustomers[0]
       })
     }
 
-    console.log(`📝 Creando customer: ${email}`)
     const customer = await customerModuleService.createCustomers({
       email: email,
       first_name: first_name || "",

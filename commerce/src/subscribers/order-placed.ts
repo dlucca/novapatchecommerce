@@ -6,12 +6,7 @@ import { getFromEmail } from "../lib/email-config"
 export default async function orderPlacedHandler({ 
   event: { data },
   container,
-}: SubscriberArgs<{ id: string }>) {
-  // Early return if Resend is not configured
-  if (!process.env.RESEND_API_KEY) {
-    console.log('⚠️ RESEND_API_KEY no configurada, saltando envío de confirmación de pedido')
-    return
-  }
+}: SubscriberArgs<{ id: string }>) {  
 
   const orderModuleService = container.resolve(Modules.ORDER)
   
@@ -20,8 +15,6 @@ export default async function orderPlacedHandler({
     relations: ["items", "items.product", "shipping_address"]
   })
   
-  console.log(`📧 Enviando confirmación de pedido: ${order.display_id}`)
-
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   const total = new Intl.NumberFormat('es-MX', {
@@ -143,7 +136,6 @@ export default async function orderPlacedHandler({
       return
     }
 
-    console.log('✅ Confirmación de pedido enviada:', emailData)
   } catch (error) {
     console.error('❌ Error al enviar confirmación de pedido:', error)
   }

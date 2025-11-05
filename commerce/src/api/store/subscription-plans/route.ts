@@ -23,9 +23,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
             }
           )
 
-          console.log(`🔍 Looking for promotion with code: ${plan.promotion_code}`)
-          console.log(`🔍 Found ${promotions.length} promotions`)
-
           if (promotions.length > 0) {
             const promotion = promotions[0]
             console.log(`✅ Promotion found:`, {

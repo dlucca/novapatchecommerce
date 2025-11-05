@@ -4,7 +4,7 @@ import { Resend } from "resend"
 import { getFromEmail } from "../lib/email-config"
 
 export default async function customerCreatedHandler({
-  event: { data, name },
+  event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
 
@@ -15,7 +15,7 @@ export default async function customerCreatedHandler({
 
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    const { data: emailData, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: getFromEmail('welcome'),
       to: customer.email,
       subject: '¡Bienvenido a NovaPatch! 🎉',

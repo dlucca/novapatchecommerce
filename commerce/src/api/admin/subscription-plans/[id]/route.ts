@@ -62,13 +62,13 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       })
     }
 
-    if (name !== undefined) plan.name = name
-    if (interval_days !== undefined) plan.interval_days = interval_days
-    if (free_shipping_threshold !== undefined) plan.free_shipping_threshold = free_shipping_threshold
-    if (description !== undefined) plan.description = description
-    if (promotion_code !== undefined) plan.promotion_code = promotion_code
-    if (is_active !== undefined) plan.is_active = is_active
-    if (sort_order !== undefined) plan.sort_order = sort_order
+    if (name !== undefined) {plan.name = name}
+    if (interval_days !== undefined) {plan.interval_days = interval_days}
+    if (free_shipping_threshold !== undefined) {plan.free_shipping_threshold = free_shipping_threshold}
+    if (description !== undefined) {plan.description = description}
+    if (promotion_code !== undefined) {plan.promotion_code = promotion_code}
+    if (is_active !== undefined) {plan.is_active = is_active}
+    if (sort_order !== undefined) {plan.sort_order = sort_order}
     
     plan.updated_at = new Date()
 
