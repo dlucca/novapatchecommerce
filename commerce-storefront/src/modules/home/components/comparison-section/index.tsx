@@ -72,68 +72,68 @@ const ComparisonSection = () => {
             <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full mr-1"></div>
             <div className="h-10 w-10 md:h-14 md:w-14 bg-white rounded-full"></div>
           </div>
-          <div className="hidden md:block overflow-x-auto">
-            <div className="shadow-lg overflow-hidden">
-              <table className="mx-auto border-collapse">
+          <div className="hidden md:block overflow-x-auto px-4 lg:px-8">
+            <div className="overflow-hidden max-w-7xl mx-auto">
+              <table className="w-full border-collapse">
                 <thead>
                   <tr>
                     <th
-                      className="text-left py-6 px-4 font-normal text-3xl"
-                      style={{ color: "#3d6a96", minWidth: 200 }}
+                      className="text-left py-8 px-8 lg:px-12 font-normal text-3xl lg:text-4xl"
+                      style={{ color: "#3d6a96", width: "40%" }}
                     >
                       Característica
                     </th>
-                    <th className="text-center py-6 px-6">
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="h-12 flex items-center justify-center">
+                    <th className="text-center py-8 px-8 lg:px-12" style={{ width: "20%" }}>
+                      <div className="flex flex-col items-center gap-4">
+                        <div className="h-14 flex items-center justify-center">
                           <Image
                             src="/assets/nav/LOGO-1.svg"
-                            width={120}
-                            height={48}
+                            width={140}
+                            height={56}
                             alt="Novapatch"
                             className="object-contain"
                           />
                         </div>
                         <span
-                          className="text-sm font-medium whitespace-nowrap"
+                          className="text-base font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Nuestros parches
                         </span>
                       </div>
                     </th>
-                    <th className="text-center py-6 px-6">
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="h-12 flex items-center justify-center">
+                    <th className="text-center py-8 px-8 lg:px-12" style={{ width: "20%" }}>
+                      <div className="flex flex-col items-center gap-4">
+                        <div className="h-14 flex items-center justify-center">
                           <Image
                             src="/assets/comparison/parche.svg"
-                            width={40}
-                            height={48}
+                            width={48}
+                            height={56}
                             alt="Parche"
                             className="object-contain"
                           />
                         </div>
                         <span
-                          className="text-sm font-medium whitespace-nowrap"
+                          className="text-base font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Cápsulas comunes
                         </span>
                       </div>
                     </th>
-                    <th className="text-center py-6 px-6">
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="h-12 flex items-center justify-center">
+                    <th className="text-center py-8 px-8 lg:px-12" style={{ width: "20%" }}>
+                      <div className="flex flex-col items-center gap-4">
+                        <div className="h-14 flex items-center justify-center">
                           <Image
                             src="/assets/comparison/bear.svg"
-                            width={30}
-                            height={48}
+                            width={36}
+                            height={56}
                             alt="Osito"
                             className="object-contain"
                           />
                         </div>
                         <span
-                          className="text-sm font-medium whitespace-nowrap"
+                          className="text-base font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
                           Gomitas comunes
@@ -155,18 +155,18 @@ const ComparisonSection = () => {
                       style={{ borderBottom: "1px solid #000000ff" }}
                     >
                       <td
-                        className="py-4 px-4 font-medium text-sm"
+                        className="py-6 px-8 lg:px-12 font-medium text-base lg:text-lg"
                         style={{ color: "#3d6a96" }}
                       >
                         {feature.name}
                       </td>
-                      <td className="py-4 px-6 text-center">
+                      <td className="py-6 px-8 lg:px-12 text-center">
                         <CheckIcon isCheck={feature.novapatch} />
                       </td>
-                      <td className="py-4 px-6 text-center">
+                      <td className="py-6 px-8 lg:px-12 text-center">
                         <CheckIcon isCheck={feature.pills} />
                       </td>
-                      <td className="py-4 px-6 text-center">
+                      <td className="py-6 px-8 lg:px-12 text-center">
                         <CheckIcon isCheck={feature.gummies} />
                       </td>
                     </tr>

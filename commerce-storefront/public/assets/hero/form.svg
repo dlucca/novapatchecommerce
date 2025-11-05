@@ -1,17 +1,9 @@
 <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 637 302" width="637" height="302">
-	<defs>
-		<linearGradient id="g1" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-506.996,-151.939,58.86,-196.407,557.514,393.005)">
-			<stop offset=".001" stop-color="#ffffff" stop-opacity=".6"/>
-			<stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
-		</linearGradient>
-	</defs>
 	<style>
 		tspan { white-space:pre } 
-		.s0 { fill: url(#g1) } 
-		.s1 { fill: none;stroke: #005088;stroke-miterlimit:10;stroke-width: 2.3 } 
+		.s0 { fill: none;stroke: #005088;stroke-miterlimit:10;stroke-width: 2.3 } 
 	</style>
 	<g id="Layer 1">
 		<path id="&lt;Path&gt;" class="s0" d="m1.92 99.8v-55.97c0-23.2 18.8-42 42-42h55.96c23.2 0 42.01 18.8 42.01 42v58.41c0 31.95 26.14 58.09 58.09 58.09l393.18 0.01c23.19 0 42 18.8 42 42v55.96c0 23.2-18.81 42.01-42 42.01h-391.37c-23.2 0-42-18.81-42-42.01v-58.41c0-31.95-26.14-58.09-58.1-58.09h-57.77c-23.2 0-42-18.81-42-42z"/>
-		<path id="&lt;Path&gt;" class="s1" d="m1.92 99.8v-55.97c0-23.2 18.8-42 42-42h55.96c23.2 0 42.01 18.8 42.01 42v58.41c0 31.95 26.14 58.09 58.09 58.09l393.18 0.01c23.19 0 42 18.8 42 42v55.96c0 23.2-18.81 42.01-42 42.01h-391.37c-23.2 0-42-18.81-42-42.01v-58.41c0-31.95-26.14-58.09-58.1-58.09h-57.77c-23.2 0-42-18.81-42-42z"/>
 	</g>
 </svg>

@@ -11,7 +11,7 @@ const HowItWorksSection = () => {
           <div className="flex-1 text-center lg:text-left w-full order-1 lg:order-2">
             <div className="max-w-xl mx-auto lg:mx-0">
               <h2
-                className="font-normal leading-tight text-novapatch-title"
+                className="font-bold leading-tight text-novapatch-title"
                 style={{ color: "#3d6a96" }}
               >
                 Cómo funciona
@@ -44,7 +44,7 @@ const HowItWorksSection = () => {
           <div className="flex-1 flex justify-center items-center w-full order-2 lg:order-1">
             <div className="w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
               <Image
-                src="/assets/work/howwork.svg"
+                src="/assets/work/howwork.webp"
                 alt="Cómo funciona - Parches inteligentes"
                 width={500}
                 height={400}

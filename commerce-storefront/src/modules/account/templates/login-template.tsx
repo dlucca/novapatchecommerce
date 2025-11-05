@@ -1,3 +1,16 @@
+/**
+ * ⚠️ DISABLED - Medusa Native Login/Registration Template
+ *
+ * This template is disabled because the project uses Clerk for authentication.
+ * See /sign-in and /sign-up for authentication pages with Clerk.
+ *
+ * To reactivate:
+ * 1. Uncomment this code
+ * 2. Uncomment the signup() and login() functions in @lib/data/customer
+ * 3. Uncomment the Login and Register components
+ * 4. Create a route that uses this template
+ */
+
 "use client"
 
 import { useState } from "react"

@@ -70,24 +70,27 @@ export default function NavClient({ user, cart }: NavClientProps) {
           <div className="hidden md:flex items-center space-x-8 flex-1">
             <LocalizedClientLink
               href="/store"
-              className="text-sm font-bold text-gray-700 hover:text-blue-600 transition-colors duration-200"
+              className="text-sm font-bold hover:opacity-70 transition-opacity duration-200"
               data-testid="nav-store-link"
+              style={{ color: "#3d6a96" }}
             >
               Tienda
             </LocalizedClientLink>
 
             <LocalizedClientLink
               href="/subscriptions"
-              className="text-sm font-bold text-gray-700 hover:text-blue-600 transition-colors duration-200"
+              className="text-sm font-bold hover:opacity-70 transition-opacity duration-200"
               data-testid="nav-subscriptions-link"
+              style={{ color: "#3d6a96" }}
             >
               Suscripciones
             </LocalizedClientLink>
 
             <LocalizedClientLink
               href="/about"
-              className="text-sm font-bold text-gray-700 hover:text-blue-600 transition-colors duration-200"
+              className="text-sm font-bold hover:opacity-70 transition-opacity duration-200"
               data-testid="nav-about-link"
+              style={{ color: "#3d6a96" }}
             >
               Nosotros
             </LocalizedClientLink>
@@ -102,8 +105,8 @@ export default function NavClient({ user, cart }: NavClientProps) {
               <Image
                 src="/assets/nav/LOGO-1.svg"
                 alt="Logo de NovaPatch"
-                width={150}
-                height={150}
+                width={170}
+                height={170}
                 priority
               />
             </LocalizedClientLink>

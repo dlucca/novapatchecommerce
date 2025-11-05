@@ -69,7 +69,7 @@ export default function ProductInfoAccordion({ product }: ProductInfoAccordionPr
   }
 
   return (
-    <div className="bg-white border-t border-b border-gray-300">
+    <div className="">
       {accordionItems.map((item, index) => (
         <div
           key={index}
@@ -77,7 +77,7 @@ export default function ProductInfoAccordion({ product }: ProductInfoAccordionPr
         >
           <button
             onClick={() => toggleAccordion(index)}
-            className="w-full flex items-center justify-between py-4 px-6 text-left hover:bg-gray-50 transition-colors"
+            className="w-full flex items-center justify-between py-4 px-6 text-left"
             aria-expanded={openIndex === index}
           >
             <h3 className="text-sm font-medium text-black uppercase tracking-wide">

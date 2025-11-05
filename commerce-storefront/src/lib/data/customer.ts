@@ -59,73 +59,89 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
   return updateRes
 }
 
-export async function signup(_currentState: unknown, formData: FormData) {
-  const password = formData.get("password") as string
-  const customerForm = {
-    email: formData.get("email") as string,
-    first_name: formData.get("first_name") as string,
-    last_name: formData.get("last_name") as string,
-    phone: formData.get("phone") as string,
-  }
+/**
+ * ⚠️ DISABLED - Medusa Native Authentication
+ *
+ * This project uses Clerk for all authentication.
+ * The signup() and login() functions are commented out because:
+ * 1. Clerk handles all registration/login at /sign-up and /sign-in
+ * 2. The useClerkMedusaSync hook syncs Clerk users to Medusa
+ * 3. Maintaining two auth systems causes confusion and issues
+ *
+ * If you need to reactivate Medusa native authentication in the future,
+ * uncomment these functions and the components in:
+ * - commerce-storefront/src/modules/account/components/login
+ * - commerce-storefront/src/modules/account/components/register
+ * - commerce-storefront/src/modules/account/templates/login-template.tsx
+ */
 
-  try {
-    const token = await sdk.auth.register("customer", "emailpass", {
-      email: customerForm.email,
-      password: password,
-    })
+// export async function signup(_currentState: unknown, formData: FormData) {
+//   const password = formData.get("password") as string
+//   const customerForm = {
+//     email: formData.get("email") as string,
+//     first_name: formData.get("first_name") as string,
+//     last_name: formData.get("last_name") as string,
+//     phone: formData.get("phone") as string,
+//   }
 
-    await setAuthToken(token as string)
+//   try {
+//     const token = await sdk.auth.register("customer", "emailpass", {
+//       email: customerForm.email,
+//       password: password,
+//     })
 
-    const headers = {
-      ...(await getAuthHeaders()),
-    }
+//     await setAuthToken(token as string)
 
-    const { customer: createdCustomer } = await sdk.store.customer.create(
-      customerForm,
-      {},
-      headers
-    )
+//     const headers = {
+//       ...(await getAuthHeaders()),
+//     }
 
-    const loginToken = await sdk.auth.login("customer", "emailpass", {
-      email: customerForm.email,
-      password,
-    })
+//     const { customer: createdCustomer } = await sdk.store.customer.create(
+//       customerForm,
+//       {},
+//       headers
+//     )
 
-    await setAuthToken(loginToken as string)
+//     const loginToken = await sdk.auth.login("customer", "emailpass", {
+//       email: customerForm.email,
+//       password,
+//     })
 
-    const customerCacheTag = await getCacheTag("customers")
-    revalidateTag(customerCacheTag)
+//     await setAuthToken(loginToken as string)
 
-    await transferCart()
+//     const customerCacheTag = await getCacheTag("customers")
+//     revalidateTag(customerCacheTag)
 
-    return createdCustomer
-  } catch (error: any) {
-    return error.toString()
-  }
-}
+//     await transferCart()
 
-export async function login(_currentState: unknown, formData: FormData) {
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
+//     return createdCustomer
+//   } catch (error: any) {
+//     return error.toString()
+//   }
+// }
 
-  try {
-    await sdk.auth
-      .login("customer", "emailpass", { email, password })
-      .then(async (token) => {
-        await setAuthToken(token as string)
-        const customerCacheTag = await getCacheTag("customers")
-        revalidateTag(customerCacheTag)
-      })
-  } catch (error: any) {
-    return error.toString()
-  }
+// export async function login(_currentState: unknown, formData: FormData) {
+//   const email = formData.get("email") as string
+//   const password = formData.get("password") as string
 
-  try {
-    await transferCart()
-  } catch (error: any) {
-    return error.toString()
-  }
-}
+//   try {
+//     await sdk.auth
+//       .login("customer", "emailpass", { email, password })
+//       .then(async (token) => {
+//         await setAuthToken(token as string)
+//         const customerCacheTag = await getCacheTag("customers")
+//         revalidateTag(customerCacheTag)
+//       })
+//   } catch (error: any) {
+//     return error.toString()
+//   }
+
+//   try {
+//     await transferCart()
+//   } catch (error: any) {
+//     return error.toString()
+//   }
+// }
 
 export async function signout(countryCode: string) {
   await sdk.auth.logout()
