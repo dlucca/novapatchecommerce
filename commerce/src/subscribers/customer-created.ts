@@ -4,7 +4,7 @@ import { Resend } from "resend"
 import { getFromEmail } from "../lib/email-config"
 
 export default async function customerCreatedHandler({
-  event: { data },
+  event: { data, name },
   container,
 }: SubscriberArgs<{ id: string }>) {
 
