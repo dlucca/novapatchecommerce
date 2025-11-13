@@ -41,7 +41,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "novapatchecommerce-production.up.railway.app",
+        hostname: "novapatchecommerce-production-f896.up.railway.app",
       },
       {
         protocol: "https",
