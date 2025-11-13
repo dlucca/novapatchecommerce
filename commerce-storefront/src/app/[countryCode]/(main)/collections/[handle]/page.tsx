@@ -24,7 +24,6 @@ export async function generateStaticParams() {
     })
 
     if (!collections || collections.length === 0) {
-      console.log('⚠️ No collections found during build, skipping static generation')
       return []
     }
 

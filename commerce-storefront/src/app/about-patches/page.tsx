@@ -23,7 +23,7 @@ export default function AboutPatches() {
 
       {/* Content Sections */}
       <div className="max-w-6xl mx-auto px-4 py-16">
-        
+
         {/* ¿Qué son los parches? */}
         <section className="mb-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -32,12 +32,12 @@ export default function AboutPatches() {
                 ¿Qué son los parches médicos?
               </Heading>
               <Text className="text-lg text-gray-600 mb-4">
-                Los parches médicos son sistemas de administración transdérmica que liberan 
-                ingredientes activos directamente a través de la piel, proporcionando una 
+                Los parches médicos son sistemas de administración transdérmica que liberan
+                ingredientes activos directamente a través de la piel, proporcionando una
                 absorción controlada y sostenida.
               </Text>
               <Text className="text-lg text-gray-600">
-                Esta tecnología permite una dosificación precisa y constante, evitando los 
+                Esta tecnología permite una dosificación precisa y constante, evitando los
                 picos y valles asociados con otros métodos de administración.
               </Text>
             </div>
@@ -59,7 +59,7 @@ export default function AboutPatches() {
           <Heading level="h2" className="text-3xl font-bold text-gray-900 mb-12 text-center">
             Beneficios de los Parches NovaPatch
           </Heading>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-green-50 rounded-lg p-6 text-center">
               <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -104,13 +104,13 @@ export default function AboutPatches() {
           <Heading level="h2" className="text-3xl font-bold text-gray-900 mb-12 text-center">
             ¿Cómo Funcionan?
           </Heading>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold">
                 1
               </div>
-              <Heading level="h4" className="font-semibold mb-2">Aplicación</Heading>
+              <h4 className="font-semibold mb-2">Aplicación</h4>
               <Text className="text-gray-600 text-sm">
                 Retira el protector y aplica el parche en piel limpia y seca
               </Text>
@@ -120,7 +120,7 @@ export default function AboutPatches() {
               <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold">
                 2
               </div>
-              <Heading level="h4" className="font-semibold mb-2">Penetración</Heading>
+              <h4 className="font-semibold mb-2">Penetración</h4>
               <Text className="text-gray-600 text-sm">
                 Los ingredientes activos penetran a través de la piel
               </Text>
@@ -130,7 +130,7 @@ export default function AboutPatches() {
               <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold">
                 3
               </div>
-              <Heading level="h4" className="font-semibold mb-2">Absorción</Heading>
+              <h4 className="font-semibold mb-2">Absorción</h4>
               <Text className="text-gray-600 text-sm">
                 Se absorben directamente en el torrente sanguíneo
               </Text>
@@ -140,7 +140,7 @@ export default function AboutPatches() {
               <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold">
                 4
               </div>
-              <Heading level="h4" className="font-semibold mb-2">Efecto</Heading>
+              <h4 className="font-semibold mb-2">Efecto</h4>
               <Text className="text-gray-600 text-sm">
                 Liberación sostenida durante 8-12 horas
               </Text>
@@ -157,14 +157,14 @@ export default function AboutPatches() {
             Descubre cómo nuestros parches pueden mejorar tu bienestar diario
           </Text>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="/store" 
+            <a
+              href="/store"
               className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-200"
             >
               Ver Productos
             </a>
-            <a 
-              href="/info" 
+            <a
+              href="/info"
               className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition-colors duration-200"
             >
               Más Información

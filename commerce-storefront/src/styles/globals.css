@@ -250,3 +250,19 @@ h3 {
     display: none;
   }
 }
+
+.hero-image {
+  object-position: center;
+}
+
+@media (max-width: 640px) {
+  .hero-image {
+    object-position: 35% center;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hero-image {
+    object-position: 40% center;
+  }
+}

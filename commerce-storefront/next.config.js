@@ -14,10 +14,10 @@ const nextConfig = {
     },
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   webpack: (config) => {
     config.resolve.alias = {
@@ -41,7 +41,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "novapatchecommerce-production.up.railway.app",
+        hostname: "novapatchecommerce-production-f896.up.railway.app",
       },
       {
         protocol: "https",

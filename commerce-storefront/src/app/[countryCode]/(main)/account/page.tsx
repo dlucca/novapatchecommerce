@@ -23,8 +23,8 @@ export default async function OverviewTemplate() {
   }
 
   // TODO: Fetch orders from Medusa
-  const orders = []
+  // const orders = []
 
-  return <Overview customer={mockCustomer as any} orders={orders} />
+  // return <Overview customer={mockCustomer as any} orders={orders} />
 }
 

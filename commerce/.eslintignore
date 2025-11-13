@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.medusa/
+build/
+.cache/
+coverage/
+*.config.js
+medusa-config.ts
+integration-tests/
+static/
+

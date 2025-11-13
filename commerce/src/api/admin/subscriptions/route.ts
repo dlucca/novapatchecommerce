@@ -17,9 +17,9 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
     const filters: any = {}
-    if (customer_id) filters.customer_id = customer_id
-    if (plan) filters.plan = plan
-    if (status) filters.status = status
+    if (customer_id) {filters.customer_id = customer_id}
+    if (plan) {filters.plan = plan}
+    if (status) {filters.status = status}
 
     const { data: subscriptions } = await query.graph({
       entity: "subscription",

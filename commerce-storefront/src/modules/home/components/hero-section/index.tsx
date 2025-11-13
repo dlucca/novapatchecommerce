@@ -47,7 +47,7 @@ const productFeatures = [
 // Slides del carrusel con textos personalizados
 const heroSlides = [
   {
-    image: "/assets/hero/Energy.webp",
+    image: "/assets/hero/Energy-new.webp",
     title: "Qué bien",
     titleLine2: "se siente",
     titleLine3: "sentirse bien.",
@@ -57,7 +57,7 @@ const heroSlides = [
     link: "/store",
   },
   {
-    image: "/assets/hero/Glow.webp",
+    image: "/assets/hero/Glow-new.webp",
     title: "Juventud",
     titleLine2: "radiante",
     titleLine3: "al instante.",
@@ -67,7 +67,7 @@ const heroSlides = [
     link: "/store",
   },
   {
-    image: "/assets/hero/Shield.webp",
+    image: "/assets/hero/Shield-new.webp",
     title: "Súmale un",
     titleLine2: "plus único",
     titleLine3: "a tu día a día.",
@@ -77,7 +77,7 @@ const heroSlides = [
     link: "/store",
   },
   {
-    image: "/assets/hero/Sleep.webp",
+    image: "/assets/hero/Sleep-new.webp",
     title: "Descanso",
     titleLine2: "profundo",
     titleLine3: "asegurado.",
@@ -87,7 +87,7 @@ const heroSlides = [
     link: "/store",
   },
   {
-    image: "/assets/hero/Woman.webp",
+    image: "/assets/hero/Woman-new.webp",
     title: "Equilibrio",
     titleLine2: "hormonal",
     titleLine3: "al natural.",
@@ -97,7 +97,7 @@ const heroSlides = [
     link: "/store",
   },
   {
-    image: "/assets/hero/Zen.webp",
+    image: "/assets/hero/Zen-new.webp",
     title: "Tu mente",
     titleLine2: "en calma",
     titleLine3: "inmediata.",
@@ -159,7 +159,8 @@ const HeroSection = () => {
               src={slide.image}
               alt={slide.title}
               fill
-              style={{ objectFit: "cover", objectPosition: "center" }}
+              className="hero-image"
+              style={{ objectFit: "cover" }}
               priority={index === 0}
             />
           </div>
