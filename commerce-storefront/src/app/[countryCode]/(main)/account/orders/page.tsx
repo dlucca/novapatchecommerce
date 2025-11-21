@@ -2,13 +2,21 @@ import { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { currentUser } from "@clerk/nextjs/server"
 import { Heading, Text } from "@medusajs/ui"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Pedidos",
   description: "Resumen de tus pedidos anteriores.",
 }
 
-export default async function Orders() {
+type Params = {
+  params: Promise<{
+    countryCode: string
+  }>
+}
+
+export default async function Orders(props: Params) {
+  const params = await props.params
   const user = await currentUser()
 
   if (!user) {
@@ -32,12 +40,12 @@ export default async function Orders() {
         <Text className="text-gray-600 mb-4">
           Cuando realices tu primera compra, aparecerá aquí.
         </Text>
-        <a
-          href="/"
+        <Link
+          href={`/${params.countryCode}/store/zencore-patch`}
           className="inline-block bg-novapatch-primary text-white font-semibold py-3 px-6 rounded-full hover:bg-novapatch-primary/90 transition-colors"
         >
           Ir a la Tienda
-        </a>
+        </Link>
       </div>
     </div>
   )

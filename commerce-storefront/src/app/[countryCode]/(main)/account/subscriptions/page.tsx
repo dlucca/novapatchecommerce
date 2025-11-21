@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { currentUser } from "@clerk/nextjs/server"
@@ -10,7 +11,14 @@ export const metadata: Metadata = {
   description: "Gestiona tus suscripciones activas",
 }
 
-export default async function Subscriptions() {
+type Params = {
+  params: Promise<{
+    countryCode: string
+  }>
+}
+
+export default async function Subscriptions(Props: Params) {
+  const params = await Props.params
   const user = await currentUser()
 
   if (!user) {
@@ -38,12 +46,12 @@ export default async function Subscriptions() {
           <p className="text-gray-600 mb-4">
             Suscríbete a nuestros productos y recibe envíos automáticos con descuentos exclusivos.
           </p>
-          <a
-            href="/subscriptions"
+          <Link
+            href={`/${params.countryCode}/subscriptions`}
             className="inline-block bg-novapatch-button text-white font-semibold py-3 px-6 rounded-full hover:bg-novapatch-button/90 transition-colors"
           >
             Ver Planes de Suscripción
-          </a>
+          </Link>
         </div>
       </div>
     )
