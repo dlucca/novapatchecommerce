@@ -4,9 +4,9 @@ import { listCartOptions, retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
 import { getBaseURL } from "@lib/util/env"
 import { StoreCartShippingOption } from "@medusajs/types"
-import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner"
-import Footer from "@modules/layout/templates/footer"
-import Nav from "@modules/layout/templates/nav"
+import CartMismatchBanner from "@/components/shared/cart-mismatch-banner"
+import Footer from "@/components/shared/footer"
+import Nav from "@/components/shared/nav"
 import FreeShippingPriceNudge from "@modules/shipping/components/free-shipping-price-nudge"
 
 export const metadata: Metadata = {

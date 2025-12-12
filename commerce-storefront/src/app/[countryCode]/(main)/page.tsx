@@ -3,15 +3,7 @@ import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 import { logger } from "@lib/util/logger"
 import { featureFlags } from "@lib/feature-flags"
-import {
-  HeroSection,
-  ProductPatchesSection,
-  ComparisonSection,
-  HowItWorksSection,
-  TestimonialsSection,
-  FAQSection,
-  FeaturedProducts
-} from "@modules/home/components"
+import HomeTemplate from "@modules/home/pages/home-template"
 
 export const metadata: Metadata = {
   title: "NovaPatch - Parches Médicos Innovadores",
@@ -19,10 +11,11 @@ export const metadata: Metadata = {
     "Activa tu bienestar sin complicaciones con nuestros parches médicos innovadores. La forma más limpia y práctica de tomar vitaminas.",
 }
 
-export default async function Home(props: {
-  params: Promise<{ countryCode: string }>
-}) {
-  const params = await props.params
+type PageProps = {
+  params: { countryCode: string }
+}
+
+export default async function Home({ params }: PageProps) {
   const { countryCode } = params
   const region = await getRegion(countryCode)
 
@@ -40,24 +33,10 @@ export default async function Home(props: {
   }
 
   return (
-    <div className="min-h-screen">
-      <HeroSection />
-
-      <ProductPatchesSection />
-
-      <ComparisonSection />
-
-      <HowItWorksSection />
-
-      <TestimonialsSection />
- 
-      {featureFlags.ENABLE_PRODUCTS && collections && region && (
-        <div className="py-16">
-          <FeaturedProducts collections={collections} region={region} />
-        </div>
-      )}
-
-      <FAQSection />
-    </div>
+    <HomeTemplate
+      collections={collections}
+      region={region}
+      showFeaturedProducts={featureFlags.ENABLE_PRODUCTS}
+    />
   )
 }
