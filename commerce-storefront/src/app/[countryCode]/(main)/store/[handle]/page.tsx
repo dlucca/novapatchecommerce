@@ -4,15 +4,15 @@ import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import { logger } from "@lib/util/logger"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-import StoreGridTemplate from "@modules/store/templates/store-grid-template"
+import StoreGridTemplate from "@modules/store/pages/store-grid-template"
 import { transformMediaUrl } from "@lib/util/transform-url"
 
-type Props = {
-  params: Promise<{ countryCode: string; handle: string }>
-  searchParams: Promise<{
+type PageProps = {
+  params: { countryCode: string; handle: string }
+  searchParams: {
     sortBy?: SortOptions
     page?: string
-  }>
+  }
 }
 
 export async function generateStaticParams() {
@@ -57,8 +57,7 @@ export async function generateStaticParams() {
   }
 }
 
-export async function generateMetadata(props: Props): Promise<Metadata> {
-  const params = await props.params
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { handle } = params
 
   const product = await listProducts({
@@ -74,7 +73,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   const thumbnailUrl = transformMediaUrl(product.thumbnail)
-  
+
   return {
     title: `${product.title} | NovaPatch`,
     description: `${product.title}`,
@@ -86,9 +85,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 }
 
-export default async function StorePage(props: Props) {
-  const params = await props.params
-  const searchParams = await props.searchParams
+export default async function StorePage({ params, searchParams }: PageProps) {
   const { sortBy, page } = searchParams
   const pageNumber = page ? parseInt(page) : 1
 
