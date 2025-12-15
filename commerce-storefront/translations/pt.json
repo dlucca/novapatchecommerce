@@ -1,0 +1,346 @@
+{
+  "nav": {
+    "store": "Loja",
+    "subscriptions": "Assinaturas",
+    "about": "Sobre nós",
+    "cart": "Carrinho",
+    "search": "Buscar produtos"
+  },
+  "account": {
+    "hello": "Olá",
+    "myAccount": "Minha Conta",
+    "summary": "Resumo",
+    "addresses": "Endereços",
+    "myOrders": "Meus Pedidos",
+    "mySubscriptions": "Minhas Assinaturas",
+    "logout": "Sair",
+    "question": "Tem dúvidas?",
+    "data": "Você pode encontrar perguntas frequentes e respostas em nossa página de atendimento ao cliente",
+    "clientService": "Atendimento ao Cliente"
+  },
+  "cart": {
+    "title": "Meu Carrinho",
+    "products": "Produtos",
+    "product": "Produto",
+    "quantity": "Quantidade",
+    "price": "Preço",
+    "total": "Total",
+    "orderSummary": "Resumo do Pedido",
+    "addPromotionCode": "Adicionar Código de Promoção",
+    "promotionApplied": "Promoção(ões) aplicada(s):",
+    "checkout": "Prosseguir para o Pagamento",
+    "continueShopping": "← Continuar Comprando",
+    "itemsInCart": "produtos no seu carrinho"
+  },
+  "footer": {
+    "shop": "Comprar",
+    "help": "Ajuda",
+    "contact": "Contate-nos",
+    "welfares": "Bem-estar",
+    "protection": "Proteção da Pele",
+    "faq": "Perguntas frequentes",
+    "about": "Sobre nós",
+    "whyChooseUs": "Por que nos escolher",
+    "subscribeAndSave": "Assine e economize",
+    "reserve": "NovaPatch. Tudos os direitos reservados.",
+    "subscribe": "Assine"
+  },
+  "hero": {
+    "slide1": {
+      "title": "Que bem que é se sentir bem.",
+      "title-bold": "Que bem que é",
+      "title-highlight": "bem",
+      "subtitle": "Ative seu bem-estar natural",
+      "cta": "Compre agora"
+    },
+    "slide2": {
+      "title": "Juventude radiante em instantes.",
+      "title-bold": "Juventude radiante",
+      "title-highlight": "instantes",
+      "subtitle": "Ative seu bem-estar natural",
+      "cta": "Compre agora"
+    },
+    "slide3": {
+      "title": "Descanso profundo garantido.",
+      "title-bold": "Descanso profundo",
+      "title-highlight": "garantido",
+      "subtitle": "Ative seu bem-estar natural",
+      "cta": "Compre agora"
+    },
+    "slide4": {
+      "title": "Sua mente calma de imediato.",
+      "title-bold": "Sua mente calma",
+      "title-highlight": "imediato",
+      "subtitle": "Ative seu bem-estar natural",
+      "cta": "Compre agora"
+    },
+    "slide5": {
+      "title": "Dê um toque extra ao seu dia a dia.",
+      "title-bold": "Dê um toque extra",
+      "title-highlight": "dia a dia",
+      "subtitle": "Ative seu bem-estar natural",
+      "cta": "Compre agora"
+    },
+    "slide6": {
+      "title": "Equilíbrio hormonal natural.",
+      "title-bold": "Equilíbrio hormonal",
+      "title-highlight": "natural",
+      "subtitle": "Ative seu bem-estar natural",
+      "cta": "Compre agora"
+    }
+  },
+  "features": {
+    "sugarFree": "Sem açúcar",
+    "vegan": "100% vegano",
+    "glutenFree": "Sem glúten",
+    "waterResistant": "Resistente à água",
+    "latexFree": "Sem látex",
+    "fastEffect": "Efeito em minutos"
+  },
+  "section2": {
+    "title": {
+      "line1": "Escolha o",
+      "line1Bold": "patch",
+      "line1End": "que",
+      "line2": "seu",
+      "line2Bold": "corpo precisa"
+    },
+    "description": "Cada um é formulado para ativar um aspecto diferente do seu bem-estar natural.",
+    "cta": "Assine e economize"
+  },
+  "comparison": {
+    "title": {
+      "line1": "A forma mais",
+      "line1Bold1": "limpa",
+      "line1And": "e",
+      "line1Bold2": "prática",
+      "line2": "de",
+      "line2Bold": "consumir vitaminas"
+    },
+    "feature": "Característica",
+    "ourPatches": "Nossos patches",
+    "commonCapsules": "Cápsulas comuns",
+    "commonGummies": "Gummies comuns",
+    "highAbsorption": "Alta taxa de absorção",
+    "noPills": "Sem comprimidos difíceis de engolir",
+    "noSugar": "Sem açúcar nem calorias",
+    "noArtificial": "Sem corantes ou recheios artificiais",
+    "noDigestive": "Não afeta o sistema digestivo"
+  },
+  "howItWorks": {
+    "title": "Como funciona",
+    "subtitle": "Patches inteligentes, absorção natural",
+    "description": "Nossos patches liberam vitaminas e minerais através da pele, sem passar pelo sistema digestivo. Isso permite uma absorção mais direta, rápida e sem interferências.",
+    "cta": "Ver agora",
+    "image": "Imagem",
+    "vitamins": "Vitaminas e extratos",
+    "patch": "Patch vitamínico",
+    "absorption": "Os nutrientes são absorvidos pela pele"
+  },
+  "testimonials": {
+    "testimonial1": "Usei o de energia pela manhã e o de sono à noite. Maravilhoso!",
+    "testimonial2": "Me salvam no trabalho! Me sinto com energia e super concentrada.",
+    "testimonial3": "Estou fascinada. O patch de imunidade diária é meu favorito!"
+  },
+  "subscriptions": {
+    "hero": {
+      "title": "Sua Rotina de Bem-Estar Começa Aqui",
+      "subtitle": "Personalize uma assinatura que funcione para você e economize em cada pedido.",
+      "cta": "Assine e economize"
+    },
+    "pricing": {
+      "mostPopular": "Mais Popular",
+      "everyDays": "A cada {days} dias",
+      "shippingStandard": "Envio padrão",
+      "shippingAlwaysFree": "Frete grátis sempre",
+      "shippingFreeOver": "Frete grátis em pedidos +${amount}",
+      "shippingEvery": "Envio a cada {days} dias",
+      "discount": "Envio a cada {days} dias com {value}% de desconto",
+      "cancelAnytime": "Cancele quando quiser",
+      "modifyEasily": "Modifique seu pedido facilmente",
+      "shippingIncluded": "Frete grátis incluído",
+      "startCta": "Começar"
+    },
+    "whySubscribe": {
+      "title": "Por Que Assinar?",
+      "slide1Title": "Economize mais",
+      "slide1Subtitle": "Economize mais com cada caixa e nunca se preocupe em ficar sem patches.",
+      "slide2Title": "Personalize sua assinatura",
+      "slide2Subtitle": "Pause, pule, altere ou cancele sua assinatura a qualquer momento.",
+      "slide3Title": "Garantia de 30 Dias",
+      "slide3Subtitle": "Acreditamos que você vai adorar NovaPatch. Se não, você está coberto.",
+      "scrollMore": "Deslize para ver mais"
+    },
+    "howItWorks": {
+      "title": "Como Assinar?",
+      "step1Title": "Escolha seus Patches",
+      "step1Description": "Navegue por nossa loja e selecione os patches que você precisa.",
+      "step2Title": "Selecione Assinatura",
+      "step2Description": "Escolha a opção 'Assinar e Economizar' ao adicionar ao carrinho.",
+      "step3Title": "Escolha Frequência",
+      "step3Description": "Selecione com que frequência você quer receber seus patches.",
+      "step4Title": "Receba e Aproveite",
+      "step4Description": "Seus patches chegarão antes que acabem.",
+      "finalNote": "Na próxima vez que comprar em novapatch.com, selecione a opção ",
+      "finalNoteHighlight": "Assinar e Economizar",
+      "finalNoteEnd": ", depois adicione ao carrinho. Veja essas economias instantâneas! Escolha seu calendário de entrega e seus patches chegarão antes que acabem."
+    },
+    "plansSection": {
+      "title": "Planos de Assinatura",
+      "loading": "Carregando planos...",
+      "noPlans": "Não há planos disponíveis no momento."
+    }
+  },
+  "faq": {
+    "title": "Tem dúvidas?",
+    "cta": "Assine e economize",
+    "question1": "Como contato a equipe de atendimento ao cliente?",
+    "answer1": "Você pode nos contatar através do chat ao vivo, email para soporte@novapatch.com ou ligando para +1-800-NOVAPATCH. Nossa equipe está disponível de segunda a sexta das 9h às 18h.",
+    "question2": "Posso receber descontos sem assinar?",
+    "answer2": "Sim, oferecemos descontos ocasionais para compras individuais. Inscreva-se em nossa newsletter para receber ofertas especiais e códigos de desconto exclusivos.",
+    "question3": "Vale a pena assinar se é minha primeira compra?",
+    "answer3": "Absolutamente! A assinatura lhe dá acesso a descontos exclusivos desde sua primeira compra, frete grátis e a flexibilidade de pausar ou cancelar a qualquer momento.",
+    "question4": "Como são aplicados os descontos?",
+    "answer4": "Os descontos são aplicados automaticamente no checkout. Os assinantes recebem descontos adicionais que são refletidos no preço final antes do pagamento.",
+    "question5": "Quais meios de pagamento vocês aceitam?",
+    "answer5": "Aceitamos todos os principais cartões de crédito (Visa, MasterCard, American Express), PayPal, Apple Pay, Google Pay e transferências bancárias.",
+    "question6": "Quanto tempo demora para chegar meu pedido?",
+    "answer6": "Os pedidos são processados em 1-2 dias úteis. O envio padrão leva 3-5 dias úteis, enquanto o envio expresso chega em 1-2 dias úteis."
+  },
+  "about": {
+    "metadata": {
+      "title": "Sobre NovaPatch - Nossa História",
+      "description": "Descubra a ciência por trás dos adesivos de vitaminas NovaPatch: uma solução sem comprimidos, de alta absorção para nutrientes essenciais."
+    },
+    "hero": {
+      "title": "A Ciência por Trás do NovaPatch",
+      "subtitle": "Descubra por que os adesivos são o futuro da suplementação: uma solução sem comprimidos, de alta absorção para nutrientes essenciais sem enchimentos."
+    },
+    "whyPatches": {
+      "title": "Por Que Adesivos?",
+      "paragraph1": "Você sabia que a maioria dos suplementos vitamínicos contém ingredientes que seu corpo não precisa? Isso é difícil de engolir, então estamos eliminando os comprimidos (e as gomas) da equação e resolvendo o problema com adesivos.",
+      "paragraph2": "Nossos adesivos transdérmicos oferecem uma alternativa revolucionária às vitaminas tradicionais, proporcionando uma absorção direta e eficiente sem passar pelo sistema digestivo.",
+      "features": {
+        "noFillers": "Sem Enchimentos",
+        "vegan": "Vegano",
+        "glutenFree": "Sem Glúten",
+        "fastAction": "Ação Rápida"
+      }
+    },
+    "howToUse": {
+      "title": "Apenas Descole, Cole e Aproveite!",
+      "step1": {
+        "title": "Descole",
+        "description": "Retire o protetor do adesivo com cuidado. Certifique-se de que sua pele esteja limpa e seca."
+      },
+      "step2": {
+        "title": "Cole",
+        "description": "Aplique o adesivo em uma área sem pelos, como o braço, ombro ou costas. Pressione firmemente."
+      },
+      "step3": {
+        "title": "Aproveite",
+        "description": "Deixe agir durante 8-12 horas. Continue com seu dia normalmente, é resistente à água!"
+      }
+    },
+    "values": {
+      "title": "Nossos Valores",
+      "quality": {
+        "title": "Qualidade Premium",
+        "description": "Utilizamos apenas ingredientes da mais alta qualidade, clinicamente testados e certificados."
+      },
+      "sustainability": {
+        "title": "Sustentabilidade",
+        "description": "Comprometidos com o meio ambiente, usando materiais recicláveis e processos eco-friendly."
+      },
+      "community": {
+        "title": "Comunidade",
+        "description": "Construímos uma comunidade de bem-estar onde cada pessoa importa e é ouvida."
+      },
+      "innovation": {
+        "title": "Inovação",
+        "description": "Constantemente pesquisamos e desenvolvemos novas fórmulas para melhorar seu bem-estar."
+      },
+      "transparency": {
+        "title": "Transparência",
+        "description": "Somos honestos sobre nossos ingredientes, processos e resultados. Sem segredos."
+      },
+      "safety": {
+        "title": "Segurança",
+        "description": "Todos os nossos produtos passam por rigorosos testes de segurança e qualidade antes de chegar até você."
+      }
+    },
+    "story": {
+      "title": "Nossa História",
+      "paragraph1": "NovaPatch nasceu de uma pergunta simples: Por que continuamos tomando vitaminas da mesma maneira que há 50 anos? Em um mundo onde a tecnologia avança constantemente, a suplementação tinha ficado para trás.",
+      "paragraph2": "Nossa equipe de cientistas, médicos e designers se uniu com uma missão clara: criar uma forma mais eficiente, conveniente e eficaz de obter os nutrientes que nosso corpo precisa. Após anos de pesquisa e desenvolvimento, nasceram os adesivos NovaPatch.",
+      "paragraph3": "Hoje, milhares de pessoas em todo o mundo confiam no NovaPatch para seu bem-estar diário. Não somos apenas uma empresa de suplementos; somos uma comunidade comprometida em revolucionar a forma como cuidamos de nossa saúde."
+    }
+  },
+  "store": {
+    "noProductsAvailable": "Não há produtos disponíveis",
+    "noImageAvailable": "Sem imagem disponível",
+    "defaultSubtitle": "30 adesivos transparentes",
+    "prevImage": "Imagem anterior",
+    "nextImage": "Próxima imagem",
+    "goToImage": "Ir para imagem"
+  },
+  "myAccount": {
+    "title": "Minha Conta",
+    "subtitle": "Ver e atualizar sua informação de perfil.",
+    "name": "Nome",
+    "lastName": "Sobrenome",
+    "email": "Email",
+    "phone": "Telefone",
+    "notSpecified": "Não especificado"
+  },
+  "deleteMyAccount": {
+    "title": "Zona de Perigo",
+    "subtitle": "Excluir sua conta permanentemente",
+    "button": "Excluir minha conta",
+    "question": "Tem certeza?",
+    "warning": "Esta ação é irreversível. Todos os seus dados serão excluídos permanentemente, incluindo:",
+    "data": "Sua informação pessoal, histórico de pedidos, endereços salvos, assinaturas ativas, etc.",
+    "deleting": "Excluindo...",
+    "confirm": "Sim, excluir minha conta",
+    "cancel": "Cancelar"
+  },
+  "deliveryDirections": {
+    "title": "Endereços de Entrega",
+    "subtitle": "Ver e atualizar seus endereços de entrega.",
+    "notSavedAddresses": "Você não tem endereços salvos",
+    "warning": "Os endereços serão salvos automaticamente quando você fizer sua primeira compra."
+  },
+  "myOrders": {
+    "title": "Meus Pedidos",
+    "subtitle": "Ver seus pedidos anteriores e seu estado",
+    "noOrders": "Você não tem pedidos",
+    "warning": "Quando você fizer sua primeira compra, aparecerá aqui",
+    "orderNumber": "Número do pedido",
+    "date": "Data",
+    "total": "Total",
+    "status": "Estado",
+    "goToStore": "Ir para a loja"
+  },
+  "mySubscriptions": {
+    "title": "Minhas Assinaturas",
+    "subtitle": "Gerencie suas assinaturas ativas",
+    "noSubscriptions": "Você não tem assinaturas ativas",
+    "warning": "Assine nossos produtos e receba envios automáticos com descontos exclusivos",
+    "plan": "Plano",
+    "status": "Estado",
+    "nextPayment": "Próximo pagamento",
+    "viewSubscription": "Planos de assinatura",
+    "pauseSubscription": "Pausar assinatura",
+    "cancelSubscription": "Cancelar assinatura"
+  },
+  "menu": {
+    "home": "Início",
+    "store": "Loja",
+    "subscriptions": "Assinaturas",
+    "about": "Sobre nós",
+    "myAccount": "Minha Conta",
+    "myOrders": "Meus Pedidos",
+    "mySubscriptions": "Minhas Assinaturas",
+    "logout": "Sair"
+  }
+}
