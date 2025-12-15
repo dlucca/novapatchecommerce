@@ -1,11 +1,17 @@
-'use client'
+"use client"
 
-import { useUser, SignInButton, useClerk } from '@clerk/nextjs'
-import { User, LogOut, UserCircle, Settings } from 'lucide-react'
-import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
-import LocalizedClientLink from '@modules/common/components/localized-client-link'
-import Image from 'next/image'
+import { useUser, SignInButton, useClerk } from "@clerk/nextjs"
+import { User, LogOut, UserCircle, Settings } from "lucide-react"
+import {
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+  Transition,
+} from "@headlessui/react"
+import { Fragment } from "react"
+import { useTranslations } from "next-intl"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Image from "next/image"
 
 export default function AuthUserButton() {
   const { isSignedIn, isLoaded, user } = useUser()
@@ -13,11 +19,15 @@ export default function AuthUserButton() {
 
   if (!isLoaded) {
     return (
-      <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" suppressHydrationWarning />
+      <div
+        className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"
+        suppressHydrationWarning
+      />
     )
   }
 
   if (isSignedIn && user) {
+    const t = useTranslations("menu")
     return (
       <Popover className="relative h-full" suppressHydrationWarning>
         {() => (
@@ -27,7 +37,7 @@ export default function AuthUserButton() {
                 {user.imageUrl ? (
                   <Image
                     src={user.imageUrl}
-                    alt={user.firstName || 'User'}
+                    alt={user.firstName || "User"}
                     width={32}
                     height={32}
                     className="object-cover"
@@ -67,7 +77,7 @@ export default function AuthUserButton() {
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       >
                         <UserCircle className="w-4 h-4 mr-3 text-gray-400" />
-                        Mi Cuenta
+                        {t("myAccount")}
                       </LocalizedClientLink>
 
                       <LocalizedClientLink
@@ -75,7 +85,7 @@ export default function AuthUserButton() {
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       >
                         <Settings className="w-4 h-4 mr-3 text-gray-400" />
-                        Mis Pedidos
+                        {t("myOrders")}
                       </LocalizedClientLink>
 
                       <LocalizedClientLink
@@ -83,7 +93,7 @@ export default function AuthUserButton() {
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       >
                         <Settings className="w-4 h-4 mr-3 text-gray-400" />
-                        Mis Suscripciones
+                        {t("mySubscriptions")}
                       </LocalizedClientLink>
 
                       <button
@@ -91,7 +101,7 @@ export default function AuthUserButton() {
                         className="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                       >
                         <LogOut className="w-4 h-4 mr-3" />
-                        Cerrar Sesión
+                        {t("logout")}
                       </button>
                     </div>
                   </div>
@@ -112,4 +122,3 @@ export default function AuthUserButton() {
     </SignInButton>
   )
 }
-

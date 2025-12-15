@@ -3,8 +3,10 @@
 import { Heading, Text } from "@medusajs/ui"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
+import { useTranslations } from "next-intl"
 
 export default function SubscriptionsWhySection() {
+  const t = useTranslations("subscriptions.whySubscribe")
   const [titleVisible, setTitleVisible] = useState(false)
   const titleRef = useRef<HTMLDivElement>(null)
 
@@ -60,7 +62,7 @@ export default function SubscriptionsWhySection() {
             }`}
           >
             <Heading level="h2" className="text-3xl md:text-4xl font-bold text-novapatch-title mb-4">
-              ¿Por Qué Suscribirse?
+              {t("title")}
             </Heading>
           </div>
 
@@ -74,15 +76,15 @@ export default function SubscriptionsWhySection() {
             />
           </div>
           <Heading level="h2" className="text-5xl md:text-6xl font-bold text-novapatch-title mb-8">
-            Ahorra más
+            {t("slide1Title")}
           </Heading>
           <Text className="text-2xl text-gray-700 leading-relaxed mb-12">
-            Ahorra más con cada caja y nunca te preocupes por quedarte sin parches.
+            {t("slide1Subtitle")}
           </Text>
           
           {/* Indicador de scroll */}
           <div className="flex flex-col items-center mt-16 animate-bounce">
-            <Text className="text-sm font-semibold text-novapatch-button mb-2">Desliza para ver más</Text>
+            <Text className="text-sm font-semibold text-novapatch-button mb-2">{t("scrollMore")}</Text>
             <svg className="w-8 h-8 text-novapatch-button" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
@@ -103,10 +105,10 @@ export default function SubscriptionsWhySection() {
             />
           </div>
           <Heading level="h2" className="text-5xl md:text-6xl font-bold text-novapatch-title mb-8">
-            Personaliza tu suscripción
+            {t("slide2Title")}
           </Heading>
           <Text className="text-2xl text-gray-700 leading-relaxed">
-            Pausa, omite, cambia o cancela tu suscripción en cualquier momento.
+            {t("slide2Subtitle")}
           </Text>
         </div>
       </div>
@@ -124,10 +126,10 @@ export default function SubscriptionsWhySection() {
             />
           </div>
           <Heading level="h2" className="text-5xl md:text-6xl font-bold text-novapatch-title mb-8">
-            Garantía de 30 Días
+            {t("slide3Title")}
           </Heading>
           <Text className="text-2xl text-gray-700 leading-relaxed">
-            Creemos que te encantará NovaPatch. Si no es así, estás cubierto.
+            {t("slide3Subtitle")}
           </Text>
         </div>
       </div>

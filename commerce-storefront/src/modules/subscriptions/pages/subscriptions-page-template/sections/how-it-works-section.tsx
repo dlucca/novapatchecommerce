@@ -1,11 +1,13 @@
 import { Heading, Text } from "@medusajs/ui"
+import { useTranslations } from "next-intl"
 
 export default function SubscriptionsHowItWorksSection() {
+  const t = useTranslations("subscriptions.howItWorks")
   return (
     <div className="bg-novapatch-bg-light py-20">
       <div className="max-w-6xl mx-auto px-4">
         <Heading level="h2" className="text-3xl md:text-4xl font-bold text-novapatch-title mb-12 text-center">
-          ¿Cómo Suscribirte?
+          {t("title")}
         </Heading>
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
@@ -15,10 +17,10 @@ export default function SubscriptionsHowItWorksSection() {
               1
             </div>
             <Heading level="h3" className="text-xl font-semibold text-novapatch-title mb-3">
-              Elige tus Parches
+              {t("step1Title")}
             </Heading>
             <Text className="text-gray-600">
-              Navega por nuestra tienda y selecciona los parches que necesitas.
+              {t("step1Description")}
             </Text>
           </div>
 
@@ -28,10 +30,10 @@ export default function SubscriptionsHowItWorksSection() {
               2
             </div>
             <Heading level="h3" className="text-xl font-semibold text-novapatch-title mb-3">
-              Selecciona Suscripción
+              {t("step2Title")}
             </Heading>
             <Text className="text-gray-600">
-              Elige la opción "Suscribirse y Ahorrar" al agregar al carrito.
+              {t("step2Description")}
             </Text>
           </div>
 
@@ -41,10 +43,10 @@ export default function SubscriptionsHowItWorksSection() {
               3
             </div>
             <Heading level="h3" className="text-xl font-semibold text-novapatch-title mb-3">
-              Elige Frecuencia
+              {t("step3Title")}
             </Heading>
             <Text className="text-gray-600">
-              Selecciona cada cuánto quieres recibir tus parches.
+              {t("step3Description")}
             </Text>
           </div>
 
@@ -54,19 +56,18 @@ export default function SubscriptionsHowItWorksSection() {
               4
             </div>
             <Heading level="h3" className="text-xl font-semibold text-novapatch-title mb-3">
-              Recibe y Disfruta
+              {t("step4Title")}
             </Heading>
             <Text className="text-gray-600">
-              Tus parches llegarán antes de que se te acaben.
+              {t("step4Description")}
             </Text>
           </div>
         </div>
 
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <Text className="text-gray-700 text-lg leading-relaxed">
-            La próxima vez que compres en novapatch.com, selecciona la opción <span className="font-semibold text-novapatch-button">Suscribirse y Ahorrar</span>, 
-            luego agrégalo al carrito. ¡Mira esos ahorros instantáneos! Elige tu calendario de entrega y tus parches 
-            llegarán antes de que se te acaben.
+            {t("finalNote")} <span className="font-semibold text-novapatch-button">{t("finalNoteHighlight")}</span>, 
+            {t("finalNoteEnd")}
           </Text>
         </div>
       </div>

@@ -3,7 +3,8 @@ import SubscriptionsPageTemplate from "@modules/subscriptions/pages/subscription
 
 export const metadata: Metadata = {
   title: "Suscripciones - NovaPatch",
-  description: "Suscríbete y ahorra en tus parches favoritos. Personaliza tu rutina de bienestar.",
+  description:
+    "Suscríbete y ahorra en tus parches favoritos. Personaliza tu rutina de bienestar.",
 }
 
 export default function SubscriptionsPage() {

@@ -6,15 +6,17 @@ import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
 import { useClerk } from "@clerk/nextjs"
+import { useTranslations } from "next-intl"
 
 // Menú lateral actualizado con nuevas opciones
 const getSideMenuItems = () => {
+  const t = useTranslations("menu")
   const items: Record<string, string> = {
-    "Inicio": "/",
-    "Tienda": "/store",
-    "Suscripciones": "/subscriptions",
-    "Nosotros": "/about",
-    "Mi Cuenta": "/account",
+    [t("home")]: "/",
+    [t("store")]: "/store",
+    [t("subscriptions")]: "/subscriptions",
+    [t("about")]: "/about",
+    [t("myAccount")]: "/account",
   }
 
   return items
@@ -39,7 +41,8 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
     setIsOpen(false)
   }
   void regions
-
+  const tFooter = useTranslations("footer")
+  const t = useTranslations("menu")
   return (
     <>
       <button
@@ -108,7 +111,9 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                   href={href}
                   onClick={closeMenu}
                   className="group flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-gray-700 transition-colors duration-200 hover:bg-novapatch-bg-light hover:text-novapatch-button"
-                  data-testid={`${name.toLowerCase().replace(/\s+/g, "-")}-link`}
+                  data-testid={`${name
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")}-link`}
                 >
                   <span>{name}</span>
                 </LocalizedClientLink>
@@ -125,11 +130,11 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
             >
               <span className="flex items-center gap-3">
                 <ArrowRightOnRectangle className="w-5 h-5" />
-                Cerrar sesión
+                <span>{t("logout")}</span>
               </span>
             </button>
             <p className="mt-4 text-xs text-gray-500 text-center">
-              &copy; {new Date().getFullYear()} NovaPatch. Todos los derechos reservados.
+              &copy; {new Date().getFullYear()} {tFooter("reserve")}
             </p>
           </div>
         </nav>

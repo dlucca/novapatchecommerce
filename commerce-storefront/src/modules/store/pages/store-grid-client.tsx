@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { HttpTypes } from "@medusajs/types"
 import ProductGridItem from "@modules/products/components/product-grid-item"
 import ProductActions from "@modules/products/components/product-actions"
@@ -35,6 +36,7 @@ export default function StoreGridClient({
   selectedHandle,
 }: StoreGridClientProps) {
   const router = useRouter()
+  const t = useTranslations("store")
 
   const initialProduct = selectedHandle
     ? products.find(p => p.handle === selectedHandle) || products[0]
@@ -84,7 +86,7 @@ export default function StoreGridClient({
   if (!selectedProduct || products.length === 0) {
     return (
       <div className="min-h-screen bg-novapatch-bg-cream flex items-center justify-center">
-        <p className="text-gray-500 text-lg">No hay productos disponibles</p>
+        <p className="text-gray-500 text-lg">{t("noProductsAvailable")}</p>
       </div>
     )
   }
@@ -137,7 +139,7 @@ export default function StoreGridClient({
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400">
-                      <span>Sin imagen disponible</span>
+                      <span>{t("noImageAvailable")}</span>
                     </div>
                   )}
                 </div>
@@ -169,14 +171,14 @@ export default function StoreGridClient({
                   <button
                     onClick={handlePrevImage}
                     className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all hover:scale-110"
-                    aria-label="Imagen anterior"
+                    aria-label={t("prevImage")}
                   >
                     <ChevronLeft className="w-6 h-6 text-novapatch-title" />
                   </button>
                   <button
                     onClick={handleNextImage}
                     className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all hover:scale-110"
-                    aria-label="Siguiente imagen"
+                    aria-label={t("nextImage")}
                   >
                     <ChevronRight className="w-6 h-6 text-novapatch-title" />
                   </button>
@@ -191,7 +193,7 @@ export default function StoreGridClient({
                             ? 'bg-novapatch-title w-6' 
                             : 'bg-white/60 hover:bg-white/80'
                         }`}
-                        aria-label={`Ir a imagen ${index + 1}`}
+                        aria-label={`${t("goToImage")} ${index + 1}`}
                       />
                     ))}
                   </div>
@@ -204,7 +206,7 @@ export default function StoreGridClient({
                 {selectedProduct.title}
               </h1>
               <p className="text-lg text-gray-600 mb-4">
-                {selectedProduct.subtitle || "30 parches transparentes"}
+                {selectedProduct.subtitle || t("defaultSubtitle")}
               </p>
             </div>
 
@@ -225,7 +227,7 @@ export default function StoreGridClient({
                 {selectedProduct.title}
               </h1>
               <p className="text-lg text-gray-600">
-                {selectedProduct.subtitle || "30 parches transparentes"}
+                {selectedProduct.subtitle || t("defaultSubtitle")}
               </p>
             </div>
 

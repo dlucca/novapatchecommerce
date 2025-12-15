@@ -1,7 +1,11 @@
+"use client"
+
 import Image from "next/image"
+import { useTranslations } from 'next-intl'
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const HowItWorksSection = () => {
+  const t = useTranslations('howItWorks')
 
   return (
     <section className="bg-white" style={{ paddingTop: 'clamp(3rem, 5vw, 5rem)', paddingBottom: 'clamp(3rem, 5vw, 5rem)' }}>
@@ -14,18 +18,18 @@ const HowItWorksSection = () => {
                 className="font-bold leading-tight text-novapatch-title"
                 style={{ color: "#3d6a96" }}
               >
-                Cómo funciona
+                {t('title')}
               </h2>
 
               <p
                 className="font-medium text-novapatch-title"
                 style={{ fontSize: 'clamp(1.125rem, 1.5vw + 0.25rem, 1.25rem)', marginBottom: 'clamp(1.25rem, 1.5vw, 1.5rem)' }}
               >
-                Parches inteligentes, absorción natural
+                {t('subtitle')}
               </p>
 
               <p className="text-gray-700 leading-relaxed" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)', marginBottom: 'clamp(1.75rem, 2vw, 2rem)' }}>
-                Nuestros parches liberan vitaminas y minerales a través de la piel, sin pasar por el sistema digestivo. Esto permite una absorción más directa, rápida y sin interferencias.
+                {t('description')}
               </p>
 
               <div className="text-center lg:text-left">
@@ -34,7 +38,7 @@ const HowItWorksSection = () => {
                     className="text-white font-medium rounded-lg transition-colors duration-200 hover:opacity-90 shadow-md bg-novapatch-button"
                     style={{ padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}
                   >
-                    Ver ahora
+                    {t('cta')}
                   </button>
                 </LocalizedClientLink>
               </div>
@@ -45,7 +49,7 @@ const HowItWorksSection = () => {
             <div className="w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
               <Image
                 src="/assets/work/howwork.webp"
-                alt="Cómo funciona - Parches inteligentes"
+                alt={t('subtitle')}
                 width={500}
                 height={400}
                 className="w-full h-auto"

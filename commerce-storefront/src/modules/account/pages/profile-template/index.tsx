@@ -1,4 +1,5 @@
 import ProfileDeleteAccount from "@modules/account/components/profile-delete-account"
+import { useTranslations } from "next-intl"
 import { Heading, Text } from "@medusajs/ui"
 
 type ProfileTemplateProps = {
@@ -14,50 +15,52 @@ export default function ProfileTemplate({
   lastName,
   phone,
 }: ProfileTemplateProps) {
+  const t = useTranslations("myAccount")
   return (
     <div className="w-full" data-testid="profile-page-wrapper">
       <div className="mb-8 flex flex-col gap-y-4">
-        <h1 className="text-2xl-semi">Mi Cuenta</h1>
-        <p className="text-base-regular">
-          Ver y actualizar tu información de perfil.
-        </p>
+        <h1 className="text-2xl-semi">{t("title")}</h1>
+        <p className="text-base-regular">{t("subtitle")}</p>
       </div>
 
       <div className="flex flex-col gap-y-8 w-full">
-        {/* Nombre */}
         <div className="flex flex-col gap-y-4">
-          <Heading level="h2" className="text-lg font-semibold">Nombre</Heading>
+          <Heading level="h2" className="text-lg font-semibold">
+            {t("name")}
+          </Heading>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Text className="text-sm text-gray-600 mb-1">Nombre</Text>
-              <Text className="text-base">{firstName || 'No especificado'}</Text>
+              <Text className="text-sm text-gray-600 mb-1">{t("name")}</Text>
+              <Text className="text-base">
+                {firstName || t("notSpecified")}
+              </Text>
             </div>
             <div>
-              <Text className="text-sm text-gray-600 mb-1">Apellido</Text>
-              <Text className="text-base">{lastName || 'No especificado'}</Text>
+              <Text className="text-sm text-gray-600 mb-1">
+                {t("lastName")}
+              </Text>
+              <Text className="text-base">{lastName || t("notSpecified")}</Text>
             </div>
           </div>
         </div>
 
         <Divider />
-
-        {/* Email */}
         <div className="flex flex-col gap-y-4">
-          <Heading level="h2" className="text-lg font-semibold">Email</Heading>
+          <Heading level="h2" className="text-lg font-semibold">
+            {t("email")}
+          </Heading>
           <Text className="text-base">{email}</Text>
         </div>
 
         <Divider />
-
-        {/* Teléfono */}
         <div className="flex flex-col gap-y-4">
-          <Heading level="h2" className="text-lg font-semibold">Teléfono</Heading>
-          <Text className="text-base">{phone || 'No especificado'}</Text>
+          <Heading level="h2" className="text-lg font-semibold">
+            {t("phone")}
+          </Heading>
+          <Text className="text-base">{phone || t("notSpecified")}</Text>
         </div>
 
         <Divider />
-
-        {/* Eliminar Cuenta */}
         <ProfileDeleteAccount />
       </div>
     </div>
@@ -67,4 +70,3 @@ export default function ProfileTemplate({
 const Divider = () => {
   return <div className="w-full h-px bg-gray-200" />
 }
-
