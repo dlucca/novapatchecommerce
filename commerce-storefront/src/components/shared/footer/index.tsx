@@ -25,7 +25,7 @@ export default function Footer() {
           }}
         >
           <div
-            className="hidden md:grid md:grid-cols-[1fr_1fr_1fr_auto] md:items-start"
+            className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_auto] md:items-start"
             style={{ gap: "clamp(2rem, 3vw, 3rem)" }}
           >
             <div
