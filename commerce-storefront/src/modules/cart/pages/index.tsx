@@ -3,6 +3,7 @@ import Summary from "./summary"
 import EmptyCartMessage from "../components/empty-cart-message"
 import SignInPrompt from "../components/sign-in-prompt"
 import Divider from "@/components/ui/divider"
+import { useTranslations } from "next-intl"
 import { HttpTypes } from "@medusajs/types"
 
 const CartTemplate = ({
@@ -12,15 +13,16 @@ const CartTemplate = ({
   cart: HttpTypes.StoreCart | null
   customer: HttpTypes.StoreCustomer | null
 }) => {
+  const t = useTranslations("cart")
   return (
     <div className="min-h-screen bg-novapatch-bg-cream py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-testid="cart-container">
         {cart?.items?.length ? (
           <>
             <div className="mb-8">
-              <h1 className="text-4xl font-bold text-gray-900">Mi Carrito</h1>
+              <h1 className="text-4xl font-bold text-gray-900">{t("title")}</h1>
               <p className="text-gray-600 mt-2">
-                {cart.items.length} {cart.items.length === 1 ? 'producto' : 'productos'} en tu carrito
+                {cart.items.length} {cart.items.length === 1 ? t("product") : t("products")} {t("itemsInCart")}
               </p>
             </div>
 

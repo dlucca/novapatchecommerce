@@ -4,6 +4,7 @@ import CartTotals from "@modules/common/components/cart-totals"
 import Divider from "@/components/ui/divider"
 import DiscountCode from "@modules/checkout/components/discount-code"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { useTranslations } from "next-intl"
 import { HttpTypes } from "@medusajs/types"
 
 type SummaryProps = {
@@ -23,6 +24,7 @@ function getCheckoutStep(cart: HttpTypes.StoreCart) {
 }
 
 const Summary = ({ cart }: SummaryProps) => {
+  const t = useTranslations("cart")
   const step = getCheckoutStep(cart)
 
   const transformedCart = {
@@ -38,7 +40,7 @@ const Summary = ({ cart }: SummaryProps) => {
   return (
     <div className="flex flex-col gap-y-6">
       <h2 className="text-2xl font-bold text-gray-900">
-        Resumen del pedido
+        {t("orderSummary")}
       </h2>
 
       <DiscountCode cart={cart} />

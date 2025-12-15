@@ -2,9 +2,11 @@
 
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
+import { useTranslations } from 'next-intl'
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const ProductPatchesSection = () => {
+  const t = useTranslations('section2')
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
 
@@ -78,21 +80,20 @@ const ProductPatchesSection = () => {
                 className="font-normal leading-tight text-novapatch-title"
                 style={{ marginBottom: 'clamp(1rem, 1.25vw, 1.25rem)' }}
               >
-                Elegí el <span className="font-bold">parche</span> que
+                {t('title.line1')} <span className="font-bold">{t('title.line1Bold')}</span> {t('title.line1End')}
                 <br className="hidden sm:block" />
-                tu <span className="font-bold">cuerpo necesita</span>
+                {t('title.line2')} <span className="font-bold">{t('title.line2Bold')}</span>
               </h2>
 
               <p className="text-gray-700 max-w-md" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)', marginBottom: 'clamp(1.25rem, 1.5vw, 1.5rem)' }}>
-                Cada uno está formulado para activar un aspecto diferente de tu
-                bienestar natural.
+                {t('description')}
               </p>
               <LocalizedClientLink href="/store">
                 <button
                   className="text-white font-medium rounded-lg shadow-md hover:opacity-90 transition-opacity bg-novapatch-button"
                   style={{ padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}
                 >
-                  Suscríbete y ahorra
+                  {t('cta')}
                 </button>
               </LocalizedClientLink>
             </div>

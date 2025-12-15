@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react"
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { useTranslations } from 'next-intl'
 
 import SideMenu from "@/components/shared/side-menu"
 import AuthUserButton from "@modules/account/components/user-button"
@@ -31,6 +32,7 @@ export default function NavClient({ cart }: NavClientProps) {
   const [searchOpen, setSearchOpen] = useState(false)
   const params = useParams()
   const countryCode = (params?.countryCode as string) || "mx"
+  const t = useTranslations('nav')
 
   const cartFallback = (
     <LocalizedClientLink
@@ -74,7 +76,7 @@ export default function NavClient({ cart }: NavClientProps) {
               data-testid="nav-store-link"
               style={{ color: "#3d6a96" }}
             >
-              Tienda
+              {t('store')}
             </LocalizedClientLink>
 
             <LocalizedClientLink
@@ -83,7 +85,7 @@ export default function NavClient({ cart }: NavClientProps) {
               data-testid="nav-subscriptions-link"
               style={{ color: "#3d6a96" }}
             >
-              Suscripciones
+              {t('subscriptions')}
             </LocalizedClientLink>
 
             <LocalizedClientLink
@@ -92,7 +94,7 @@ export default function NavClient({ cart }: NavClientProps) {
               data-testid="nav-about-link"
               style={{ color: "#3d6a96" }}
             >
-              Nosotros
+              {t('about')}
             </LocalizedClientLink>
           </div>
 

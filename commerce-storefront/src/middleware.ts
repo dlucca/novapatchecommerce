@@ -1,24 +1,42 @@
-import { clerkMiddleware } from '@clerk/nextjs/server'
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { clerkMiddleware } from "@clerk/nextjs/server"
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
+import { getLocaleFromCountryCode } from "./i18n"
 
-// MVP Semana 1: Middleware simplificado solo para autenticación
 export default clerkMiddleware(async (_auth, req: NextRequest) => {
   const { pathname } = req.nextUrl
 
   // Skip middleware for static files and API routes
   if (
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/api') ||
-    pathname.includes('.') ||
-    pathname.startsWith('/images') ||
-    pathname.startsWith('/assets')
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname.includes(".") ||
+    pathname.startsWith("/images") ||
+    pathname.startsWith("/assets")
   ) {
     return NextResponse.next()
   }
 
-  // Para MVP Semana 1: Solo manejar autenticación
-  // No necesitamos lógica de regiones por ahora
+  // Extraer countryCode de la URL (formato: /mx/... o /br/...)
+  const countryCodeMatch = pathname.match(/^\/([a-z]{2})(\/|$)/)
+
+  if (countryCodeMatch) {
+    const countryCode = countryCodeMatch[1]
+    const locale = getLocaleFromCountryCode(countryCode)
+    const requestHeaders = new Headers(req.headers)
+    requestHeaders.set("x-next-intl-locale", locale)
+
+    const response = NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      },
+    })
+
+    response.headers.set("x-next-intl-locale", locale)
+
+    return response
+  }
+
   return NextResponse.next()
 })
 

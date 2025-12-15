@@ -1,5 +1,6 @@
 const checkEnvVariables = require("./check-env-variables")
 const path = require("path")
+const withNextIntl = require('next-intl/plugin')('./src/i18n.ts')
 
 checkEnvVariables()
 
@@ -81,4 +82,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = withNextIntl(nextConfig)

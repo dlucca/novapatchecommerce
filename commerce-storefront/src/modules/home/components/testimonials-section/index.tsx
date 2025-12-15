@@ -2,27 +2,35 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import { useTranslations } from 'next-intl'
 
 const TestimonialsSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const t = useTranslations('testimonials')
 
-  const testimonials = [
+  const testimonialsConfig = [
     {
       stars: 5,
-      text: "Usé el de energía por la mañana y el de sueño en la noche. ¡Una maravilla!",
+      textKey: "testimonial1",
       image: "/assets/testimonials/woman3.svg"
     },
     {
       stars: 5,
-      text: "¡Me salvan en el trabajo! Me siento con energía y súper concentrada.",
+      textKey: "testimonial2",
       image: "/assets/testimonials/woman-2.svg"
     },
     {
       stars: 5,
-      text: "Estoy fascinada. ¡El parche de inmunidad diaria es mi favorito!",
+      textKey: "testimonial3",
       image: "/assets/testimonials/woman-1.svg"
     }
   ]
+
+  const testimonials = testimonialsConfig.map(item => ({
+    stars: item.stars,
+    text: t(item.textKey),
+    image: item.image
+  }))
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % testimonials.length)

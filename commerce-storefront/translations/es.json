@@ -1,0 +1,346 @@
+{
+  "nav": {
+    "store": "Tienda",
+    "subscriptions": "Suscripciones",
+    "about": "Nosotros",
+    "cart": "Carrito",
+    "search": "Buscar productos"
+  },
+  "account": {
+    "hello": "Hola",
+    "myAccount": "Mi Cuenta",
+    "summary": "Resumen",
+    "addresses": "Direcciones",
+    "myOrders": "Mis Pedidos",
+    "mySubscriptions": "Mis Suscripciones",
+    "logout": "Cerrar Sesión",
+    "question": "¿Tienes preguntas?",
+    "data": "Puedes encontrar preguntas frecuentes y respuestas en nuestra página de servicio al cliente",
+    "clientService": "Servicio al Cliente"
+  },
+  "cart": {
+    "title": "Mi Carrito",
+    "products": "Productos",
+    "product": "Producto",
+    "quantity": "Cantidad",
+    "price": "Precio",
+    "total": "Total",
+    "orderSummary": "Resumen del pedido",
+    "addPromotionCode": "Add Promotion Code(s)",
+    "promotionApplied": "Promotion(s) applied:",
+    "checkout": "Proceder al pago",
+    "continueShopping": "← Continuar comprando",
+    "itemsInCart": "productos en tu carrito"
+  },
+  "footer": {
+    "shop": "Comprar",
+    "help": "Ayuda",
+    "welfares": "Bem-estar",
+    "protection": "Proteção da Pele",
+    "contact": "Contactanos",
+    "faq": "Preguntas frecuentes",
+    "about": "Nosotros",
+    "whyChooseUs": "Porque elegirnos",
+    "subscribeAndSave": "Suscribete y ahorra",
+    "reserve": "NovaPatch. Todos los derechos reservados.",
+    "subscribe": "Suscribete"
+  },
+  "hero": {
+    "slide1": {
+      "title": "Qué bien se siente sentirse bien.",
+      "title-bold": "Qué bien se siente",
+      "title-highlight": "bien",
+      "subtitle": "Activa tu bienestar natural",
+      "cta": "Comprar ahora"
+    },
+    "slide2": {
+      "title": "Juventud radiante al instante.",
+      "title-bold": "Juventud radiante",
+      "title-highlight": "instante",
+      "subtitle": "Activa tu bienestar natural",
+      "cta": "Comprar ahora"
+    },
+    "slide3": {
+      "title": "Descanso profundo asegurado.",
+      "title-bold": "Descanso profundo",
+      "title-highlight": "asegurado",
+      "subtitle": "Activa tu bienestar natural",
+      "cta": "Comprar ahora"
+    },
+    "slide4": {
+      "title": "Tu mente en calma inmediata.",
+      "title-bold": "Tu mente en calma",
+      "title-highlight": "inmediata",
+      "subtitle": "Activa tu bienestar natural",
+      "cta": "Comprar ahora"
+    },
+    "slide5": {
+      "title": "Súmale un plus único a tu día a día.",
+      "title-bold": "Súmale un plus único",
+      "title-highlight": "día a día",
+      "subtitle": "Activa tu bienestar natural",
+      "cta": "Comprar ahora"
+    },
+    "slide6": {
+      "title": "Equilibrio hormonal al natural.",
+      "title-bold": "Equilibrio hormonal",
+      "title-highlight": "natural",
+      "subtitle": "Activa tu bienestar natural",
+      "cta": "Comprar ahora"
+    }
+  },
+  "features": {
+    "sugarFree": "Sin azúcar",
+    "vegan": "100% vegano",
+    "glutenFree": "Libre de gluten",
+    "waterResistant": "Resistente al agua",
+    "latexFree": "Sin latex",
+    "fastEffect": "Efecto en minutos"
+  },
+  "section2": {
+    "title": {
+      "line1": "Elegí el",
+      "line1Bold": "parche",
+      "line1End": "que",
+      "line2": "tu",
+      "line2Bold": "cuerpo necesita"
+    },
+    "description": "Cada uno está formulado para activar un aspecto diferente de tu bienestar natural.",
+    "cta": "Suscribete y ahorra"
+  },
+  "comparison": {
+    "title": {
+      "line1": "La forma más",
+      "line1Bold1": "limpia",
+      "line1And": "y",
+      "line1Bold2": "práctica",
+      "line2": "de",
+      "line2Bold": "tomar vitaminas"
+    },
+    "feature": "Característica",
+    "ourPatches": "Nuestros parches",
+    "commonCapsules": "Cápsulas comunes",
+    "commonGummies": "Gomitas comunes",
+    "highAbsorption": "Alta tasa de absorción",
+    "noPills": "Sin pastillas difíciles de tragar",
+    "noSugar": "Sin azúcar ni calorías",
+    "noArtificial": "Sin colorantes ni rellenos artificiales",
+    "noDigestive": "No afecta tu sistema digestivo"
+  },
+  "howItWorks": {
+    "title": "Cómo funciona",
+    "subtitle": "Parches inteligentes, absorción natural",
+    "description": "Nuestros parches liberan vitaminas y minerales a través de la piel, sin pasar por el sistema digestivo. Esto permite una absorción más directa, rápida y sin interferencias.",
+    "cta": "Ver ahora",
+    "image": "Imagen",
+    "vitamins": "Vitaminas y extractos",
+    "patch": "Parche vitaminico",
+    "absorption": "Los nutrientes se absorben a través de la piel"
+  },
+  "testimonials": {
+    "testimonial1": "Usé el de energía por la mañana y el de sueño en la noche. ¡Una maravilla!",
+    "testimonial2": "¡Me salvan en el trabajo! Me siento con energía y súper concentrada.",
+    "testimonial3": "Estoy fascinada. ¡El parche de inmunidad diaria es mi favorito!"
+  },
+  "subscriptions": {
+    "hero": {
+      "title": "Tu Rutina de Bienestar Comienza Aquí",
+      "subtitle": "Personaliza una suscripción que funcione para ti y ahorra en cada pedido.",
+      "cta": "Suscríbete y ahorra"
+    },
+    "pricing": {
+      "mostPopular": "Más Popular",
+      "everyDays": "Cada {days} días",
+      "shippingStandard": "Envío estándar",
+      "shippingAlwaysFree": "Envío gratis siempre",
+      "shippingFreeOver": "Envío gratis en pedidos +${amount}",
+      "shippingEvery": "Envío cada {days} días",
+      "discount": "Envío cada {days} días con {value}% de descuento",
+      "cancelAnytime": "Cancela cuando quieras",
+      "modifyEasily": "Modifica tu pedido fácilmente",
+      "shippingIncluded": "Envío gratis incluido",
+      "startCta": "Comenzar"
+    },
+    "whySubscribe": {
+      "title": "¿Por Qué Suscribirse?",
+      "slide1Title": "Ahorra más",
+      "slide1Subtitle": "Ahorra más con cada caja y nunca te preocupes por quedarte sin parches.",
+      "slide2Title": "Personaliza tu suscripción",
+      "slide2Subtitle": "Pausa, omite, cambia o cancela tu suscripción en cualquier momento.",
+      "slide3Title": "Garantía de 30 Días",
+      "slide3Subtitle": "Creemos que te encantará NovaPatch. Si no es así, estás cubierto.",
+      "scrollMore": "Desliza para ver más"
+    },
+    "howItWorks": {
+      "title": "¿Cómo Suscribirte?",
+      "step1Title": "Elige tus Parches",
+      "step1Description": "Navega por nuestra tienda y selecciona los parches que necesitas.",
+      "step2Title": "Selecciona Suscripción",
+      "step2Description": "Elige la opción 'Suscribirse y Ahorrar' al agregar al carrito.",
+      "step3Title": "Elige Frecuencia",
+      "step3Description": "Selecciona cada cuánto quieres recibir tus parches.",
+      "step4Title": "Recibe y Disfruta",
+      "step4Description": "Tus parches llegarán antes de que se te acaben.",
+      "finalNote": "La próxima vez que compres en novapatch.com, selecciona la opción ",
+      "finalNoteHighlight": "Suscribirse y Ahorrar",
+      "finalNoteEnd": ", luego agrégalo al carrito. ¡Mira esos ahorros instantáneos! Elige tu calendario de entrega y tus parches llegarán antes de que se te acaben."
+    },
+    "plansSection": {
+      "title": "Planes de Suscripción",
+      "loading": "Cargando planes...",
+      "noPlans": "No hay planes disponibles en este momento."
+    }
+  },
+  "faq": {
+    "title": "¿Tienes dudas?",
+    "cta": "Suscríbete y ahorra",
+    "question1": "¿Cómo contacto al equipo de atención al cliente?",
+    "answer1": "Puedes contactarnos a través de nuestro chat en vivo, email a soporte@novapatch.com o llamando al +1-800-NOVAPATCH. Nuestro equipo está disponible de lunes a viernes de 9am a 6pm.",
+    "question2": "¿Puedo recibir descuentos sin suscribirme?",
+    "answer2": "Sí, ofrecemos descuentos ocasionales para compras individuales. Suscríbete a nuestro newsletter para recibir ofertas especiales y códigos de descuento exclusivos.",
+    "question3": "¿Vale la pena suscribirme si es mi primera compra?",
+    "answer3": "¡Absolutamente! La suscripción te da acceso a descuentos exclusivos desde tu primera compra, envío gratuito y la flexibilidad de pausar o cancelar en cualquier momento.",
+    "question4": "¿Cómo se aplican los descuentos?",
+    "answer4": "Los descuentos se aplican automáticamente en el checkout. Los suscriptores reciben descuentos adicionales que se reflejan en el precio final antes del pago.",
+    "question5": "¿Qué medios de pago aceptan?",
+    "answer5": "Aceptamos todas las tarjetas de crédito principales (Visa, MasterCard, American Express), PayPal, Apple Pay, Google Pay y transferencias bancarias.",
+    "question6": "¿Cuánto tarda en llegar mi pedido?",
+    "answer6": "Los pedidos se procesan en 1-2 días hábiles. El envío estándar toma 3-5 días hábiles, mientras que el envío express llega en 1-2 días hábiles."
+  },
+  "about": {
+    "metadata": {
+      "title": "Sobre NovaPatch - Nuestra Historia",
+      "description": "Descubre la ciencia detrás de los parches de vitaminas NovaPatch: una solución sin pastillas, de alta absorción para nutrientes esenciales."
+    },
+    "hero": {
+      "title": "La Ciencia Detrás de NovaPatch",
+      "subtitle": "Descubre por qué los parches son el futuro de la suplementación: una solución sin pastillas, de alta absorción para nutrientes esenciales sin rellenos."
+    },
+    "whyPatches": {
+      "title": "¿Por Qué Parches?",
+      "paragraph1": "¿Sabías que la mayoría de los suplementos vitamínicos contienen ingredientes que tu cuerpo no necesita? Eso es difícil de tragar, así que estamos eliminando las pastillas (y las gomitas) de la ecuación y solucionando el problema con parches.",
+      "paragraph2": "Nuestros parches transdérmicos ofrecen una alternativa revolucionaria a las vitaminas tradicionales, proporcionando una absorción directa y eficiente sin pasar por el sistema digestivo.",
+      "features": {
+        "noFillers": "Sin Rellenos",
+        "vegan": "Vegano",
+        "glutenFree": "Sin Gluten",
+        "fastAction": "Acción Rápida"
+      }
+    },
+    "howToUse": {
+      "title": "¡Solo Despega, Pega y Disfruta!",
+      "step1": {
+        "title": "Despega",
+        "description": "Retira el protector del parche con cuidado. Asegúrate de que tu piel esté limpia y seca."
+      },
+      "step2": {
+        "title": "Pega",
+        "description": "Aplica el parche en un área sin vello, como el brazo, hombro o espalda. Presiona firmemente."
+      },
+      "step3": {
+        "title": "Disfruta",
+        "description": "Deja actuar durante 8-12 horas. Sigue con tu día normalmente, ¡es resistente al agua!"
+      }
+    },
+    "values": {
+      "title": "Nuestros Valores",
+      "quality": {
+        "title": "Calidad Premium",
+        "description": "Utilizamos solo ingredientes de la más alta calidad, clínicamente probados y certificados."
+      },
+      "sustainability": {
+        "title": "Sostenibilidad",
+        "description": "Comprometidos con el medio ambiente, usando materiales reciclables y procesos eco-friendly."
+      },
+      "community": {
+        "title": "Comunidad",
+        "description": "Construimos una comunidad de bienestar donde cada persona importa y es escuchada."
+      },
+      "innovation": {
+        "title": "Innovación",
+        "description": "Constantemente investigamos y desarrollamos nuevas fórmulas para mejorar tu bienestar."
+      },
+      "transparency": {
+        "title": "Transparencia",
+        "description": "Somos honestos sobre nuestros ingredientes, procesos y resultados. Sin secretos."
+      },
+      "safety": {
+        "title": "Seguridad",
+        "description": "Todos nuestros productos pasan rigurosas pruebas de seguridad y calidad antes de llegar a ti."
+      }
+    },
+    "story": {
+      "title": "Nuestra Historia",
+      "paragraph1": "NovaPatch nació de una simple pregunta: ¿Por qué seguimos tomando vitaminas de la misma manera que hace 50 años? En un mundo donde la tecnología avanza constantemente, la suplementación se había quedado atrás.",
+      "paragraph2": "Nuestro equipo de científicos, médicos y diseñadores se unió con una misión clara: crear una forma más eficiente, conveniente y efectiva de obtener los nutrientes que nuestro cuerpo necesita. Después de años de investigación y desarrollo, nacieron los parches NovaPatch.",
+      "paragraph3": "Hoy, miles de personas en todo el mundo confían en NovaPatch para su bienestar diario. No somos solo una empresa de suplementos; somos una comunidad comprometida con revolucionar la forma en que cuidamos nuestra salud."
+    }
+  },
+  "store": {
+    "noProductsAvailable": "No hay productos disponibles",
+    "noImageAvailable": "Sin imagen disponible",
+    "defaultSubtitle": "30 parches transparentes",
+    "prevImage": "Imagen anterior",
+    "nextImage": "Siguiente imagen",
+    "goToImage": "Ir a imagen"
+  },
+  "myAccount": {
+    "title": "Mi Cuenta",
+    "subtitle": "Ver y actualizar tu información de perfil.",
+    "name": "Nombre",
+    "lastName": "Apellido",
+    "email": "Email",
+    "phone": "Teléfono",
+    "notSpecified": "No especificado"
+  },
+  "deleteMyAccount": {
+    "title": "Zona de Peligro",
+    "subtitle": "Eliminar tu cuenta de forma permanente",
+    "button": "Eliminar mi cuenta",
+    "question": "¿Estás seguro?",
+    "warning": "Esta acción es irreversible. Todos tus datos serán eliminados permanentemente, incluyendo:",
+    "data": "Tu información personal, historial de pedidos, direcciones guardadas, suscripciones activas, etc.",
+    "deleting": "Eliminando...",
+    "confirm": "Sim, excluir minha conta",
+    "cancel": "Cancelar"
+  },
+  "deliveryDirections": {
+    "title": "Direcciones de Envío",
+    "subtitle": "Ver y actualizar tus direcciones de envío.",
+    "notSavedAddresses": "No tienes direcciones guardadas",
+    "warning": "Las direcciones se guardarán automáticamente cuando realices tu primera compra."
+  },
+  "myOrders": {
+    "title": "Mis Pedidos",
+    "subtitle": "Ver tus pedidos anteriores y su estado",
+    "noOrders": "No tienes pedidos",
+    "warning": "Cuando realices tu primera compra, aparecerá aquí",
+    "orderNumber": "Número de pedido",
+    "date": "Fecha",
+    "total": "Total",
+    "status": "Estado",
+    "goToStore": "Ir a la tienda"
+  },
+  "mySubscriptions": {
+    "title": "Mis Suscripciones",
+    "subtitle": "Gestiona tus suscripciones activas",
+    "noSubscriptions": "No tienes suscripciones activas",
+    "warning": "Suscríbete a nuestros productos y recibe envíos automáticos con descuentos exclusivos",
+    "plan": "Plan",
+    "status": "Estado",
+    "nextPayment": "Próximo pago",
+    "viewSubscription": "Planes de suscripción",
+    "pauseSubscription": "Pausar suscripción",
+    "cancelSubscription": "Cancelar suscripción"
+  },
+  "menu": {
+    "home": "Inicio",
+    "store": "Tienda",
+    "subscriptions": "Suscripciones",
+    "about": "Nosotros",
+    "myAccount": "Mi Cuenta",
+    "myOrders": "Mis Pedidos",
+    "mySubscriptions": "Mis Suscripciones",
+    "logout": "Cerrar Sesión"
+  }
+}

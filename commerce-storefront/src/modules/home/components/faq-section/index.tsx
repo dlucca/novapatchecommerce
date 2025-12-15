@@ -1,37 +1,26 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from 'next-intl'
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const FAQSection = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
+  const t = useTranslations('faq')
 
-  const faqs = [
-    {
-      question: "¿Cómo contacto al equipo de atención al cliente?",
-      answer: "Puedes contactarnos a través de nuestro chat en vivo, email a soporte@novapatch.com o llamando al +1-800-NOVAPATCH. Nuestro equipo está disponible de lunes a viernes de 9am a 6pm."
-    },
-    {
-      question: "¿Puedo recibir descuentos sin suscribirme?",
-      answer: "Sí, ofrecemos descuentos ocasionales para compras individuales. Suscríbete a nuestro newsletter para recibir ofertas especiales y códigos de descuento exclusivos."
-    },
-    {
-      question: "¿Vale la pena suscribirme si es mi primera compra?",
-      answer: "¡Absolutamente! La suscripción te da acceso a descuentos exclusivos desde tu primera compra, envío gratuito y la flexibilidad de pausar o cancelar en cualquier momento."
-    },
-    {
-      question: "¿Cómo se aplican los descuentos?",
-      answer: "Los descuentos se aplican automáticamente en el checkout. Los suscriptores reciben descuentos adicionales que se reflejan en el precio final antes del pago."
-    },
-    {
-      question: "¿Qué medios de pago aceptan?",
-      answer: "Aceptamos todas las tarjetas de crédito principales (Visa, MasterCard, American Express), PayPal, Apple Pay, Google Pay y transferencias bancarias."
-    },
-    {
-      question: "¿Cuánto tarda en llegar mi pedido?",
-      answer: "Los pedidos se procesan en 1-2 días hábiles. El envío estándar toma 3-5 días hábiles, mientras que el envío express llega en 1-2 días hábiles."
-    }
+  const faqsConfig = [
+    { questionKey: "question1", answerKey: "answer1" },
+    { questionKey: "question2", answerKey: "answer2" },
+    { questionKey: "question3", answerKey: "answer3" },
+    { questionKey: "question4", answerKey: "answer4" },
+    { questionKey: "question5", answerKey: "answer5" },
+    { questionKey: "question6", answerKey: "answer6" },
   ]
+
+  const faqs = faqsConfig.map(item => ({
+    question: t(item.questionKey),
+    answer: t(item.answerKey)
+  }))
 
   const toggleFAQ = (index: number) => {
     setOpenFAQ(openFAQ === index ? null : index)
@@ -45,7 +34,7 @@ const FAQSection = () => {
             className="font-bold leading-tight text-novapatch-title"
             style={{ marginBottom: 'clamp(0.75rem, 1vw, 1rem)' }}
           >
-            ¿Tienes dudas?
+            {t('title')}
           </h2>
         </div>
 
@@ -98,7 +87,7 @@ const FAQSection = () => {
                 fontSize: 'clamp(0.875rem, 1vw, 1rem)'
               }}
             >
-              Suscríbete y ahorra
+              {t('cta')}
             </button>
           </LocalizedClientLink>
         </div>
