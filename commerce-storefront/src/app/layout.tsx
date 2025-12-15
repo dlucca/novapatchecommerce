@@ -1,7 +1,7 @@
 import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
 import { ClerkProvider } from '@clerk/nextjs'
-import ClerkMedusaSyncProvider from "../components/providers/clerk-medusa-sync"
+import ClerkMedusaSyncProvider from "@/providers/clerk-medusa-sync"
 import { Outfit } from 'next/font/google'
 import "../styles/globals.css"
 

@@ -72,7 +72,7 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
  * uncomment these functions and the components in:
  * - commerce-storefront/src/modules/account/components/login
  * - commerce-storefront/src/modules/account/components/register
- * - commerce-storefront/src/modules/account/templates/login-template.tsx
+ * - commerce-storefront/src/modules/account/pages/login-template.tsx
  */
 
 // export async function signup(_currentState: unknown, formData: FormData) {

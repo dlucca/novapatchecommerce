@@ -3,107 +3,84 @@
 import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useState, useEffect } from "react"
+import { useTranslations } from "next-intl"
 
-// Íconos de características
-const productFeatures = [
+// Íconos de características (keys para traducciones)
+const productFeaturesConfig = [
   {
     src: "/assets/features/not_sugar-cropped.svg",
-    alt: "Sin azúcar",
+    translationKey: "sugarFree",
     width: 60,
     height: 60,
   },
   {
     src: "/assets/features/vegan-cropped.svg",
-    alt: "100% vegano",
+    translationKey: "vegan",
     width: 75,
     height: 75,
   },
   {
     src: "/assets/features/gluten_free-cropped.svg",
-    alt: "Libre de gluten",
+    translationKey: "glutenFree",
     width: 60,
     height: 60,
   },
   {
     src: "/assets/features/water_proo-cropped.svg",
-    alt: "Resistente al agua",
+    translationKey: "waterResistant",
     width: 60,
     height: 60,
   },
   {
     src: "/assets/features/latex-free.svg",
-    alt: "Sin látex",
+    translationKey: "latexFree",
     width: 60,
     height: 60,
   },
   {
     src: "/assets/features/minutes-cropped.svg",
-    alt: "Efecto en minutos",
+    translationKey: "fastEffect",
     width: 60,
     height: 60,
   },
 ]
 
-// Slides del carrusel con textos personalizados
-const heroSlides = [
+// Configuración de slides (sin texto, solo metadata)
+const heroSlidesConfig = [
   {
     image: "/assets/hero/Energy-new.webp",
-    title: "Qué bien",
-    titleLine2: "se siente",
-    titleLine3: "sentirse bien.",
-    highlightedWord: "bien",
+    slideKey: "slide1",
     waveColor: "#5686BC", // Energy
-    subtitle: "Activa tu bienestar natural",
     link: "/store",
   },
   {
     image: "/assets/hero/Glow-new.webp",
-    title: "Juventud",
-    titleLine2: "radiante",
-    titleLine3: "al instante.",
-    highlightedWord: "instante",
+    slideKey: "slide2",
     waveColor: "#f35c55", // Glow
-    subtitle: "Activa tu bienestar natural",
     link: "/store",
   },
   {
     image: "/assets/hero/Shield-new.webp",
-    title: "Súmale un",
-    titleLine2: "plus único",
-    titleLine3: "a tu día a día.",
-    highlightedWord: "día a día",
+    slideKey: "slide5",
     waveColor: "#FFA849", // Shield
-    subtitle: "Activa tu bienestar natural",
     link: "/store",
   },
   {
     image: "/assets/hero/Sleep-new.webp",
-    title: "Descanso",
-    titleLine2: "profundo",
-    titleLine3: "asegurado.",
-    highlightedWord: "asegurado",
+    slideKey: "slide3",
     waveColor: "#1EB1BB", // Sleep
-    subtitle: "Activa tu bienestar natural",
     link: "/store",
   },
   {
     image: "/assets/hero/Woman-new.webp",
-    title: "Equilibrio",
-    titleLine2: "hormonal",
-    titleLine3: "al natural.",
-    highlightedWord: "natural",
+    slideKey: "slide6",
     waveColor: "#C89EC6", // Woman
-    subtitle: "Activa tu bienestar natural",
     link: "/store",
   },
   {
     image: "/assets/hero/Zen-new.webp",
-    title: "Tu mente",
-    titleLine2: "en calma",
-    titleLine3: "inmediata.",
-    highlightedWord: "inmediata",
+    slideKey: "slide4",
     waveColor: "#4E82BC", // Zen
-    subtitle: "Activa tu bienestar natural",
     link: "/store",
   },
 ]
@@ -111,13 +88,14 @@ const heroSlides = [
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const tHero = useTranslations("hero")
+  const tFeatures = useTranslations("features")
 
-  // Auto-advance carousel every 8 seconds (más lento)
   useEffect(() => {
     const timer = setInterval(() => {
       setIsTransitioning(true)
       setTimeout(() => {
-        setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+        setCurrentSlide((prev) => (prev + 1) % heroSlidesConfig.length)
         setIsTransitioning(false)
       }, 800)
     }, 8000)
@@ -125,39 +103,76 @@ const HeroSection = () => {
     return () => clearInterval(timer)
   }, [])
 
-  // Función para ir al slide anterior
   const goToPrevSlide = () => {
     setIsTransitioning(true)
     setTimeout(() => {
-      setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
+      setCurrentSlide(
+        (prev) => (prev - 1 + heroSlidesConfig.length) % heroSlidesConfig.length
+      )
       setIsTransitioning(false)
     }, 800)
   }
 
-  // Función para ir al siguiente slide
   const goToNextSlide = () => {
     setIsTransitioning(true)
     setTimeout(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+      setCurrentSlide((prev) => (prev + 1) % heroSlidesConfig.length)
       setIsTransitioning(false)
     }, 800)
   }
 
-  const currentSlideData = heroSlides[currentSlide]
+  const currentSlideConfig = heroSlidesConfig[currentSlide]
+
+  const currentSlideTexts = {
+    title: tHero(`${currentSlideConfig.slideKey}.title`),
+    "title-bold": tHero(`${currentSlideConfig.slideKey}.title-bold`),
+    "title-highlight": tHero(`${currentSlideConfig.slideKey}.title-highlight`),
+    subtitle: tHero(`${currentSlideConfig.slideKey}.subtitle`),
+    cta: tHero(`${currentSlideConfig.slideKey}.cta`),
+  }
+
+  const getTitleRemainder = (fullTitle: string, partsToRemove: string[]) => {
+    const canonicalize = (value: string) =>
+      value.normalize("NFC").replace(/\s+/g, " ").trim()
+
+    let result = canonicalize(fullTitle)
+
+    const parts = partsToRemove
+      .filter(Boolean)
+      .map(canonicalize)
+      .filter(Boolean)
+      .sort((a, b) => b.length - a.length)
+
+    for (const part of parts) {
+      const index = result.indexOf(part)
+      if (index === -1) continue
+      result = result.slice(0, index) + result.slice(index + part.length)
+      result = result.replace(/\s+/g, " ").trim()
+    }
+
+    return result.replace(/\.$/, "")
+  }
+
+  const productFeatures = productFeaturesConfig.map((feature) => ({
+    src: feature.src,
+    alt: tFeatures(feature.translationKey),
+    width: feature.width,
+    height: feature.height,
+  }))
 
   return (
     <section className="relative overflow-visible h-screen min-h-[600px]">
-      {/* Background images with crossfade */}
       <div className="absolute inset-0">
-        {heroSlides.map((slide, index) => (
+        {heroSlidesConfig.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-[2000ms] ${index === currentSlide ? "opacity-100" : "opacity-0"
-              }`}
+            className={`absolute inset-0 transition-opacity duration-[2000ms] ${
+              index === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
           >
             <Image
               src={slide.image}
-              alt={slide.title}
+              alt={slide.slideKey}
               fill
               className="hero-image"
               style={{ objectFit: "cover" }}
@@ -174,8 +189,18 @@ const HeroSection = () => {
         className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white p-2 rounded-full transition-all duration-200 hover:scale-110"
         aria-label="Slide anterior"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </button>
 
@@ -184,43 +209,57 @@ const HeroSection = () => {
         className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white p-2 rounded-full transition-all duration-200 hover:scale-110"
         aria-label="Slide siguiente"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
         </svg>
       </button>
 
       {/* Content */}
       <div className="relative z-20 h-full flex items-center pt-32 xsmall:pt-40 md:pt-0">
         <div className="w-full px-8 xsmall:px-12 sm:px-16 md:px-24 lg:px-32 xl:px-40">
-          <div className="max-w-2xl">
+          <div className="max-w-md">
             <h1
-              className={`text-white font-bold leading-[1.05] text-[clamp(2.75rem,4.5vw+0.5rem,4.25rem)] mb-[clamp(1rem,2vw,1.5rem)] transition-opacity duration-700 ${isTransitioning ? "opacity-0" : "opacity-100"
-                }`}
+              className={`text-pretty text-white font-bold leading-[1.05] text-[clamp(2.75rem,4.5vw+0.5rem,4.25rem)] mb-[clamp(1rem,2vw,1.5rem)] transition-opacity duration-700 ${
+                isTransitioning ? "opacity-0" : "opacity-100"
+              }`}
             >
-              {currentSlideData.title} <br />
-              {currentSlideData.titleLine2} <br />
+              {currentSlideTexts["title-bold"]} <br />
               <span className="relative inline-block">
-                {currentSlideData.titleLine3.split(currentSlideData.highlightedWord)[0]}
-                <span 
+                {getTitleRemainder(currentSlideTexts.title, [
+                  currentSlideTexts["title-bold"],
+                  currentSlideTexts["title-highlight"],
+                ])}
+                <span
                   className="text-white px-2 transition-colors duration-[2000ms]"
-                  style={{ backgroundColor: currentSlideData.waveColor }}
+                  style={{ backgroundColor: currentSlideConfig.waveColor }}
                 >
-                  {currentSlideData.highlightedWord}
+                  {currentSlideTexts["title-highlight"]}
                 </span>
-                {currentSlideData.titleLine3.split(currentSlideData.highlightedWord)[1]}
+                .
               </span>
             </h1>
 
             <p
-              className={`text-white font-light leading-relaxed text-[clamp(1rem,1.5vw+0.5rem,1.375rem)] mb-[clamp(1.5rem,2vw,2rem)] max-w-[clamp(280px,50vw,500px)] transition-opacity duration-700 ${isTransitioning ? "opacity-0" : "opacity-100"
-                }`}
+              className={`text-white font-light leading-relaxed text-[clamp(1rem,1.5vw+0.5rem,1.375rem)] mb-[clamp(1.5rem,2vw,2rem)] max-w-[clamp(280px,50vw,500px)] transition-opacity duration-700 ${
+                isTransitioning ? "opacity-0" : "opacity-100"
+              }`}
             >
-              {currentSlideData.subtitle}
+              {currentSlideTexts.subtitle}
             </p>
 
-            <LocalizedClientLink href={currentSlideData.link}>
+            <LocalizedClientLink href={currentSlideConfig.link}>
               <button className="bg-novapatch-button text-white font-medium rounded-lg shadow-md hover:opacity-90 transition-opacity px-[clamp(1.5rem,2vw,2rem)] py-[clamp(0.625rem,1vw,0.75rem)] text-[clamp(0.875rem,1vw,1rem)]">
-                Comprar ahora
+                {currentSlideTexts.cta}
               </button>
             </LocalizedClientLink>
           </div>
@@ -231,20 +270,19 @@ const HeroSection = () => {
         className="absolute left-0 right-0 w-full z-30 overflow-visible h-40"
         style={{ bottom: "clamp(-12rem, -3rem - 2vw, -8rem)" }}
       >
-        <svg width="100%" height="100%" fill={currentSlideData.waveColor}>
+        <svg width="100%" height="100%" fill={currentSlideConfig.waveColor}>
           <defs>
             <mask id="hole">
               <rect width="100%" height="100%" fill="white" />
               <svg width="170" x="87%">
                 <circle r="25" cx={25} cy="0%" fill="black" />
-                <circle r="25" cx={75+10} cy="0%" fill="black" />
-                <circle r="25" cx={125+20} cy="0%" fill="black" />
+                <circle r="25" cx={75 + 10} cy="0%" fill="black" />
+                <circle r="25" cx={125 + 20} cy="0%" fill="black" />
               </svg>
             </mask>
           </defs>
 
           <rect id="donut" width="100%" height="100%" mask="url(#hole)" />
-
         </svg>
 
         <div className="absolute left-0 right-0 w-full z-40 top-1/2 -translate-y-1/2 overflow-visible">
@@ -260,7 +298,6 @@ const HeroSection = () => {
           </div>
 
           <div className="max-w-7xl mx-auto relative px-4 sm:px-6 lg:px-8 z-50">
-            {/* Grid de 2 filas en móvil, 1 fila en desktop */}
             <div className="grid grid-cols-3 md:flex md:flex-row md:justify-center gap-x-3 gap-y-4 xsmall:gap-x-4 xsmall:gap-y-5 md:gap-x-10 lg:gap-x-12 xl:gap-x-16">
               {productFeatures.map((feature, index) => (
                 <div

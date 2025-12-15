@@ -1,7 +1,7 @@
 import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { Toaster } from "@medusajs/ui"
-import AccountLayout from "@modules/account/templates/account-layout"
+import AccountLayout from "@modules/account/pages/account-layout"
 
 export default async function AccountPageLayout({
   children,

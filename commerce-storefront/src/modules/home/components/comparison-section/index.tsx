@@ -1,38 +1,25 @@
+"use client"
+
 import Image from "next/image"
+import { useTranslations } from 'next-intl'
 
 const ComparisonSection = () => {
-  const features = [
-    {
-      name: "Alta tasa de absorción",
-      novapatch: true,
-      pills: false,
-      gummies: false,
-    },
-    {
-      name: "Sin pastillas difíciles de tragar",
-      novapatch: true,
-      pills: false,
-      gummies: true,
-    },
-    {
-      name: "Sin azúcar ni calorías",
-      novapatch: true,
-      pills: true,
-      gummies: false,
-    },
-    {
-      name: "Sin colorantes ni rellenos artificiales",
-      novapatch: true,
-      pills: false,
-      gummies: false,
-    },
-    {
-      name: "No afecta tu sistema digestivo",
-      novapatch: true,
-      pills: false,
-      gummies: false,
-    },
+  const t = useTranslations('comparison')
+  
+  const featuresConfig = [
+    { key: "highAbsorption", novapatch: true, pills: false, gummies: false },
+    { key: "noPills", novapatch: true, pills: false, gummies: true },
+    { key: "noSugar", novapatch: true, pills: true, gummies: false },
+    { key: "noArtificial", novapatch: true, pills: false, gummies: false },
+    { key: "noDigestive", novapatch: true, pills: false, gummies: false },
   ]
+  
+  const features = featuresConfig.map(f => ({
+    name: t(f.key),
+    novapatch: f.novapatch,
+    pills: f.pills,
+    gummies: f.gummies,
+  }))
 
   const CheckIcon = ({ isCheck }: { isCheck: boolean }) => (
     <span
@@ -52,14 +39,14 @@ const ComparisonSection = () => {
             className="font-normal leading-tight text-novapatch-title"
             style={{ color: "#3d6a96" }}
           >
-            La forma más <span className="font-bold">limpia</span> y{" "}
-            <span className="font-bold">práctica</span>
+            {t('title.line1')} <span className="font-bold">{t('title.line1Bold1')}</span> {t('title.line1And')}{" "}
+            <span className="font-bold">{t('title.line1Bold2')}</span>
           </h2>
           <h2
             className="font-normal leading-tight text-novapatch-title"
             style={{ color: "#3d6a96" }}
           >
-            de <span className="font-bold">tomar vitaminas</span>
+            {t('title.line2')} <span className="font-bold">{t('title.line2Bold')}</span>
           </h2>
         </div>
         <div
@@ -80,7 +67,7 @@ const ComparisonSection = () => {
                       className="text-left py-8 px-8 lg:px-12 font-normal text-3xl lg:text-4xl"
                       style={{ color: "#3d6a96", width: "40%" }}
                     >
-                      Característica
+                      {t('feature')}
                     </th>
                     <th className="text-center py-8 px-8 lg:px-12" style={{ width: "20%" }}>
                       <div className="flex flex-col items-center gap-4">
@@ -97,7 +84,7 @@ const ComparisonSection = () => {
                           className="text-base font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
-                          Nuestros parches
+                          {t('ourPatches')}
                         </span>
                       </div>
                     </th>
@@ -116,7 +103,7 @@ const ComparisonSection = () => {
                           className="text-base font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
-                          Cápsulas comunes
+                          {t('commonCapsules')}
                         </span>
                       </div>
                     </th>
@@ -135,7 +122,7 @@ const ComparisonSection = () => {
                           className="text-base font-medium whitespace-nowrap"
                           style={{ color: "#3d6a96" }}
                         >
-                          Gomitas comunes
+                          {t('commonGummies')}
                         </span>
                       </div>
                     </th>

@@ -1,6 +1,6 @@
 import { retrieveCart } from "@lib/data/cart"
 import { logger } from "@lib/util/logger"
-import CartTemplate from "@modules/cart/templates"
+import CartTemplate from "@modules/cart/pages"
 import { Metadata } from "next"
 import { currentUser } from "@clerk/nextjs/server"
 
@@ -9,7 +9,11 @@ export const metadata: Metadata = {
   description: "Ver tu carrito de compras",
 }
 
-export default async function Cart() {
+type PageProps = {
+  params: { countryCode: string }
+}
+
+export default async function Cart({ params }: PageProps) {
   const cart = await retrieveCart().catch((error) => {
     logger.error("Failed to retrieve cart", error as Error, { context: 'CartPage' })
     return null
