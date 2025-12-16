@@ -105,7 +105,7 @@ export default function AboutPage() {
               >
                 {tHow("step1.title")}
               </Heading>
-              <Text className="text-gray-600 leading-relaxed">
+              <Text className="text-lg text-gray-600 leading-relaxed">
                 {tHow("step1.description")}
               </Text>
             </div>
@@ -122,7 +122,7 @@ export default function AboutPage() {
               >
                 {tHow("step2.title")}
               </Heading>
-              <Text className="text-gray-600 leading-relaxed">
+              <Text className="text-lg text-gray-600 leading-relaxed">
                 {tHow("step2.description")}
               </Text>
             </div>
@@ -139,7 +139,7 @@ export default function AboutPage() {
               >
                 {tHow("step3.title")}
               </Heading>
-              <Text className="text-gray-600 leading-relaxed">
+              <Text className="text-lg text-gray-600 leading-relaxed">
                 {tHow("step3.description")}
               </Text>
             </div>
@@ -166,7 +166,7 @@ export default function AboutPage() {
             >
               {tValues("quality.title")}
             </Heading>
-            <Text className="text-gray-600">
+            <Text className="text-lg text-gray-600">
               {tValues("quality.description")}
             </Text>
           </div>
@@ -181,7 +181,7 @@ export default function AboutPage() {
             >
               {tValues("sustainability.title")}
             </Heading>
-            <Text className="text-gray-600">
+            <Text className="text-lg text-gray-600">
               {tValues("sustainability.description")}
             </Text>
           </div>
@@ -196,7 +196,7 @@ export default function AboutPage() {
             >
               {tValues("community.title")}
             </Heading>
-            <Text className="text-gray-600">
+            <Text className="text-lg text-gray-600">
               {tValues("community.description")}
             </Text>
           </div>
@@ -211,7 +211,7 @@ export default function AboutPage() {
             >
               {tValues("innovation.title")}
             </Heading>
-            <Text className="text-gray-600">
+            <Text className="text-lg text-gray-600">
               {tValues("innovation.description")}
             </Text>
           </div>
@@ -226,7 +226,7 @@ export default function AboutPage() {
             >
               {tValues("transparency.title")}
             </Heading>
-            <Text className="text-gray-600">
+            <Text className="text-lg text-gray-600">
               {tValues("transparency.description")}
             </Text>
           </div>
@@ -241,7 +241,7 @@ export default function AboutPage() {
             >
               {tValues("safety.title")}
             </Heading>
-            <Text className="text-gray-600">
+            <Text className="text-lg text-gray-600">
               {tValues("safety.description")}
             </Text>
           </div>
@@ -257,11 +257,11 @@ export default function AboutPage() {
         </Heading>
 
         <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
-          <Text>{tStory("paragraph1")}</Text>
+          <Text className="text-lg">{tStory("paragraph1")}</Text>
 
-          <Text>{tStory("paragraph2")}</Text>
+          <Text className="text-lg">{tStory("paragraph2")}</Text>
 
-          <Text>{tStory("paragraph3")}</Text>
+          <Text className="text-lg">{tStory("paragraph3")}</Text>
         </div>
       </div>
       <TestimonialsSection />

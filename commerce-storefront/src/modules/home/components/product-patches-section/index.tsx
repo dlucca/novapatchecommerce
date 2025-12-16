@@ -85,13 +85,13 @@ const ProductPatchesSection = () => {
                 {t('title.line2')} <span className="font-bold">{t('title.line2Bold')}</span>
               </h2>
 
-              <p className="text-gray-700 max-w-md" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)', marginBottom: 'clamp(1.25rem, 1.5vw, 1.5rem)' }}>
+              <p className="text-gray-700 max-w-md" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)', marginBottom: 'clamp(1.25rem, 1.5vw, 1.5rem)' }}>
                 {t('description')}
               </p>
               <LocalizedClientLink href="/store">
                 <button
                   className="text-white font-medium rounded-lg shadow-md hover:opacity-90 transition-opacity bg-novapatch-button"
-                  style={{ padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}
+                  style={{ padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}
                 >
                   {t('cta')}
                 </button>
