@@ -19,7 +19,7 @@ export default function SubscriptionsHowItWorksSection() {
             <Heading level="h3" className="text-xl font-semibold text-novapatch-title mb-3">
               {t("step1Title")}
             </Heading>
-            <Text className="text-gray-600">
+            <Text className="text-lg text-gray-600">
               {t("step1Description")}
             </Text>
           </div>
@@ -32,7 +32,7 @@ export default function SubscriptionsHowItWorksSection() {
             <Heading level="h3" className="text-xl font-semibold text-novapatch-title mb-3">
               {t("step2Title")}
             </Heading>
-            <Text className="text-gray-600">
+            <Text className="text-lg text-gray-600">
               {t("step2Description")}
             </Text>
           </div>
@@ -45,7 +45,7 @@ export default function SubscriptionsHowItWorksSection() {
             <Heading level="h3" className="text-xl font-semibold text-novapatch-title mb-3">
               {t("step3Title")}
             </Heading>
-            <Text className="text-gray-600">
+            <Text className="text-lg text-gray-600">
               {t("step3Description")}
             </Text>
           </div>
@@ -58,7 +58,7 @@ export default function SubscriptionsHowItWorksSection() {
             <Heading level="h3" className="text-xl font-semibold text-novapatch-title mb-3">
               {t("step4Title")}
             </Heading>
-            <Text className="text-gray-600">
+            <Text className="text-lg text-gray-600">
               {t("step4Description")}
             </Text>
           </div>
