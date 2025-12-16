@@ -1,4 +1,4 @@
-import { listProductsWithSort } from "@lib/data/products"
+import { listProducts, listProductsWithSort } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import StoreGridClient from "./store-grid-client"
@@ -46,6 +46,25 @@ export default async function StoreGridTemplate({
     sortBy,
     countryCode,
   })
+
+  if (selectedHandle) {
+    const selectedProduct = await listProducts({
+      countryCode,
+      queryParams: {
+        handle: selectedHandle,
+      },
+    }).then(({ response }) => response.products[0])
+
+    if (selectedProduct) {
+      const idx = products.findIndex((p) => p.handle === selectedHandle)
+      if (idx !== -1) {
+        products = [...products]
+        products[idx] = selectedProduct
+      } else {
+        products = [selectedProduct, ...products]
+      }
+    }
+  }
 
   const totalPages = Math.ceil(count / PRODUCT_LIMIT)
 

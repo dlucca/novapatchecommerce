@@ -56,6 +56,10 @@ export const listProducts = async ({
   const defaultFields =
     "+metadata,+tags,*variants,*variants.calculated_price,+variants.inventory_quantity,+variants.manage_inventory,+variants.allow_backorder,*images"
 
+  const isDetailQuery =
+    Boolean((queryParams as any)?.handle) ||
+    (Array.isArray((queryParams as any)?.id) ? (queryParams as any).id.length > 0 : Boolean((queryParams as any)?.id))
+
   return sdk.client
     .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
       `/store/products`,
@@ -70,7 +74,7 @@ export const listProducts = async ({
         },
         headers,
         next,
-        cache: "force-cache",
+        cache: isDetailQuery ? "no-store" : "force-cache",
       }
     )
     .then(({ products, count }) => {

@@ -10,6 +10,8 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import Image from "next/image"
 import { useState, useEffect } from "react"
 import { transformMediaUrl } from "@lib/util/transform-url"
+import { useLocale } from "next-intl"
+import { useTranslations } from "next-intl"
 
 type ProductDetailPanelProps = {
   product: HttpTypes.StoreProduct
@@ -22,11 +24,31 @@ export default function ProductDetailPanel({
   region,
   countryCode,
 }: ProductDetailPanelProps) {
+  const locale = useLocale()
   const [purchaseType, setPurchaseType] = useState<"one-time" | "subscription">("subscription")
   const [quantity, setQuantity] = useState(1)
   const [isAdding, setIsAdding] = useState(false)
   const [itemAdded, setItemAdded] = useState(false)
   const [defaultPlan, setDefaultPlan] = useState<SubscriptionPlanConfig | null>(null)
+
+  const getLocalizedMetaString = (baseKey: string): string | null => {
+    const md = product.metadata as Record<string, unknown> | undefined
+    if (!md) return null
+
+    const localizedKey = `${baseKey}_${locale}`
+
+    const localizedValue = md[localizedKey]
+    if (typeof localizedValue === "string" && localizedValue.trim().length > 0) {
+      return localizedValue
+    }
+
+    const baseValue = md[baseKey]
+    if (typeof baseValue === "string" && baseValue.trim().length > 0) {
+      return baseValue
+    }
+
+    return null
+  }
 
   useEffect(() => {
     const loadDefaultPlan = async () => {
@@ -96,7 +118,7 @@ export default function ProductDetailPanel({
       setIsAdding(false)
     }
   }
-
+  const t = useTranslations('store');
   return (
     <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
       <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-12">
@@ -139,7 +161,7 @@ export default function ProductDetailPanel({
             />
             <div className="flex-1">
               <div className="flex items-center justify-between">
-                <span className="font-medium text-gray-900">Compra única</span>
+                <span className="font-medium text-gray-900">{t('oneTimePurchase')}</span>
                 <span className="text-xl font-bold text-gray-900">
                   {oneTimePrice}
                 </span>
@@ -164,10 +186,7 @@ export default function ProductDetailPanel({
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-900">Suscríbete y ahorra</span>
-                  <span className="bg-[#00BCD4] text-white text-xs font-bold px-2 py-0.5 rounded">
-                    Ahorra 20%
-                  </span>
+                  <span className="font-medium text-gray-900">{t('subsAndSave')}</span>
                 </div>
                 <span className="text-xl font-bold text-[#00BCD4]">
                   {subscriptionPrice}
@@ -178,19 +197,13 @@ export default function ProductDetailPanel({
                   <svg className="w-3 h-3 text-[#00BCD4]" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
                     <path d="M5 13l4 4L19 7"></path>
                   </svg>
-                  ¡Pausa, cambia o cancela en cualquier momento!
+                  {t('description1')}
                 </li>
                 <li className="flex items-center gap-2">
                   <svg className="w-3 h-3 text-[#00BCD4]" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
                     <path d="M5 13l4 4L19 7"></path>
                   </svg>
-                  Entrega cada 30 días
-                </li>
-                <li className="flex items-center gap-2">
-                  <svg className="w-3 h-3 text-[#00BCD4]" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M5 13l4 4L19 7"></path>
-                  </svg>
-                  Envío gratuito a partir del segundo pedido
+                  {t('description2')}
                 </li>
               </ul>
             </div>
@@ -229,17 +242,17 @@ export default function ProductDetailPanel({
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Agregando...
+                {t('store.adding')}
               </>
             ) : itemAdded ? (
               <>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                ¡Agregado!
+                {t('store.added')}
               </>
             ) : (
-              "Agregar al carrito"
+              t('store.addToCart')
             )}
           </button>
 
@@ -251,35 +264,35 @@ export default function ProductDetailPanel({
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9" />
               </svg>
-              Ir al carrito
+              {t('store.goToCart')}
             </LocalizedClientLink>
           )}
         </div>
 
-        <div className="border-t border-gray-200 pt-6 space-y-4">
-          {product.description && typeof product.description === 'string' ? (
+        {/* <div className="border-t border-gray-200 pt-6 space-y-4"> */}
+          {(getLocalizedMetaString("description") ?? (typeof product.description === "string" ? product.description : null)) ? (
             <div>
               <h3 className="text-base font-semibold text-gray-900 mb-2">Descripción</h3>
               <p className="text-sm text-gray-700 leading-relaxed">
-                {product.description}
+                {getLocalizedMetaString("description") ?? product.description}
               </p>
             </div>
           ) : null}
 
-          {product.metadata?.beneficios && typeof product.metadata.beneficios === 'string' ? (
+          {getLocalizedMetaString("beneficios") ? (
             <div>
               <h3 className="text-base font-semibold text-gray-900 mb-2">Beneficios</h3>
               <p className="text-sm text-gray-700 leading-relaxed">
-                {product.metadata.beneficios}
+                {getLocalizedMetaString("beneficios")}
               </p>
             </div>
           ) : null}
 
-          {product.metadata?.uso && typeof product.metadata.uso === 'string' ? (
+          {getLocalizedMetaString("uso") ? (
             <div>
               <h3 className="text-base font-semibold text-gray-900 mb-2">Modo de Uso</h3>
               <p className="text-sm text-gray-700 leading-relaxed">
-                {product.metadata.uso}
+                {getLocalizedMetaString("uso")}
               </p>
             </div>
           ) : null}
@@ -303,7 +316,7 @@ export default function ProductDetailPanel({
               </div>
             </div>
           ) : null}
-        </div>
+        {/* </div> */}
       </div>
     </div>
   )

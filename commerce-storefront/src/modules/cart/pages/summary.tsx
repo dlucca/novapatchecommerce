@@ -37,6 +37,7 @@ const Summary = ({ cart }: SummaryProps) => {
     })),
   }
 
+  const tDiscount = useTranslations("discount");
   return (
     <div className="flex flex-col gap-y-6">
       <h2 className="text-2xl font-bold text-gray-900">
@@ -54,7 +55,7 @@ const Summary = ({ cart }: SummaryProps) => {
         data-testid="checkout-button"
       >
         <button className="w-full bg-novapatch-primary hover:bg-novapatch-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-md hover:shadow-lg">
-          Proceder al pago
+          {tDiscount("proceedToPayment")}
         </button>
       </LocalizedClientLink>
 
@@ -62,7 +63,7 @@ const Summary = ({ cart }: SummaryProps) => {
         href="/store"
         className="text-center text-sm text-gray-600 hover:text-novapatch-primary transition-colors"
       >
-        ← Continuar comprando
+        {t("continueShopping")}
       </LocalizedClientLink>
     </div>
   )
