@@ -280,9 +280,56 @@
     "noProductsAvailable": "No hay productos disponibles",
     "noImageAvailable": "Sin imagen disponible",
     "defaultSubtitle": "30 parches transparentes",
+    "subsAndSave": "Suscríbete y ahorra",
+    "description1": "¡Pausa, cambia o cancela en cualquier momento!",
+    "description2": "Envío automático según tu plan",
     "prevImage": "Imagen anterior",
     "nextImage": "Siguiente imagen",
-    "goToImage": "Ir a imagen"
+    "goToImage": "Ir a imagen",
+    "add": "agregar",
+    "adding": "Agregando...",
+    "added": "¡Agregado!",
+    "productAdded": "Producto agregado al carrito",
+    "addToCart": "Agregar al carrito",
+    "goToCart": "Ir al carrito",
+    "descriptionTitle": "Descripción",
+    "oneTimePurchase": "Compra única",
+    "save": "Ahorra",
+    "choisePlan": "Elige tu plan:",
+    "plan": {
+      "monthly": "Plan mensual",
+      "bimonthly": "Plan bimensual",
+      "trimonthly": "Plan trimestral",
+      "quarterly": "Plan trimestral"
+    }
+  },
+  "description": {
+    "howItWorks": "Cómo funciona",
+    "benefits": "Beneficios",
+    "usage": "Modo de uso",
+    "whatIncludes": "Qué incluye"
+  },
+  "myCart": {
+    "myCart": "Mi carrito",
+    "quantity": "Cantidad",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "viewCart": "Ver carrito",
+    "checkout": "Finalizar compra",
+    "emptyCart": "Tu carrito está vacío",
+    "exploreProducts": "Explorar productos"
+  },
+  "discount": {
+    "addDiscount": "Agregar código de descuento",
+    "apply": "Aplicar",
+    "placeholder": "Ingresa tu código de descuento",
+    "subtotal": "Subtotal (sin envío e impuestos)",
+    "shipping": "Envío",
+    "subscriptionDiscount": "Descuento de suscripción",
+    "taxes": "Impuestos",
+    "total": "Total",
+    "proceedToPayment": "Proceder al pago",
+    "continueShopping": "Continuar comprando"
   },
   "myAccount": {
     "title": "Mi Cuenta",

@@ -7,6 +7,7 @@ import { applyPromotions } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import ErrorMessage from "../error-message"
 import { SubmitButton } from "../submit-button"
+import { useTranslations } from "next-intl"
 
 type DiscountCodeProps = {
   cart: HttpTypes.StoreCart & {
@@ -44,6 +45,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
     }
   }
 
+  const t = useTranslations("discount")
   return (
     <div className="w-full bg-white flex flex-col">
       <div className="txt-medium">
@@ -55,7 +57,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
               className="txt-medium text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
               data-testid="add-discount-button"
             >
-              Add Promotion Code(s)
+              {t("addDiscount")}
             </button>
           </Label>
 
@@ -74,7 +76,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                   variant="secondary"
                   data-testid="discount-apply-button"
                 >
-                  Apply
+                  {t("apply")}
                 </SubmitButton>
               </div>
 
