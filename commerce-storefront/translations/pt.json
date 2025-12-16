@@ -280,9 +280,57 @@
     "noProductsAvailable": "Não há produtos disponíveis",
     "noImageAvailable": "Sem imagem disponível",
     "defaultSubtitle": "30 adesivos transparentes",
+    "subsAndSave": "Assine e economize",
+    "description1": "Pausa, muda ou cancela a qualquer momento!",
+    "description2": "Envio automático de acordo com seu plano",
     "prevImage": "Imagem anterior",
     "nextImage": "Próxima imagem",
-    "goToImage": "Ir para imagem"
+    "goToImage": "Ir para imagem",
+    "add": "adicionar",
+    "adding": "Adicionando...",
+    "added": "Adicionado!",
+    "addToCart": "Adicionar ao carrinho",
+    "goToCart": "Ir ao carrinho",
+    "descriptionTitle": "Descrição",
+    "oneTimePurchase": "Compra única",
+    "save": "Economize",
+    "choisePlan": "Escolha seu plano:",
+    "productAdded": "Produto adicionado ao carrinho",
+    "plan": {
+      "monthly": "Plano mensal",
+      "bimonthly": "Plano bimensal",
+      "trimonthly": "Plano trimestral",
+      "quarterly": "Plano trimestral"
+    }
+  },
+  "description": {
+    "howItWorks": "Como funciona",
+    "benefits": "Benefícios",
+    "usage": "Modo de uso",
+    "whatIncludes": "O que inclui"
+  },
+  "discount": {
+    "addDiscount": "Adicionar código de desconto",
+    "apply": "Aplicar",
+    "placeholder": "Insira seu código de desconto",
+    "subtotal": "Subtotal (sem frete e impostos)",
+    "shipping": "Envio",
+    "subscriptionDiscount": "Desconto de assinatura",
+    "taxes": "Impostos",
+    "total": "Total",
+    "proceedToPayment": "Prosseguir com o pagamento",
+    "continueShopping": "Continuar comprando"
+  },
+  "myCart": {
+    "myCart": "Meu Carrinho",
+    "closeCart": "Fechar carrinho",
+    "quantity": "Quantidade",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "viewCart": "Ver carrinho",
+    "checkout": "Concluir compra",
+    "emptyCart": "Seu carrinho está vazio",
+    "exploreProducts": "Explorar produtos"
   },
   "myAccount": {
     "title": "Minha Conta",
