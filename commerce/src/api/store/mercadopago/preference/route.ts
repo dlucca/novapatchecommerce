@@ -1,12 +1,16 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MercadoPagoConfig, Preference } from "mercadopago"
 
+interface PreferenceRequestBody {
+  cartId: string
+}
+
 export async function POST(
-  req: MedusaRequest,
+  req: MedusaRequest<PreferenceRequestBody>,
   res: MedusaResponse
 ): Promise<void> {
   try {
-    const { cartId } = req.body
+    const { cartId } = req.body as PreferenceRequestBody
 
     if (!cartId) {
       res.status(400).json({ error: "cartId is required" })
