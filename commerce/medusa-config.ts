@@ -27,6 +27,12 @@ function validateEnvironmentVariables() {
     { key: 'CLERK_SECRET_KEY', feature: 'Clerk authentication' },
   ]
 
+  // Mercado Pago variables (required for Brazil region)
+  const mercadoPagoEnvs = [
+    { key: 'MERCADOPAGO_ACCESS_TOKEN', feature: 'Mercado Pago payments (Brazil)' },
+    { key: 'MERCADOPAGO_PUBLIC_KEY', feature: 'Mercado Pago frontend integration' },
+  ]
+
   // Check required variables
   requiredEnvs.forEach(env => {
     if (!process.env[env.key]) {
@@ -36,6 +42,13 @@ function validateEnvironmentVariables() {
 
   // Check optional variables
   optionalEnvs.forEach(env => {
+    if (!process.env[env.key]) {
+      warnings.push(`⚠️  ${env.key} not configured - ${env.feature} will be disabled`)
+    }
+  })
+
+  // Check Mercado Pago variables
+  mercadoPagoEnvs.forEach(env => {
     if (!process.env[env.key]) {
       warnings.push(`⚠️  ${env.key} not configured - ${env.feature} will be disabled`)
     }
@@ -122,6 +135,24 @@ module.exports = defineConfig({
             options: {
               backend_url: `${process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"}/static`,
               upload_dir: "static",
+            },
+          },
+        ],
+      },
+    },
+    {
+      resolve: '@medusajs/medusa/payment',
+      options: {
+        providers: [
+          {
+            resolve: '@nicogorga/medusa-payment-mercadopago/providers/mercado-pago',
+            id: 'mercadopago',
+            options: {
+              accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
+              webhookSecret: process.env.MERCADOPAGO_WEBHOOK_SECRET,
+              successUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/order/confirmed`,
+              failureUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/checkout?step=payment`,
+              pendingUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/order/confirmed`,
             },
           },
         ],
