@@ -1,7 +1,7 @@
 "use client"
 
 import { RadioGroup } from "@headlessui/react"
-import { isStripe as isStripeFunc, paymentInfoMap } from "@lib/constants"
+import { isStripe as isStripeFunc, isMercadoPago, paymentInfoMap } from "@lib/constants"
 import { initiatePaymentSession } from "@lib/data/cart"
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
 import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
@@ -9,6 +9,7 @@ import ErrorMessage from "@modules/checkout/components/error-message"
 import PaymentContainer, {
   StripeCardContainer,
 } from "@modules/checkout/components/payment-container"
+import MercadoPagoPayment from "@modules/checkout/components/payment/mercadopago-payment"
 import Divider from "@/components/ui/divider"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
@@ -43,7 +44,7 @@ const Payment = ({
   const setPaymentMethod = async (method: string) => {
     setError(null)
     setSelectedPaymentMethod(method)
-    if (isStripeFunc(method)) {
+    if (isStripeFunc(method) || isMercadoPago(method)) {
       await initiatePaymentSession(cart, {
         provider_id: method,
       })
@@ -153,6 +154,22 @@ const Payment = ({
                         setError={setError}
                         setCardComplete={setCardComplete}
                       />
+                    ) : isMercadoPago(paymentMethod.id) ? (
+                      <PaymentContainer
+                        paymentInfoMap={paymentInfoMap}
+                        paymentProviderId={paymentMethod.id}
+                        selectedPaymentOptionId={selectedPaymentMethod}
+                      >
+                        {selectedPaymentMethod === paymentMethod.id && activeSession && (
+                          <div className="mt-4">
+                            <MercadoPagoPayment
+                              cart={cart}
+                              session={activeSession}
+                              onPaymentCompleted={() => handleSubmit()}
+                            />
+                          </div>
+                        )}
+                      </PaymentContainer>
                     ) : (
                       <PaymentContainer
                         paymentInfoMap={paymentInfoMap}
@@ -233,6 +250,8 @@ const Payment = ({
                   <Text>
                     {isStripeFunc(selectedPaymentMethod) && cardBrand
                       ? cardBrand
+                      : isMercadoPago(selectedPaymentMethod)
+                      ? "Mercado Pago"
                       : "Another step will appear"}
                   </Text>
                 </div>

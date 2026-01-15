@@ -1,7 +1,8 @@
 "use client"
 
-import { isManual, isStripe } from "@lib/constants"
+import { isManual, isStripe, isMercadoPago } from "@lib/constants"
 import { placeOrder } from "@lib/data/cart"
+import { createMercadoPagoPreference } from "@lib/data/mercadopago"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
@@ -33,6 +34,14 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
           notReady={notReady}
           cart={cart}
           data-testid={dataTestId}
+        />
+      )
+    case isMercadoPago(paymentSession?.provider_id):
+      return (
+        <MercadoPagoPaymentButton 
+          notReady={notReady} 
+          cart={cart}
+          data-testid={dataTestId} 
         />
       )
     case isManual(paymentSession?.provider_id):
@@ -146,6 +155,63 @@ const StripePaymentButton = ({
       <ErrorMessage
         error={errorMessage}
         data-testid="stripe-payment-error-message"
+      />
+    </>
+  )
+}
+
+const MercadoPagoPaymentButton = ({ 
+  notReady,
+  cart 
+}: { 
+  notReady: boolean
+  cart: HttpTypes.StoreCart
+}) => {
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const handlePayment = async () => {
+    setSubmitting(true)
+    setErrorMessage(null)
+
+    try {
+      console.log("Creating Mercado Pago preference for cart:", cart.id)
+      
+      // Crear preferencia de pago en Mercado Pago
+      const preference = await createMercadoPagoPreference(cart.id)
+      
+      console.log("Preference created:", preference)
+      
+      // Redirigir a Mercado Pago (usar sandbox para TEST tokens)
+      const redirectUrl = preference.sandboxInitPoint || preference.initPoint
+      
+      if (redirectUrl) {
+        console.log("Redirecting to:", redirectUrl)
+        window.location.href = redirectUrl
+      } else {
+        throw new Error("No se pudo obtener la URL de pago de Mercado Pago")
+      }
+    } catch (err: any) {
+      console.error("Error creating Mercado Pago preference:", err)
+      setErrorMessage(err.message || "Error al procesar el pago con Mercado Pago")
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <>
+      <Button
+        disabled={notReady}
+        isLoading={submitting}
+        onClick={handlePayment}
+        size="large"
+        data-testid="submit-order-button"
+      >
+        {submitting ? "Redirigiendo a Mercado Pago..." : "Pagar con Mercado Pago"}
+      </Button>
+      <ErrorMessage
+        error={errorMessage}
+        data-testid="mercadopago-payment-error-message"
       />
     </>
   )
