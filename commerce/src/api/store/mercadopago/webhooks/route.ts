@@ -52,7 +52,7 @@ export async function POST(
   req: MedusaRequest<WebhookPayload>,
   res: MedusaResponse
 ): Promise<void> {
-  const { type, action, data } = req.body as WebhookPayload
+  const { type, data } = req.body as WebhookPayload
 
   try {
     const webhookSecret = process.env.MERCADOPAGO_WEBHOOK_SECRET
@@ -88,11 +88,16 @@ export async function POST(
       return
     }
 
+    // Always track payment status in cart metadata and payment session
+    await updateCartPaymentTracking(req, cartId, paymentInfo)
+    await updatePaymentSessionData(req, cartId, paymentInfo)
+
     switch (paymentInfo.status) {
       case "approved":
         await handleApprovedPayment(req, cartId, paymentInfo)
         break
       case "rejected":
+        console.log(`❌ Payment rejected for cart ${cartId}: ${paymentInfo.status_detail}`)
         break
       case "pending":
       case "in_process":
@@ -212,5 +217,115 @@ async function findOrderByCartId(query: any, cartId: string): Promise<any | null
     return null
   } catch (err) {
     return null
+  }
+}
+
+/**
+ * Track payment status in cart metadata for visibility/auditing
+ */
+async function updateCartPaymentTracking(
+  req: MedusaRequest,
+  cartId: string,
+  paymentInfo: any
+): Promise<void> {
+  try {
+    const cartModule = req.scope.resolve(Modules.CART)
+    const query = req.scope.resolve("query")
+
+    // Get current cart metadata
+    const { data: carts } = await query.graph({
+      entity: "cart",
+      fields: ["id", "metadata"],
+      filters: { id: cartId },
+    })
+
+    const cart = carts?.[0]
+    const currentMetadata = cart?.metadata || {}
+
+    // Build payment history entry
+    const historyEntry = {
+      status: paymentInfo.status,
+      status_detail: paymentInfo.status_detail,
+      payment_id: paymentInfo.id?.toString(),
+      timestamp: new Date().toISOString(),
+    }
+
+    // Append to payment history (keep last 10 entries)
+    const existingHistory = currentMetadata.mp_payment_history
+    const paymentHistory: typeof historyEntry[] = Array.isArray(existingHistory)
+      ? [...existingHistory, historyEntry]
+      : [historyEntry]
+    if (paymentHistory.length > 10) {
+      paymentHistory.shift()
+    }
+
+    await cartModule.updateCarts([{
+      id: cartId,
+      metadata: {
+        ...currentMetadata,
+        mp_status: paymentInfo.status,
+        mp_status_detail: paymentInfo.status_detail,
+        mp_payment_id: paymentInfo.id?.toString(),
+        mp_last_webhook_at: new Date().toISOString(),
+        mp_payment_history: paymentHistory,
+      }
+    }])
+
+  } catch (err: any) {
+    console.warn(`Could not update cart metadata: ${err.message}`)
+  }
+}
+
+/**
+ * Update payment session data with MP payment status
+ */
+async function updatePaymentSessionData(
+  req: MedusaRequest,
+  cartId: string,
+  paymentInfo: any
+): Promise<void> {
+  try {
+    const query = req.scope.resolve("query")
+    const paymentModule = req.scope.resolve(Modules.PAYMENT)
+
+    // Get cart with payment sessions
+    const { data: carts } = await query.graph({
+      entity: "cart",
+      fields: [
+        "id",
+        "payment_collection.*",
+        "payment_collection.payment_sessions.*",
+      ],
+      filters: { id: cartId },
+    })
+
+    const cart = carts?.[0]
+    const paymentSession = cart?.payment_collection?.payment_sessions?.find(
+      (s: any) => s.provider_id?.includes("mercadopago")
+    )
+
+    if (!paymentSession) {
+      return
+    }
+
+    // Update payment session data with MP status info
+    const currentData = paymentSession.data || {}
+    await paymentModule.updatePaymentSession({
+      id: paymentSession.id,
+      currency_code: paymentSession.currency_code,
+      amount: paymentSession.amount,
+      data: {
+        ...currentData,
+        mp_status: paymentInfo.status,
+        mp_status_detail: paymentInfo.status_detail,
+        mp_payment_id: paymentInfo.id?.toString(),
+        mp_payment_method_id: paymentInfo.payment_method_id,
+        mp_payment_type_id: paymentInfo.payment_type_id,
+        mp_last_updated: new Date().toISOString(),
+      }
+    })
+
+  } catch (err: any) {
+    console.warn(`Could not update payment session: ${err.message}`)
   }
 }
