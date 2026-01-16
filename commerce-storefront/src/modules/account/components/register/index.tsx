@@ -1,5 +1,5 @@
 /**
- * ⚠️ DISABLED - Medusa Native Registration Component
+ * DISABLED - Medusa Native Registration Component
  *
  * This component is disabled because the project uses Clerk for authentication.
  * See /sign-up for registration with Clerk.

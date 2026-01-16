@@ -75,7 +75,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       customer: customer
     })
   } catch (error: any) {
-    console.error("❌ Error creando customer:", error)
+    console.error("Error creando customer:", error)
     return res.status(500).json({
       error: error.message || "Failed to create customer"
     })

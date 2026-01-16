@@ -12,7 +12,7 @@ function validateWebhookSignature(
 ): boolean {
   if (!xSignature || !xRequestId || !webhookSecret) {
     if (process.env.NODE_ENV === "development" && !webhookSecret) {
-      console.warn("⚠️ Webhook signature validation skipped (no secret configured)")
+      console.warn("Webhook signature validation skipped (no secret configured)")
       return true
     }
     return false
@@ -60,7 +60,7 @@ export async function POST(
     const xRequestId = req.headers["x-request-id"] as string | undefined
 
     if (webhookSecret && !validateWebhookSignature(xSignature, xRequestId, data?.id?.toString(), webhookSecret)) {
-      console.error("❌ Invalid webhook signature")
+      console.error("Invalid webhook signature")
       res.status(401).json({ error: "Invalid signature" })
       return
     }
@@ -97,17 +97,17 @@ export async function POST(
         await handleApprovedPayment(req, cartId, paymentInfo)
         break
       case "rejected":
-        console.log(`❌ Payment rejected for cart ${cartId}: ${paymentInfo.status_detail}`)
+        // console.log(`❌ Payment rejected for cart ${cartId}: ${paymentInfo.status_detail}`)
         break
       case "pending":
       case "in_process":
-        console.log(`⏳ Payment pending for cart ${cartId}`)
+        // console.log(`⏳ Payment pending for cart ${cartId}`)
         break
       case "cancelled":
-        console.log(`🚫 Payment cancelled for cart ${cartId}`)
+        // console.log(`🚫 Payment cancelled for cart ${cartId}`)
         break
       default:
-        console.log(`ℹ️ Unhandled payment status: ${paymentInfo.status}`)
+        // console.log(`ℹ️ Unhandled payment status: ${paymentInfo.status}`)
     }
 
     res.status(200).json({ received: true })
@@ -128,7 +128,7 @@ async function handleApprovedPayment(
   // Check if order already exists (idempotency)
   const existingOrder = await findOrderByCartId(query, cartId)
   if (existingOrder) {
-    console.log(`✅ Order already exists for cart ${cartId}: ${existingOrder.id}`)
+    // console.log(`✅ Order already exists for cart ${cartId}: ${existingOrder.id}`)
     return
   }
 
@@ -145,7 +145,7 @@ async function handleApprovedPayment(
 
   const cart = carts[0]
   if (!cart) {
-    console.error(`❌ Cart ${cartId} not found`)
+    console.error(` Cart ${cartId} not found`)
     return
   }
 
@@ -162,7 +162,7 @@ async function handleApprovedPayment(
         status: "approved",
       })
     } catch (err: any) {
-      console.warn(`⚠️ Could not authorize session: ${err.message}`)
+      console.warn(`Could not authorize session: ${err.message}`)
     }
   }
 
@@ -174,7 +174,6 @@ async function handleApprovedPayment(
     const orderId = result?.order?.id || result?.id
 
     if (orderId) {
-      console.log(`✅ Order created via webhook: ${orderId}`)
       try {
         const cartModule = req.scope.resolve(Modules.CART)
         await cartModule.updateCarts([{
@@ -185,10 +184,10 @@ async function handleApprovedPayment(
         console.warn(`Could not update cart metadata: ${err}`)
       }
     } else {
-      console.error(`❌ Cart completion failed for ${cartId}`)
+      console.error(` Cart completion failed for ${cartId}`)
     }
   } catch (err: any) {
-    console.error(`❌ Workflow error: ${err.message}`)
+    console.error(` Workflow error: ${err.message}`)
     throw err
   }
 }

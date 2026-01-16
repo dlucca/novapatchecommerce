@@ -59,7 +59,6 @@ export async function POST(
 
     const items = cart.items.map((item: any) => {
       const unitPrice = Number(item.unit_price || 0)
-      console.log(`   Item: ${item.variant?.product?.title || item.title} - Qty: ${item.quantity} - Price: ${unitPrice}`)
       return {
         id: item.id,
         title: item.variant?.product?.title || item.title || "Product",
@@ -88,11 +87,6 @@ export async function POST(
 	    const successUrl = `${frontendUrl}/${countryCode}/checkout/success?cartId=${cartId}`
 	    const failureUrl = `${frontendUrl}/${countryCode}/checkout/failure?cartId=${cartId}`
 	    const pendingUrl = `${frontendUrl}/${countryCode}/checkout/pending?cartId=${cartId}`
-
-    console.log(`📍 MercadoPago back URLs:`)
-    console.log(`   Success: ${successUrl}`)
-    console.log(`   Failure: ${failureUrl}`)
-    console.log(`   Pending: ${pendingUrl}`)
 
     const preferenceData: any = {
       items,

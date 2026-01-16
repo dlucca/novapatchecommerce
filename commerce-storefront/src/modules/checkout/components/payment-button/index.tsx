@@ -175,13 +175,9 @@ const MercadoPagoPaymentButton = ({
     setSubmitting(true)
     setErrorMessage(null)
 
-    try {
-      console.log("Creating Mercado Pago preference for cart:", cart.id)
-      
+    try {      
       // Crear preferencia de pago en Mercado Pago
       const preference = await createMercadoPagoPreference(cart.id)
-
-      console.log("Preference created:", preference)
 
 	      const mpEnv = process.env.NEXT_PUBLIC_MERCADOPAGO_ENV
 	      const useSandbox = mpEnv
@@ -193,7 +189,6 @@ const MercadoPagoPaymentButton = ({
 	        : preference.initPoint
 
       if (redirectUrl) {
-        console.log("Redirecting to:", redirectUrl)
         window.location.href = redirectUrl
       } else {
         throw new Error("No se pudo obtener la URL de pago de Mercado Pago")

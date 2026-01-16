@@ -27,8 +27,6 @@ export async function POST(
   const startTime = Date.now()
   const { cartId, paymentId } = req.body
 
-  console.log(`\n🛒 [MercadoPago] Complete order request for cart: ${cartId}`)
-
   try {
     if (!cartId) {
       res.status(400).json({ success: false, error: "cartId is required" } as CompleteOrderResponse)
@@ -89,9 +87,8 @@ export async function POST(
       const paymentApi = new Payment(client)
       try {
         mpPaymentInfo = await paymentApi.get({ id: paymentId })
-        console.log(`💳 MP Payment status: ${mpPaymentInfo.status}`)
       } catch (err: any) {
-        console.warn(`⚠️ Could not fetch payment info: ${err.message}`)
+        console.warn(`Could not fetch payment info: ${err.message}`)
       }
     }
 
@@ -129,26 +126,20 @@ export async function POST(
           status: "approved",
         })
       } catch (err: any) {
-        console.warn(`⚠️ Could not authorize payment session: ${err.message}`)
+        console.warn(`Could not authorize payment session: ${err.message}`)
         // Continue anyway - the completeCartWorkflow might handle this
       }
     }
 
-    console.log(`🚀 Completing cart workflow...`)
     const workflowResult = await completeCartWorkflow(req.scope).run({
       input: { id: cartId },
     })
-
-    console.log(`📦 Workflow result:`, JSON.stringify(workflowResult, null, 2))
 
     const result = workflowResult?.result as any
     // Result can be { order: { id } } or { id } depending on Medusa version
     const orderId = result?.order?.id || result?.id
 
     if (orderId) {
-      const elapsed = Date.now() - startTime
-      console.log(`✅ Order created: ${orderId} in ${elapsed}ms`)
-
       // Store order_id in cart metadata for future lookups
       try {
         const cartModule = req.scope.resolve(Modules.CART)
@@ -170,14 +161,14 @@ export async function POST(
         paymentStatus: mpPaymentInfo?.status || "approved",
       } as CompleteOrderResponse)
     } else {
-      console.error(`❌ Cart completion failed:`, result)
+      console.error(`Cart completion failed:`, result)
       res.status(400).json({
         success: false,
         error: "Could not complete order. Cart may be missing required data.",
       } as CompleteOrderResponse)
     }
   } catch (error: any) {
-    console.error(`❌ Error completing order:`, error)
+    console.error(`Error completing order:`, error)
     res.status(500).json({
       success: false,
       error: error.message || "Failed to complete order",

@@ -60,7 +60,7 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
 }
 
 /**
- * ⚠️ DISABLED - Medusa Native Authentication
+ * DISABLED - Medusa Native Authentication
  *
  * This project uses Clerk for all authentication.
  * The signup() and login() functions are commented out because:
