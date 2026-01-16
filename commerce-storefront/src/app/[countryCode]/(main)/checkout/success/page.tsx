@@ -32,9 +32,14 @@ export default async function PaymentSuccessPage({ params, searchParams }: Props
     redirect(`/${countryCode}`)
   }
 
-  if (status === "rejected" || status === "cancelled") {
-    redirect(`/${countryCode}/checkout?step=payment&error=payment_${status}`)
-  }
+
+	  if (status === "rejected" || status === "cancelled") {
+	    redirect(`/${countryCode}/checkout/failure?cartId=${cartId}&status=${status}`)
+	  }
+
+	  if (status === "pending" || status === "in_process") {
+	    redirect(`/${countryCode}/checkout/pending?cartId=${cartId}&status=${status}`)
+	  }
 
   const result = await verifyAndCompleteOrder(cartId, payment_id)
 

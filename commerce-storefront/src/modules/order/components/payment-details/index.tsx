@@ -11,8 +11,8 @@ type PaymentDetailsProps = {
 const PaymentDetails = ({ order }: PaymentDetailsProps) => {
   const payment = order.payment_collections?.[0]?.payments?.[0]
 
-  const formatPaymentDate = (dateString: string) => {
-    const date = new Date(dateString)
+  const formatPaymentDate = (dateInput: string | Date) => {
+    const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput
     return date.toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'long',

@@ -84,10 +84,10 @@ export async function POST(
       })
     }
 
-    const countryCode = (cart.shipping_address?.country_code || 'br').toLowerCase()
-    const successUrl = `${frontendUrl}/${countryCode}/checkout/success?cartId=${cartId}`
-    const failureUrl = `${frontendUrl}/${countryCode}/checkout?step=payment&error=payment_failed`
-    const pendingUrl = `${frontendUrl}/${countryCode}/checkout/success?cartId=${cartId}&status=pending`
+	    const countryCode = (cart.shipping_address?.country_code || "br").toLowerCase()
+	    const successUrl = `${frontendUrl}/${countryCode}/checkout/success?cartId=${cartId}`
+	    const failureUrl = `${frontendUrl}/${countryCode}/checkout/failure?cartId=${cartId}`
+	    const pendingUrl = `${frontendUrl}/${countryCode}/checkout/pending?cartId=${cartId}`
 
     console.log(`📍 MercadoPago back URLs:`)
     console.log(`   Success: ${successUrl}`)

@@ -150,9 +150,9 @@ module.exports = defineConfig({
             options: {
               accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
               webhookSecret: process.env.MERCADOPAGO_WEBHOOK_SECRET,
-              successUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/order/confirmed`,
-              failureUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/checkout?step=payment`,
-              pendingUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/order/confirmed`,
+	              successUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/checkout/success`,
+	              failureUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/checkout/failure`,
+	              pendingUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/checkout/pending`,
             },
           },
         ],

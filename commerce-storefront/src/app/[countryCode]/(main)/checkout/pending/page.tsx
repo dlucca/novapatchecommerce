@@ -11,8 +11,9 @@ type Props = {
   searchParams: Promise<{ cartId?: string; payment_id?: string }>
 }
 
-export default async function PaymentPendingPage({ params }: Props) {
+export default async function PaymentPendingPage({ params, searchParams }: Props) {
   const { countryCode } = await params
+  const { cartId } = await searchParams
 
   return (
     <div className="min-h-screen bg-novapatch-bg-cream py-12 px-4">
@@ -77,14 +78,22 @@ export default async function PaymentPendingPage({ params }: Props) {
         </div>
 
         {/* Action Button */}
-        <div className="flex flex-col gap-3">
-          <Link
-            href={`/${countryCode}`}
-            className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 px-6 rounded-full text-center transition-colors"
-          >
-            Volver a la Tienda
-          </Link>
-        </div>
+	    <div className="flex flex-col gap-3">
+	      {cartId && (
+	        <Link
+	          href={`/${countryCode}/checkout/success?cartId=${cartId}`}
+	          className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 px-6 rounded-full text-center transition-colors"
+	        >
+	          Verificar estado del pedido
+	        </Link>
+	      )}
+	      <Link
+	        href={`/${countryCode}`}
+	        className="w-full bg-white border border-gray-300 text-gray-700 text-base font-medium py-3 px-6 rounded-full text-center hover:bg-gray-50 transition-colors"
+	      >
+	        Volver a la Tienda
+	      </Link>
+	    </div>
 
         {/* Help Link */}
         <div className="text-center mt-6">

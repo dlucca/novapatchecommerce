@@ -183,11 +183,14 @@ const MercadoPagoPaymentButton = ({
 
       console.log("Preference created:", preference)
 
-      // En producción usar initPoint, en desarrollo usar sandboxInitPoint
-      const isProduction = process.env.NODE_ENV === "production"
-      const redirectUrl = isProduction
-        ? preference.initPoint
-        : (preference.sandboxInitPoint || preference.initPoint)
+	      const mpEnv = process.env.NEXT_PUBLIC_MERCADOPAGO_ENV
+	      const useSandbox = mpEnv
+	        ? mpEnv !== "production"
+	        : process.env.NODE_ENV !== "production"
+
+	      const redirectUrl = useSandbox
+	        ? (preference.sandboxInitPoint || preference.initPoint)
+	        : preference.initPoint
 
       if (redirectUrl) {
         console.log("Redirecting to:", redirectUrl)

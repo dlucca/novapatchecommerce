@@ -23,7 +23,6 @@ export default function SuccessPoller({
 }: SuccessPollerProps) {
   const router = useRouter()
   const [status, setStatus] = useState<Status>("checking")
-  const [orderId, setOrderId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [attempts, setAttempts] = useState(0)
 
@@ -31,8 +30,7 @@ export default function SuccessPoller({
     try {
       const result = await verifyAndCompleteOrder(cartId, paymentId)
 
-      if (result.success && result.orderId) {
-        setOrderId(result.orderId)
+	      if (result.success && result.orderId) {
         setStatus("success")
         router.push(`/${countryCode}/order/${result.orderId}/confirmed`)
         return true

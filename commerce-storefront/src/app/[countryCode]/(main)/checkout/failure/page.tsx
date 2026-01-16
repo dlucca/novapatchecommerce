@@ -11,8 +11,9 @@ type Props = {
   searchParams: Promise<{ cartId?: string; payment_id?: string }>
 }
 
-export default async function PaymentFailurePage({ params }: Props) {
+export default async function PaymentFailurePage({ params, searchParams }: Props) {
   const { countryCode } = await params
+  const { cartId, payment_id } = await searchParams
 
   return (
     <div className="min-h-screen bg-novapatch-bg-cream py-12 px-4">
@@ -65,6 +66,22 @@ export default async function PaymentFailurePage({ params }: Props) {
             <p className="text-gray-600 text-sm">
               Te sugerimos verificar los datos de tu tarjeta o intentar con otro método de pago.
             </p>
+	            {(cartId || payment_id) && (
+	              <div className="mt-4 bg-gray-50 p-3 rounded-lg border border-gray-100 text-xs text-gray-600">
+	                {cartId && (
+	                  <p>
+	                    <span className="font-medium text-[#0A4C6D]">Cart ID:</span>{" "}
+	                    <span className="font-mono">{cartId}</span>
+	                  </p>
+	                )}
+	                {payment_id && (
+	                  <p className="mt-1">
+	                    <span className="font-medium text-[#0A4C6D]">Payment ID:</span>{" "}
+	                    <span className="font-mono">{payment_id}</span>
+	                  </p>
+	                )}
+	              </div>
+	            )}
           </div>
         </div>
 
