@@ -19,29 +19,33 @@ const Review = ({ cart }: { cart: any }) => {
     (cart.payment_collection || paidByGiftcard)
 
   return (
-    <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
+    <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+      <div className="flex flex-row items-center justify-between mb-5">
         <Heading
           level="h2"
           className={clx(
-            "flex flex-row text-3xl-regular gap-x-2 items-baseline",
+            "text-[#0A4C6D] text-xl font-semibold",
             {
               "opacity-50 pointer-events-none select-none": !isOpen,
             }
           )}
         >
-          Review
+          Revisión
         </Heading>
       </div>
       {isOpen && previousStepsCompleted && (
         <>
           <div className="flex items-start gap-x-1 w-full mb-6">
             <div className="w-full">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                By clicking the Place Order button, you confirm that you have
-                read, understand and accept our Terms of Use, Terms of Sale and
-                Returns Policy and acknowledge that you have read Medusa
-                Store&apos;s Privacy Policy.
+              <Text className="text-gray-600 text-base leading-relaxed">
+                Al hacer clic en el botón Realizar Pedido, confirmas que has
+                leído, comprendido y aceptas nuestros{" "}
+                <a href="/terms" className="text-[#22b2bd] hover:underline">Términos de Uso</a>,{" "}
+                <a href="/terms" className="text-[#22b2bd] hover:underline">Términos de Venta</a> y{" "}
+                <a href="/terms" className="text-[#22b2bd] hover:underline">Política de Devoluciones</a>,{" "}
+                y confirmas que has leído la{" "}
+                <a href="/privacy" className="text-[#22b2bd] hover:underline">Política de Privacidad</a>{" "}
+                de Novapatch Store.
               </Text>
             </div>
           </div>

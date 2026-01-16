@@ -41,16 +41,19 @@ export default async function PaymentSuccessPage({ params, searchParams }: Props
   if (result.success && result.orderId) {
     redirect(`/${countryCode}/order/${result.orderId}/confirmed`)
   }
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-        <SuccessPoller
-          cartId={cartId}
-          paymentId={payment_id}
-          countryCode={countryCode}
-          maxAttempts={15}
-          intervalMs={2000}
-        />
+    <div className="min-h-screen bg-novapatch-bg-cream py-12 px-4">
+      <div className="max-w-lg mx-auto">
+        <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-100">
+          <SuccessPoller
+            cartId={cartId}
+            paymentId={payment_id}
+            countryCode={countryCode}
+            maxAttempts={15}
+            intervalMs={2000}
+          />
+        </div>
       </div>
     </div>
   )

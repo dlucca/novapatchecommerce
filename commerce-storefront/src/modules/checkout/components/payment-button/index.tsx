@@ -49,7 +49,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
         <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
       )
     default:
-      return <Button disabled>Select a payment method</Button>
+      return <Button disabled className="w-full bg-gray-300 text-gray-500 text-base py-3 rounded-full border-0">Selecciona un método de pago</Button>
   }
 }
 
@@ -149,8 +149,9 @@ const StripePaymentButton = ({
         size="large"
         isLoading={submitting}
         data-testid={dataTestId}
+        className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
       >
-        Place order
+        Realizar Pedido
       </Button>
       <ErrorMessage
         error={errorMessage}
@@ -179,12 +180,15 @@ const MercadoPagoPaymentButton = ({
       
       // Crear preferencia de pago en Mercado Pago
       const preference = await createMercadoPagoPreference(cart.id)
-      
+
       console.log("Preference created:", preference)
-      
-      // Redirigir a Mercado Pago (usar sandbox para TEST tokens)
-      const redirectUrl = preference.sandboxInitPoint || preference.initPoint
-      
+
+      // En producción usar initPoint, en desarrollo usar sandboxInitPoint
+      const isProduction = process.env.NODE_ENV === "production"
+      const redirectUrl = isProduction
+        ? preference.initPoint
+        : (preference.sandboxInitPoint || preference.initPoint)
+
       if (redirectUrl) {
         console.log("Redirecting to:", redirectUrl)
         window.location.href = redirectUrl
@@ -206,6 +210,7 @@ const MercadoPagoPaymentButton = ({
         onClick={handlePayment}
         size="large"
         data-testid="submit-order-button"
+        className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
       >
         {submitting ? "Redirigiendo a Mercado Pago..." : "Pagar con Mercado Pago"}
       </Button>
@@ -245,8 +250,9 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
         onClick={handlePayment}
         size="large"
         data-testid="submit-order-button"
+        className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
       >
-        Place order
+        Realizar Pedido
       </Button>
       <ErrorMessage
         error={errorMessage}

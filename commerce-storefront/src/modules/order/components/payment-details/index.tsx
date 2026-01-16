@@ -1,7 +1,6 @@
 import { Container, Heading, Text } from "@medusajs/ui"
 
 import { isStripe, paymentInfoMap } from "@lib/constants"
-import Divider from "@/components/ui/divider"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 
@@ -10,52 +9,68 @@ type PaymentDetailsProps = {
 }
 
 const PaymentDetails = ({ order }: PaymentDetailsProps) => {
-  const payment = order.payment_collections?.[0].payments?.[0]
+  const payment = order.payment_collections?.[0]?.payments?.[0]
+
+  const formatPaymentDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  }
 
   return (
     <div>
-      <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
-        Payment
-      </Heading>
-      <div>
-        {payment && (
-          <div className="flex items-start gap-x-1 w-full">
-            <div className="flex flex-col w-1/3">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment method
-              </Text>
-              <Text
-                className="txt-medium text-ui-fg-subtle"
-                data-testid="payment-method"
-              >
-                {paymentInfoMap[payment.provider_id].title}
-              </Text>
-            </div>
-            <div className="flex flex-col w-2/3">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment details
-              </Text>
-              <div className="flex gap-2 txt-medium text-ui-fg-subtle items-center">
-                <Container className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
-                  {paymentInfoMap[payment.provider_id].icon}
-                </Container>
-                <Text data-testid="payment-amount">
-                  {isStripe(payment.provider_id) && payment.data?.card_last4
-                    ? `**** **** **** ${payment.data.card_last4}`
-                    : `${convertToLocale({
-                        amount: payment.amount,
-                        currency_code: order.currency_code,
-                      })} paid at ${new Date(
-                        payment.created_at ?? ""
-                      ).toLocaleString()}`}
-                </Text>
-              </div>
-            </div>
-          </div>
-        )}
+      <div className="flex items-center gap-2 mb-5">
+        <Heading level="h2" className="text-[#0A4C6D] text-xl font-semibold">
+          Pago
+        </Heading>
+        <div className="w-2.5 h-2.5 bg-[#22b2bd] rounded-full"></div>
       </div>
 
-      <Divider className="mt-8" />
+      {payment && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex flex-col">
+            <Text className="text-gray-500 mb-2 text-base">
+              Método de Pago
+            </Text>
+            <div className="flex items-center gap-3">
+              <Container className="flex items-center h-10 w-fit p-2 bg-gray-50 rounded-lg border border-gray-100">
+                {paymentInfoMap[payment.provider_id]?.icon}
+              </Container>
+              <Text
+                className="text-[#0A4C6D] font-medium text-base"
+                data-testid="payment-method"
+              >
+                {paymentInfoMap[payment.provider_id]?.title || 'Tarjeta'}
+              </Text>
+            </div>
+          </div>
+
+          <div className="flex flex-col">
+            <Text className="text-gray-500 mb-2 text-base">
+              Detalles del Pago
+            </Text>
+            <Text
+              className="text-gray-700 text-base"
+              data-testid="payment-amount"
+            >
+              {isStripe(payment.provider_id) && payment.data?.card_last4
+                ? `Tarjeta terminada en ${payment.data.card_last4}`
+                : `${convertToLocale({
+                    amount: payment.amount,
+                    currency_code: order.currency_code,
+                  })}`}
+            </Text>
+            <Text className="text-gray-500 text-sm mt-1">
+              Pagado el {formatPaymentDate(payment.created_at ?? "")}
+            </Text>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ChevronDown from "@modules/common/icons/chevron-down"
 import MedusaCTA from "@/components/shared/medusa-cta"
@@ -8,28 +9,35 @@ export default function CheckoutLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="w-full bg-white relative small:min-h-screen">
-      <div className="h-16 bg-white border-b ">
+    <div className="w-full bg-[#FFF8F0] relative small:min-h-screen font-outfit">
+      {/* Header */}
+      <div className="h-16 bg-white border-b border-gray-200">
         <nav className="flex h-full items-center content-container justify-between">
           <LocalizedClientLink
             href="/cart"
-            className="text-small-semi text-ui-fg-base flex items-center gap-x-2 uppercase flex-1 basis-0"
+            className="text-gray-600 hover:text-gray-900 flex items-center gap-x-2 uppercase flex-1 basis-0 transition-colors"
             data-testid="back-to-cart-link"
           >
             <ChevronDown className="rotate-90" size={16} />
-            <span className="mt-px hidden small:block txt-compact-plus text-ui-fg-subtle hover:text-ui-fg-base ">
-              Back to shopping cart
+            <span className="mt-px hidden small:block text-sm font-medium tracking-wide">
+              VOLVER AL CARRITO
             </span>
-            <span className="mt-px block small:hidden txt-compact-plus text-ui-fg-subtle hover:text-ui-fg-base">
-              Back
+            <span className="mt-px block small:hidden text-sm font-medium">
+              Volver
             </span>
           </LocalizedClientLink>
           <LocalizedClientLink
             href="/"
-            className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
+            className="flex items-center"
             data-testid="store-link"
           >
-            Medusa Store
+            <Image
+              src="/assets/nav/LOGO-1.svg"
+              alt="Logo de NovaPatch"
+              width={140}
+              height={40}
+              priority
+            />
           </LocalizedClientLink>
           <div className="flex-1 basis-0" />
         </nav>
