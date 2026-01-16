@@ -36,7 +36,8 @@ export async function POST(
         "items.*",
         "items.variant.*",
         "items.variant.product.*",
-        "shipping_address.*"
+        "shipping_address.*",
+        "shipping_methods.*"
       ],
       filters: { id: cartId }
     })
@@ -48,44 +49,73 @@ export async function POST(
       return
     }
 
-    const client = new MercadoPagoConfig({ 
+    const client = new MercadoPagoConfig({
       accessToken,
-      options: { timeout: 5000 }
+      options: { timeout: 10000 }
     })
     const preference = new Preference(client)
 
     const frontendUrl = process.env.STORE_URL || "http://localhost:8000"
-    
-    const items = cart.items.map((item: any) => ({
-      id: item.id,
-      title: item.variant?.product?.title || item.title || "Product",
-      quantity: item.quantity,
-      unit_price: Number(((item.unit_price || 0) / 100).toFixed(2)),
-      currency_id: (cart.currency_code || "BRL").toUpperCase(),
-    }))
 
-    // TODO:
-    // Nota: En desarrollo con localhost, las back_urls no son validadas por MP
-    // pero son requeridas. En producción usar URLs públicas.
+    const items = cart.items.map((item: any) => {
+      const unitPrice = Number(item.unit_price || 0)
+      console.log(`   Item: ${item.variant?.product?.title || item.title} - Qty: ${item.quantity} - Price: ${unitPrice}`)
+      return {
+        id: item.id,
+        title: item.variant?.product?.title || item.title || "Product",
+        description: item.variant?.product?.description?.substring(0, 255) || "",
+        quantity: item.quantity,
+        unit_price: unitPrice,
+        currency_id: (cart.currency_code || "BRL").toUpperCase(),
+      }
+    })
+
+    // Get shipping cost if available
+    const shippingTotal = cart.shipping_methods?.[0]?.amount || 0
+
+    if (shippingTotal > 0) {
+      items.push({
+        id: "shipping",
+        title: "Envío",
+        description: "Costo de envío",
+        quantity: 1,
+        unit_price: Number(shippingTotal),
+        currency_id: (cart.currency_code || "BRL").toUpperCase(),
+      })
+    }
+
+    const countryCode = (cart.shipping_address?.country_code || 'br').toLowerCase()
+    const successUrl = `${frontendUrl}/${countryCode}/checkout/success?cartId=${cartId}`
+    const failureUrl = `${frontendUrl}/${countryCode}/checkout?step=payment&error=payment_failed`
+    const pendingUrl = `${frontendUrl}/${countryCode}/checkout/success?cartId=${cartId}&status=pending`
+
+    console.log(`📍 MercadoPago back URLs:`)
+    console.log(`   Success: ${successUrl}`)
+    console.log(`   Failure: ${failureUrl}`)
+    console.log(`   Pending: ${pendingUrl}`)
+
     const preferenceData: any = {
       items,
       payer: {
-        email: cart.email || "test@test.com",
+        email: cart.email || "customer@example.com",
+        name: cart.shipping_address?.first_name || "",
+        surname: cart.shipping_address?.last_name || "",
+        address: cart.shipping_address ? {
+          street_name: cart.shipping_address.address_1 || "",
+          street_number: "",
+          zip_code: cart.shipping_address.postal_code || "",
+        } : undefined,
       },
       external_reference: cartId,
       metadata: {
         cart_id: cartId,
       },
-    }
-
-    // Solo agregar back_urls si es una URL pública (no localhost)
-    if (!frontendUrl.includes('localhost')) {
-      preferenceData.back_urls = {
-        success: `${frontendUrl}/br/checkout/success?cartId=${cartId}`,
-        failure: `${frontendUrl}/br/checkout/failure?cartId=${cartId}`,
-        pending: `${frontendUrl}/br/checkout/pending?cartId=${cartId}`,
-      }
-      preferenceData.auto_return = "approved"
+      back_urls: {
+        success: successUrl,
+        failure: failureUrl,
+        pending: pendingUrl,
+      },
+      ...(frontendUrl.includes('localhost') ? {} : { auto_return: "approved" }),
     }
 
     const response = await preference.create({ body: preferenceData })

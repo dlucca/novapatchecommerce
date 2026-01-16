@@ -1,12 +1,9 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MercadoPagoConfig, Payment } from "mercadopago"
 import crypto from "crypto"
+import { completeCartWorkflow } from "@medusajs/medusa/core-flows"
 import { Modules } from "@medusajs/framework/utils"
 
-/**
- * Validates the Mercado Pago webhook signature
- * @see https://www.mercadopago.com.br/developers/en/docs/your-integrations/notifications/webhooks
- */
 function validateWebhookSignature(
   xSignature: string | undefined,
   xRequestId: string | undefined,
@@ -31,9 +28,7 @@ function validateWebhookSignature(
 
   const ts = tsMatch.replace("ts=", "")
   const receivedHash = v1Match.replace("v1=", "")
-
   const manifest = `id:${dataId};request-id:${xRequestId};ts:${ts};`
-
   const expectedHash = crypto
     .createHmac("sha256", webhookSecret)
     .update(manifest)
@@ -47,6 +42,7 @@ function validateWebhookSignature(
 
 interface WebhookPayload {
   type: string
+  action?: string
   data: {
     id: string
   }
@@ -56,9 +52,9 @@ export async function POST(
   req: MedusaRequest<WebhookPayload>,
   res: MedusaResponse
 ): Promise<void> {
-  try {
-    const { type, data } = req.body as WebhookPayload
+  const { type, action, data } = req.body as WebhookPayload
 
+  try {
     const webhookSecret = process.env.MERCADOPAGO_WEBHOOK_SECRET
     const xSignature = req.headers["x-signature"] as string | undefined
     const xRequestId = req.headers["x-request-id"] as string | undefined
@@ -81,8 +77,8 @@ export async function POST(
     }
 
     const client = new MercadoPagoConfig({ accessToken })
-    const payment = new Payment(client)
-    const paymentInfo = await payment.get({ id: data.id })
+    const paymentApi = new Payment(client)
+    const paymentInfo = await paymentApi.get({ id: data.id })
 
     const cartId = paymentInfo.external_reference || paymentInfo.metadata?.cart_id
 
@@ -92,14 +88,11 @@ export async function POST(
       return
     }
 
-
-    // Procesar según el estado del pago
     switch (paymentInfo.status) {
       case "approved":
         await handleApprovedPayment(req, cartId, paymentInfo)
         break
       case "rejected":
-        console.log(`❌ Payment rejected for cart ${cartId}`)
         break
       case "pending":
       case "in_process":
@@ -114,72 +107,110 @@ export async function POST(
 
     res.status(200).json({ received: true })
   } catch (error: any) {
-    console.error("❌ Error processing Mercado Pago webhook:", error)
+    console.error("Webhook error:", error.message)
     res.status(500).json({ error: "Webhook processing failed" })
   }
 }
 
-/**
- * Handle approved payment: complete the cart and create the order
- */
+
 async function handleApprovedPayment(
   req: MedusaRequest,
   cartId: string,
   paymentInfo: any
 ): Promise<void> {
-  try {
-    const cartService = req.scope.resolve(Modules.CART)
+  const query = req.scope.resolve("query")
 
-    // Check if order already exists for this cart (idempotency)
-    const query = req.scope.resolve("query")
-    const { data: existingOrders } = await query.graph({
-      entity: "order",
-      fields: ["id", "metadata"],
-    })
+  // Check if order already exists (idempotency)
+  const existingOrder = await findOrderByCartId(query, cartId)
+  if (existingOrder) {
+    console.log(`✅ Order already exists for cart ${cartId}: ${existingOrder.id}`)
+    return
+  }
 
-    // Check if any order has this cartId in metadata
-    const orderExists = existingOrders?.some((order: any) =>
-      order.metadata?.cart_id === cartId ||
-      order.metadata?.mercadopago_cart_id === cartId
-    )
+  const { data: carts } = await query.graph({
+    entity: "cart",
+    fields: [
+      "id",
+      "completed_at",
+      "payment_collection.*",
+      "payment_collection.payment_sessions.*",
+    ],
+    filters: { id: cartId },
+  })
 
-    if (orderExists) {
-      console.log(`✅ Order already exists for cart ${cartId}, skipping`)
-      return
-    }
+  const cart = carts[0]
+  if (!cart) {
+    console.error(`❌ Cart ${cartId} not found`)
+    return
+  }
 
-    // Get the cart
-    const cart = await cartService.retrieveCart(cartId, {
-      relations: ["items", "shipping_address", "billing_address", "payment_collection"]
-    })
 
-    if (!cart) {
-      console.error(`❌ Cart ${cartId} not found`)
-      return
-    }
+  const paymentSession = cart.payment_collection?.payment_sessions?.find(
+    (s: any) => s.provider_id?.includes("mercadopago")
+  )
 
-    // Store payment info in cart metadata
-    await cartService.updateCarts([{
-      id: cartId,
-      metadata: {
-        ...cart.metadata,
+  if (paymentSession && paymentSession.status !== "authorized") {
+    try {
+      const paymentModule = req.scope.resolve(Modules.PAYMENT)
+      await paymentModule.authorizePaymentSession(paymentSession.id, {
         mercadopago_payment_id: paymentInfo.id,
-        mercadopago_status: paymentInfo.status,
-        mercadopago_status_detail: paymentInfo.status_detail,
-        payment_completed_at: new Date().toISOString()
+        status: "approved",
+      })
+    } catch (err: any) {
+      console.warn(`⚠️ Could not authorize session: ${err.message}`)
+    }
+  }
+
+  try {
+    const { result } = await completeCartWorkflow(req.scope).run({
+      input: { id: cartId },
+    }) as { result: any }
+
+    const orderId = result?.order?.id || result?.id
+
+    if (orderId) {
+      console.log(`✅ Order created via webhook: ${orderId}`)
+      try {
+        const cartModule = req.scope.resolve(Modules.CART)
+        await cartModule.updateCarts([{
+          id: cartId,
+          metadata: { order_id: orderId }
+        }])
+      } catch (err) {
+        console.warn(`Could not update cart metadata: ${err}`)
       }
-    }])
+    } else {
+      console.error(`❌ Cart completion failed for ${cartId}`)
+    }
+  } catch (err: any) {
+    console.error(`❌ Workflow error: ${err.message}`)
+    throw err
+  }
+}
 
-    console.log(`✅ Payment approved for cart ${cartId}`)
-    console.log(`   Payment ID: ${paymentInfo.id}`)
-    console.log(`   Amount: ${paymentInfo.transaction_amount} ${paymentInfo.currency_id}`)
+async function findOrderByCartId(query: any, cartId: string): Promise<any | null> {
+  try {
+    const { data: carts } = await query.graph({
+      entity: "cart",
+      fields: ["id", "metadata", "completed_at"],
+      filters: { id: cartId },
+    })
 
-    // Note: The actual order completion should be handled by Medusa's payment flow
-    // The payment provider plugin should capture the payment and trigger order creation
-    // This webhook serves as a backup verification
+    const cart = carts?.[0]
+    if (cart?.metadata?.order_id) {
+      const { data: orders } = await query.graph({
+        entity: "order",
+        fields: ["id", "status"],
+        filters: { id: cart.metadata.order_id },
+      })
 
-  } catch (error) {
-    console.error(`❌ Error handling approved payment for cart ${cartId}:`, error)
-    throw error
+      if (orders && orders.length > 0) {
+        return orders[0]
+      }
+    }
+
+    return null
+  } catch (err) {
+    return null
   }
 }
