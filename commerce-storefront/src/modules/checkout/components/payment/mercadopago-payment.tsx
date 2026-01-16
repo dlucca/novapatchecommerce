@@ -30,7 +30,7 @@ export default function MercadoPagoPayment({
                             {new Intl.NumberFormat('pt-BR', { 
                                 style: 'currency', 
                                 currency: cart.currency_code || 'BRL' 
-                            }).format((cart.total || 0) / 100)}
+                            }).format((cart.total || 0))}
                         </p>
                         <p className="text-xs text-gray-600">
                             ✓ Cartão de crédito • Débito • Pix • Boleto

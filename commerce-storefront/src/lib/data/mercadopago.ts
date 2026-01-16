@@ -1,7 +1,8 @@
 "use server"
 
 import { sdk } from "@lib/config"
-import { getAuthHeaders } from "./cookies"
+import { getAuthHeaders, removeCartId } from "./cookies"
+import { revalidateTag } from "next/cache"
 
 /**
  * Create Mercado Pago payment preference and get redirect URL
@@ -12,10 +13,10 @@ export async function createMercadoPagoPreference(cartId: string) {
         'Content-Type': 'application/json',
     }
 
-    const response = await sdk.client.fetch<{ 
+    const response = await sdk.client.fetch<{
         preferenceId: string
         initPoint: string
-        sandboxInitPoint: string 
+        sandboxInitPoint: string
     }>(`/store/mercadopago/preference`, {
         method: "POST",
         headers,
@@ -25,9 +26,62 @@ export async function createMercadoPagoPreference(cartId: string) {
     return response
 }
 
-/**
- * Process payment with Mercado Pago
- */
+interface CompleteOrderResponse {
+    success: boolean
+    orderId?: string
+    orderStatus?: string
+    paymentStatus?: string
+    error?: string
+    alreadyCompleted?: boolean
+}
+
+export async function verifyAndCompleteOrder(cartId: string, paymentId?: string): Promise<{
+    success: boolean
+    orderId?: string
+    error?: string
+}> {
+    const headers = {
+        ...(await getAuthHeaders()),
+        'Content-Type': 'application/json',
+    }
+
+    try {
+        const response = await sdk.client.fetch<CompleteOrderResponse>(
+            `/store/mercadopago/complete-order`,
+            {
+                method: "POST",
+                headers,
+                body: { cartId, paymentId },
+            }
+        )
+
+        if (response.success && response.orderId) {
+            await removeCartId()
+            revalidateTag("carts")
+            revalidateTag("orders")
+
+            return {
+                success: true,
+                orderId: response.orderId,
+            }
+        }
+
+        return {
+            success: false,
+            error: response.error || "Could not complete order",
+        }
+    } catch (error: any) {
+        console.error("Error completing order:", error)
+
+        const errorMessage = error.body?.error || error.message || "Failed to complete order"
+
+        return {
+            success: false,
+            error: errorMessage,
+        }
+    }
+}
+
 export async function processMercadoPagoPayment(data: {
     cartId: string
     paymentData: any
@@ -43,9 +97,6 @@ export async function processMercadoPagoPayment(data: {
     })
 }
 
-/**
- * Get Mercado Pago public key from backend
- */
 export async function getMercadoPagoPublicKey(): Promise<string> {
     try {
         const response = await sdk.client.fetch<{ publicKey: string }>(`/mercadopago/config`, {
@@ -55,5 +106,34 @@ export async function getMercadoPagoPublicKey(): Promise<string> {
     } catch (error) {
         console.error("Error fetching Mercado Pago public key:", error)
         return process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY || ""
+    }
+}
+
+interface OrderStatusResponse {
+    status: "pending" | "processing" | "completed" | "failed"
+    orderId?: string
+    paymentStatus?: string
+    message?: string
+}
+
+export async function checkOrderStatus(cartId: string, paymentId?: string): Promise<OrderStatusResponse> {
+    try {
+        const params = new URLSearchParams({ cartId })
+        if (paymentId) {
+            params.append("paymentId", paymentId)
+        }
+
+        const response = await sdk.client.fetch<OrderStatusResponse>(
+            `/store/mercadopago/order-status?${params.toString()}`,
+            { method: "GET" }
+        )
+
+        return response
+    } catch (error: any) {
+        console.error("Error checking order status:", error)
+        return {
+            status: "failed",
+            message: error.message || "Failed to check order status",
+        }
     }
 }
