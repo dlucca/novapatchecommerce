@@ -10,14 +10,13 @@ import { revalidateTag } from "next/cache"
 export async function createMercadoPagoPreference(cartId: string) {
     const headers = {
         ...(await getAuthHeaders()),
-        'Content-Type': 'application/json',
     }
 
     const response = await sdk.client.fetch<{
         preferenceId: string
         initPoint: string
         sandboxInitPoint: string
-    }>(`/store/mercadopago/preference`, {
+    }>(`/store/payment/preference`, {
         method: "POST",
         headers,
         body: { cartId },
@@ -47,7 +46,7 @@ export async function verifyAndCompleteOrder(cartId: string, paymentId?: string)
 
     try {
         const response = await sdk.client.fetch<CompleteOrderResponse>(
-            `/store/mercadopago/complete-order`,
+            `/store/payment/complete-order`,
             {
                 method: "POST",
                 headers,
@@ -90,7 +89,7 @@ export async function processMercadoPagoPayment(data: {
         ...(await getAuthHeaders()),
     }
 
-    return sdk.client.fetch(`/store/mercadopago/payment`, {
+    return sdk.client.fetch(`/store/payment/webhooks`, {
         method: "POST",
         headers,
         body: JSON.stringify(data),
@@ -99,7 +98,7 @@ export async function processMercadoPagoPayment(data: {
 
 export async function getMercadoPagoPublicKey(): Promise<string> {
     try {
-        const response = await sdk.client.fetch<{ publicKey: string }>(`/mercadopago/config`, {
+        const response = await sdk.client.fetch<{ publicKey: string }>(`/store/payment/config`, {
             method: "GET",
         })
         return response.publicKey
@@ -124,7 +123,7 @@ export async function checkOrderStatus(cartId: string, paymentId?: string): Prom
         }
 
         const response = await sdk.client.fetch<OrderStatusResponse>(
-            `/store/mercadopago/order-status?${params.toString()}`,
+            `/store/payment/order-status?${params.toString()}`,
             { method: "GET" }
         )
 

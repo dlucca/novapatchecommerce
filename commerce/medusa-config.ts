@@ -145,14 +145,13 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: '@nicogorga/medusa-payment-mercadopago/providers/mercado-pago',
+            resolve: './src/modules/payment-gateway/providers/mercadopago/medusa-provider',
             id: 'mercadopago',
             options: {
-              accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
-              webhookSecret: process.env.MERCADOPAGO_WEBHOOK_SECRET,
-	              successUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/checkout/success`,
-	              failureUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/checkout/failure`,
-	              pendingUrl: `${process.env.STORE_URL || 'http://localhost:8000'}/br/checkout/pending`,
+              accessToken: process.env.MERCADOPAGO_BR_ACCESS_TOKEN || process.env.MERCADOPAGO_ACCESS_TOKEN,
+              publicKey: process.env.MERCADOPAGO_BR_PUBLIC_KEY || process.env.MERCADOPAGO_PUBLIC_KEY,
+              webhookSecret: process.env.MERCADOPAGO_BR_WEBHOOK_SECRET || process.env.MERCADOPAGO_WEBHOOK_SECRET,
+              sandbox: process.env.MERCADOPAGO_BR_SANDBOX === 'true' || process.env.MERCADOPAGO_SANDBOX === 'true',
             },
           },
         ],
