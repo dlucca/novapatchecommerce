@@ -1,9 +1,10 @@
 "use client"
 
 import { useState } from "react"
+import { useLocale } from "next-intl"
 import { ChevronDown } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
-
+import { useTranslations } from "next-intl"
 type AccordionItem = {
   title: string
   content: string
@@ -16,46 +17,91 @@ type ProductInfoAccordionProps = {
 
 export default function ProductInfoAccordion({ product }: ProductInfoAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const locale = useLocale()
 
+  const toHtmlListIfArray = (value: unknown): string => {
+    const tryParseJsonArray = (s: string): unknown => {
+      const trimmed = s.trim()
+      if (!(trimmed.startsWith("[") && trimmed.endsWith("]"))) {
+        return s
+      }
+
+      try {
+        return JSON.parse(trimmed)
+      } catch {
+        return s
+      }
+    }
+
+    const normalized = typeof value === "string" ? tryParseJsonArray(value) : value
+
+    if (Array.isArray(normalized)) {
+      const items = normalized.map((v) => String(v))
+      return `<ul class="list-disc pl-5 space-y-1">${items.map((item) => `<li>${item}</li>`).join("")}</ul>`
+    }
+
+    return typeof normalized === "string" ? normalized : String(normalized)
+  }
+
+  const getLocalizedMetaString = (baseKey: string): string | null => {
+    const md = product.metadata as Record<string, unknown> | undefined
+    if (!md) return null
+
+    const localizedKey = `${baseKey}_${locale}`
+
+    const localizedValue = md[localizedKey]
+    if (typeof localizedValue === "string" && localizedValue.trim().length > 0) {
+      return localizedValue
+    }
+
+    const baseValue = md[baseKey]
+    if (typeof baseValue === "string" && baseValue.trim().length > 0) {
+      return baseValue
+    }
+
+    return null
+  }
+
+  const t = useTranslations("description");
   const accordionItems: AccordionItem[] = []
 
-  if (product.metadata?.how_to_use && typeof product.metadata.how_to_use === 'string') {
+  const howToUse = getLocalizedMetaString("how_to_use")
+  if (howToUse) {
     accordionItems.push({
-      title: "CÓMO SE USA",
-      content: product.metadata.how_to_use
+      title: t("howItWorks"),
+      content: howToUse,
     })
   }
 
-  if (product.metadata?.ingredients && typeof product.metadata.ingredients === 'string') {
+  const ingredients = getLocalizedMetaString("ingredients")
+  if (ingredients) {
     accordionItems.push({
-      title: "INGREDIENTES",
-      content: product.metadata.ingredients
+      title: t("benefits"),
+      content: ingredients,
     })
   }
 
-  const whatsIncludesData = product.metadata?.whats_includes || product.metadata?.whats_included
+  const md = product.metadata as Record<string, unknown> | undefined
+  const whatsIncludesData =
+    (md && (md[`whats_includes_${locale}`] ?? md[`whats_included_${locale}`] ?? md["whats_includes"] ?? md["whats_included"])) ||
+    null
   if (whatsIncludesData) {
-    const content = typeof whatsIncludesData === 'string'
-      ? whatsIncludesData
-      : Array.isArray(whatsIncludesData)
-      ? `<ul class="list-disc pl-5 space-y-1">${whatsIncludesData.map((item: string) => `<li>${item}</li>`).join('')}</ul>`
-      : String(whatsIncludesData)
+    const content = toHtmlListIfArray(whatsIncludesData)
     
     accordionItems.push({
-      title: "QUÉ INCLUYE",
+      title: t("whatIncludes"),
       content
     })
   }
 
-  if (product.metadata?.benefits) {
-    const content = typeof product.metadata.benefits === 'string'
-      ? product.metadata.benefits
-      : Array.isArray(product.metadata.benefits)
-      ? `<ul class="list-disc pl-5 space-y-1">${product.metadata.benefits.map((item: string) => `<li>${item}</li>`).join('')}</ul>`
-      : String(product.metadata.benefits)
+  const benefitsData =
+    (md && (md[`benefits_${locale}`] ?? md["benefits"])) ||
+    null
+  if (benefitsData) {
+    const content = toHtmlListIfArray(benefitsData)
     
     accordionItems.push({
-      title: "BENEFICIOS",
+      title: t("usage"),
       content
     })
   }
@@ -107,3 +153,4 @@ export default function ProductInfoAccordion({ product }: ProductInfoAccordionPr
     </div>
   )
 }
+

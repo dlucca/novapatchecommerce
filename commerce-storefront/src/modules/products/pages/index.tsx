@@ -54,7 +54,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                   </p>
                 )}
 
-                <p className="text-gray-700 font-medium mb-6" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}>
+                <p className="text-gray-700 font-medium mb-6" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                   30 parches transpar
                 </p>
 
@@ -77,7 +77,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                     </h3>
                     <p
                       className="text-gray-700 leading-relaxed whitespace-pre-line"
-                      style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}
+                      style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}
                       data-testid="product-description"
                     >
                       {product.description}
@@ -94,7 +94,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                       <svg className="w-5 h-5 text-teal-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}>
+                      <span className="text-gray-700" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                         Alta tasa de absorción
                       </span>
                     </li>
@@ -102,7 +102,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                       <svg className="w-5 h-5 text-teal-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}>
+                      <span className="text-gray-700" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                         Sin pastillas difíciles de tragar
                       </span>
                     </li>
@@ -110,7 +110,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                       <svg className="w-5 h-5 text-teal-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}>
+                      <span className="text-gray-700" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                         Sin azúcar ni calorías
                       </span>
                     </li>
@@ -118,7 +118,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                       <svg className="w-5 h-5 text-teal-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}>
+                      <span className="text-gray-700" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                         No afecta tu sistema digestivo
                       </span>
                     </li>

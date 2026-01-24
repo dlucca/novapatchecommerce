@@ -47,7 +47,7 @@ const FAQSection = () => {
                 style={{
                   padding: 'clamp(0.75rem, 1vw, 1rem) clamp(1.25rem, 1.5vw, 1.5rem)',
                   borderRadius: 'clamp(0.75rem, 1vw, 1rem)',
-                  fontSize: 'clamp(0.875rem, 1vw, 1rem)'
+                  fontSize: 'clamp(1rem, 1.25vw, 1.125rem)'
                 }}
               >
                 <span className="leading-tight pr-2">
@@ -68,7 +68,7 @@ const FAQSection = () => {
                   }`}
               >
                 <div className="bg-gray-50 shadow-inner animate-fade-in" style={{ marginTop: 'clamp(0.5rem, 0.75vw, 0.75rem)', padding: 'clamp(1rem, 1.25vw, 1.25rem)', borderRadius: 'clamp(0.5rem, 0.75vw, 0.75rem)' }}>
-                  <p className="text-gray-700 leading-relaxed" style={{ fontSize: 'clamp(0.875rem, 1vw, 1rem)' }}>
+                  <p className="text-gray-700 leading-relaxed" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}>
                     {faq.answer}
                   </p>
                 </div>
@@ -84,7 +84,7 @@ const FAQSection = () => {
               style={{
                 padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(2rem, 2.5vw, 2.5rem)',
                 borderRadius: 'clamp(0.5rem, 0.75vw, 0.75rem)',
-                fontSize: 'clamp(0.875rem, 1vw, 1rem)'
+                fontSize: 'clamp(1rem, 1.25vw, 1.125rem)'
               }}
             >
               {t('cta')}

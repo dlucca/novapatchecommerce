@@ -13,6 +13,8 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import Thumbnail from "@modules/products/components/thumbnail"
 import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
+import { useTranslations } from "next-intl"
+
 
 const CartDropdown = ({
   cart: cartState,
@@ -69,6 +71,7 @@ const CartDropdown = ({
     itemRef.current = totalItems
   }, [pathname, totalItems])
 
+  const t = useTranslations("myCart");
   return (
     <div
       className="h-full z-50"
@@ -114,11 +117,11 @@ const CartDropdown = ({
             data-testid="nav-cart-dropdown"
           >
             <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900 text-lg">Mi carrito</h3>
+              <h3 className="font-semibold text-gray-900 text-lg">{t("myCart")}</h3>
               <button
                 onClick={close}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
-                aria-label="Cerrar carrito"
+                aria-label={t("closeCart")}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -168,7 +171,7 @@ const CartDropdown = ({
                             )}
                             <div className="flex items-center justify-between mt-2">
                               <span className="text-xs text-gray-500">
-                                Cantidad: {item.quantity}
+                                {t("quantity")}: {item.quantity}
                               </span>
                               <span className="text-sm font-semibold text-gray-900">
                                 {convertToLocale({
@@ -188,7 +191,7 @@ const CartDropdown = ({
                   {/* Subtotal */}
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-gray-700">
-                      Subtotal ({totalItems} {totalItems === 1 ? 'item' : 'items'})
+                       {t("subtotal")} ({totalItems} {totalItems === 1 ?  'item' : 'items'})
                     </span>
                     <span
                       className="text-lg font-bold text-gray-900"
@@ -210,27 +213,27 @@ const CartDropdown = ({
                       onClick={close}
                       data-testid="go-to-cart-button"
                     >
-                      Ver carrito
+                      {t("viewCart")}
                     </LocalizedClientLink>
                     <LocalizedClientLink
                       href="/checkout"
                       className="block w-full text-center bg-novapatch-primary text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-novapatch-primary/90 transition-colors duration-200"
                       onClick={close}
                     >
-                      Checkout
+                      {t("checkout")}
                     </LocalizedClientLink>
                   </div>
                 </div>
               </>
             ) : (
               <div className="p-8 text-center">
-                <p className="text-gray-500 text-sm mb-4">Tu carrito está vacío</p>
+                <p className="text-gray-500 text-sm mb-4">{t("emptyCart")}</p>
                 <LocalizedClientLink
                   href="/store"
                   className="inline-block bg-novapatch-primary text-white font-semibold py-2.5 px-6 rounded-lg hover:bg-novapatch-primary/90 transition-colors duration-200"
                   onClick={close}
                 >
-                  Explorar productos
+                  {t("exploreProducts")}
                 </LocalizedClientLink>
               </div>
             )}
