@@ -27,6 +27,12 @@ function validateEnvironmentVariables() {
     { key: 'CLERK_SECRET_KEY', feature: 'Clerk authentication' },
   ]
 
+  // Mercado Pago variables (required for Brazil region)
+  const mercadoPagoEnvs = [
+    { key: 'MERCADOPAGO_ACCESS_TOKEN', feature: 'Mercado Pago payments (Brazil)' },
+    { key: 'MERCADOPAGO_PUBLIC_KEY', feature: 'Mercado Pago frontend integration' },
+  ]
+
   // Check required variables
   requiredEnvs.forEach(env => {
     if (!process.env[env.key]) {
@@ -37,21 +43,28 @@ function validateEnvironmentVariables() {
   // Check optional variables
   optionalEnvs.forEach(env => {
     if (!process.env[env.key]) {
-      warnings.push(`⚠️  ${env.key} not configured - ${env.feature} will be disabled`)
+      warnings.push(` ${env.key} not configured - ${env.feature} will be disabled`)
+    }
+  })
+
+  // Check Mercado Pago variables
+  mercadoPagoEnvs.forEach(env => {
+    if (!process.env[env.key]) {
+      warnings.push(` ${env.key} not configured - ${env.feature} will be disabled`)
     }
   })
 
   // Validate Resend API Key format if present
   if (process.env.RESEND_API_KEY) {
     if (!process.env.RESEND_API_KEY.startsWith('re_')) {
-      warnings.push('⚠️  RESEND_API_KEY does not have expected format (should start with "re_")')
+      warnings.push(' RESEND_API_KEY does not have expected format (should start with "re_")')
     }
   }
 
   // Validate production-specific requirements
   if (isProduction) {
     if (!hasRedis) {
-      warnings.push('⚠️  REDIS_URL not configured - Using in-memory cache (not recommended for production)')
+      warnings.push(' REDIS_URL not configured - Using in-memory cache (not recommended for production)')
     }
     if (process.env.JWT_SECRET === 'supersecret' || process.env.COOKIE_SECRET === 'supersecret') {
       errors.push('❌ JWT_SECRET and COOKIE_SECRET must be changed from default values in production')
@@ -61,7 +74,7 @@ function validateEnvironmentVariables() {
   // Log warnings
   if (warnings.length > 0) {
     console.warn('\n' + '='.repeat(80))
-    console.warn('⚠️  ENVIRONMENT CONFIGURATION WARNINGS')
+    console.warn(' ENVIRONMENT CONFIGURATION WARNINGS')
     console.warn('='.repeat(80))
     warnings.forEach(warning => console.warn(warning))
     console.warn('='.repeat(80) + '\n')
@@ -70,7 +83,7 @@ function validateEnvironmentVariables() {
   // Throw errors if any critical variables are missing
   if (errors.length > 0) {
     console.error('\n' + '='.repeat(80))
-    console.error('❌ ENVIRONMENT CONFIGURATION ERRORS')
+    console.error(' ENVIRONMENT CONFIGURATION ERRORS')
     console.error('='.repeat(80))
     errors.forEach(error => console.error(error))
     console.error('='.repeat(80) + '\n')
@@ -122,6 +135,23 @@ module.exports = defineConfig({
             options: {
               backend_url: `${process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"}/static`,
               upload_dir: "static",
+            },
+          },
+        ],
+      },
+    },
+    {
+      resolve: '@medusajs/medusa/payment',
+      options: {
+        providers: [
+          {
+            resolve: './src/modules/payment-gateway/providers/mercadopago/medusa-provider',
+            id: 'mercadopago',
+            options: {
+              accessToken: process.env.MERCADOPAGO_BR_ACCESS_TOKEN || process.env.MERCADOPAGO_ACCESS_TOKEN,
+              publicKey: process.env.MERCADOPAGO_BR_PUBLIC_KEY || process.env.MERCADOPAGO_PUBLIC_KEY,
+              webhookSecret: process.env.MERCADOPAGO_BR_WEBHOOK_SECRET || process.env.MERCADOPAGO_WEBHOOK_SECRET,
+              sandbox: process.env.MERCADOPAGO_BR_SANDBOX === 'true' || process.env.MERCADOPAGO_SANDBOX === 'true',
             },
           },
         ],

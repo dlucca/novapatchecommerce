@@ -1,5 +1,5 @@
 /**
- * ⚠️ DISABLED - Medusa Native Login/Registration Template
+ * DISABLED - Medusa Native Login/Registration Template
  *
  * This template is disabled because the project uses Clerk for authentication.
  * See /sign-in and /sign-up for authentication pages with Clerk.

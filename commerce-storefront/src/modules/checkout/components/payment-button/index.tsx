@@ -1,7 +1,8 @@
 "use client"
 
-import { isManual, isStripe } from "@lib/constants"
+import { isManual, isStripe, isMercadoPago } from "@lib/constants"
 import { placeOrder } from "@lib/data/cart"
+import { createMercadoPagoPreference } from "@lib/data/mercadopago"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
@@ -35,12 +36,20 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
           data-testid={dataTestId}
         />
       )
+    case isMercadoPago(paymentSession?.provider_id):
+      return (
+        <MercadoPagoPaymentButton 
+          notReady={notReady} 
+          cart={cart}
+          data-testid={dataTestId} 
+        />
+      )
     case isManual(paymentSession?.provider_id):
       return (
         <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
       )
     default:
-      return <Button disabled>Select a payment method</Button>
+      return <Button disabled className="w-full bg-gray-300 text-gray-500 text-base py-3 rounded-full border-0">Selecciona un método de pago</Button>
   }
 }
 
@@ -140,12 +149,72 @@ const StripePaymentButton = ({
         size="large"
         isLoading={submitting}
         data-testid={dataTestId}
+        className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
       >
-        Place order
+        Realizar Pedido
       </Button>
       <ErrorMessage
         error={errorMessage}
         data-testid="stripe-payment-error-message"
+      />
+    </>
+  )
+}
+
+const MercadoPagoPaymentButton = ({ 
+  notReady,
+  cart 
+}: { 
+  notReady: boolean
+  cart: HttpTypes.StoreCart
+}) => {
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const handlePayment = async () => {
+    setSubmitting(true)
+    setErrorMessage(null)
+
+    try {      
+      // Crear preferencia de pago en Mercado Pago
+      const preference = await createMercadoPagoPreference(cart.id)
+
+	      const mpEnv = process.env.NEXT_PUBLIC_MERCADOPAGO_ENV
+	      const useSandbox = mpEnv
+	        ? mpEnv !== "production"
+	        : process.env.NODE_ENV !== "production"
+
+	      const redirectUrl = useSandbox
+	        ? (preference.sandboxInitPoint || preference.initPoint)
+	        : preference.initPoint
+
+      if (redirectUrl) {
+        window.location.href = redirectUrl
+      } else {
+        throw new Error("No se pudo obtener la URL de pago de Mercado Pago")
+      }
+    } catch (err: any) {
+      console.error("Error creating Mercado Pago preference:", err)
+      setErrorMessage(err.message || "Error al procesar el pago con Mercado Pago")
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <>
+      <Button
+        disabled={notReady}
+        isLoading={submitting}
+        onClick={handlePayment}
+        size="large"
+        data-testid="submit-order-button"
+        className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
+      >
+        {submitting ? "Redirigiendo a Mercado Pago..." : "Pagar con Mercado Pago"}
+      </Button>
+      <ErrorMessage
+        error={errorMessage}
+        data-testid="mercadopago-payment-error-message"
       />
     </>
   )
@@ -179,8 +248,9 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
         onClick={handlePayment}
         size="large"
         data-testid="submit-order-button"
+        className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
       >
-        Place order
+        Realizar Pedido
       </Button>
       <ErrorMessage
         error={errorMessage}

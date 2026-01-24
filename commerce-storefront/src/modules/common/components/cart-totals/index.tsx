@@ -49,7 +49,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   const t = useTranslations("discount");
   return (
     <div>
-      <div className="flex flex-col gap-y-2 txt-medium text-ui-fg-subtle ">
+      <div className="flex flex-col gap-y-3 text-base text-gray-600">
         <div className="flex items-center justify-between">
           <span>{t("subtotal")}</span>
           <span data-testid="cart-subtotal" data-value={item_subtotal || 0}>
@@ -68,12 +68,11 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
               <span>{t("subscriptionDiscount")}</span>
             </span>
             <span
-              className="text-ui-fg-interactive font-semibold"
+              className="text-[#22b2bd] font-semibold"
               data-testid="cart-subscription-discount"
               data-value={subscriptionDiscount}
             >
-              -{" "}
-              {convertToLocale({
+              -{convertToLocale({
                 amount: subscriptionDiscount,
                 currency_code,
               })}
@@ -84,12 +83,11 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
           <div className="flex items-center justify-between">
             <span>{t("discount")}</span>
             <span
-              className="text-ui-fg-interactive"
+              className="text-[#22b2bd]"
               data-testid="cart-discount"
               data-value={discount_subtotal || 0}
             >
-              -{" "}
-              {convertToLocale({
+              -{convertToLocale({
                 amount: discount_subtotal ?? 0,
                 currency_code,
               })}
@@ -107,7 +105,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
       <div className="flex items-center justify-between text-ui-fg-base mb-2 txt-medium ">
         <span>{t("total")}</span>
         <span
-          className="txt-xlarge-plus"
+          className="text-[#0A4C6D] font-bold text-xl"
           data-testid="cart-total"
           data-value={(total || 0) - subscriptionDiscount}
         >
@@ -117,7 +115,6 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
           })}
         </span>
       </div>
-      <div className="h-px w-full border-b border-gray-200 mt-4" />
     </div>
   )
 }

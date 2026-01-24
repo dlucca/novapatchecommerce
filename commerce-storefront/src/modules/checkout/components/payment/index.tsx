@@ -1,15 +1,15 @@
 "use client"
 
 import { RadioGroup } from "@headlessui/react"
-import { isStripe as isStripeFunc, paymentInfoMap } from "@lib/constants"
+import { isStripe as isStripeFunc, isMercadoPago, paymentInfoMap } from "@lib/constants"
 import { initiatePaymentSession } from "@lib/data/cart"
-import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
+import { CreditCard } from "@medusajs/icons"
 import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import PaymentContainer, {
   StripeCardContainer,
 } from "@modules/checkout/components/payment-container"
-import Divider from "@/components/ui/divider"
+import MercadoPagoPayment from "@modules/checkout/components/payment/mercadopago-payment"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 
@@ -43,7 +43,7 @@ const Payment = ({
   const setPaymentMethod = async (method: string) => {
     setError(null)
     setSelectedPaymentMethod(method)
-    if (isStripeFunc(method)) {
+    if (isStripeFunc(method) || isMercadoPago(method)) {
       await initiatePaymentSession(cart, {
         provider_id: method,
       })
@@ -107,31 +107,33 @@ const Payment = ({
   }, [isOpen])
 
   return (
-    <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
-        <Heading
-          level="h2"
-          className={clx(
-            "flex flex-row text-3xl-regular gap-x-2 items-baseline",
-            {
-              "opacity-50 pointer-events-none select-none":
-                !isOpen && !paymentReady,
-            }
+    <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+      <div className="flex flex-row items-center justify-between mb-5">
+        <div className="flex items-center gap-2">
+          <Heading
+            level="h2"
+            className={clx(
+              "text-[#0A4C6D] text-xl font-semibold",
+              {
+                "opacity-50 pointer-events-none select-none":
+                  !isOpen && !paymentReady,
+              }
+            )}
+          >
+            Pago
+          </Heading>
+          {!isOpen && paymentReady && (
+            <div className="w-2.5 h-2.5 bg-[#22b2bd] rounded-full"></div>
           )}
-        >
-          Payment
-          {!isOpen && paymentReady && <CheckCircleSolid />}
-        </Heading>
+        </div>
         {!isOpen && paymentReady && (
-          <Text>
-            <button
-              onClick={handleEdit}
-              className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
-              data-testid="edit-payment-button"
-            >
-              Edit
-            </button>
-          </Text>
+          <button
+            onClick={handleEdit}
+            className="text-[#22b2bd] text-base hover:underline font-medium"
+            data-testid="edit-payment-button"
+          >
+            Editar
+          </button>
         )}
       </div>
       <div>
@@ -153,6 +155,22 @@ const Payment = ({
                         setError={setError}
                         setCardComplete={setCardComplete}
                       />
+                    ) : isMercadoPago(paymentMethod.id) ? (
+                      <PaymentContainer
+                        paymentInfoMap={paymentInfoMap}
+                        paymentProviderId={paymentMethod.id}
+                        selectedPaymentOptionId={selectedPaymentMethod}
+                      >
+                        {selectedPaymentMethod === paymentMethod.id && activeSession && (
+                          <div className="mt-4">
+                            <MercadoPagoPayment
+                              cart={cart}
+                              session={activeSession}
+                              onPaymentCompleted={() => handleSubmit()}
+                            />
+                          </div>
+                        )}
+                      </PaymentContainer>
                     ) : (
                       <PaymentContainer
                         paymentInfoMap={paymentInfoMap}
@@ -167,15 +185,15 @@ const Payment = ({
           )}
 
           {paidByGiftcard && (
-            <div className="flex flex-col w-1/3">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment method
+            <div className="flex flex-col">
+              <Text className="text-gray-500 mb-2 text-base">
+                Método de pago
               </Text>
               <Text
-                className="txt-medium text-ui-fg-subtle"
+                className="text-[#0A4C6D] text-base"
                 data-testid="payment-method-summary"
               >
-                Gift card
+                Tarjeta de regalo
               </Text>
             </div>
           )}
@@ -187,7 +205,7 @@ const Payment = ({
 
           <Button
             size="large"
-            className="mt-6"
+            className="mt-6 w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
             onClick={handleSubmit}
             isLoading={isLoading}
             disabled={
@@ -197,63 +215,61 @@ const Payment = ({
             data-testid="submit-payment-button"
           >
             {!activeSession && isStripeFunc(selectedPaymentMethod)
-              ? " Enter card details"
-              : "Continue to review"}
+              ? "Ingresar datos de tarjeta"
+              : "Continuar a revisión"}
           </Button>
         </div>
 
         <div className={isOpen ? "hidden" : "block"}>
           {cart && paymentReady && activeSession ? (
-            <div className="flex items-start gap-x-1 w-full">
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                  Payment method
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col">
+                <Text className="text-gray-500 mb-2 text-base">
+                  Método de Pago
                 </Text>
                 <Text
-                  className="txt-medium text-ui-fg-subtle"
+                  className="text-[#0A4C6D] text-base"
                   data-testid="payment-method-summary"
                 >
                   {paymentInfoMap[activeSession?.provider_id]?.title ||
                     activeSession?.provider_id}
                 </Text>
               </div>
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                  Payment details
-                </Text>
+              <div className="flex flex-col">
                 <div
-                  className="flex gap-2 txt-medium text-ui-fg-subtle items-center"
+                  className="flex gap-3 items-center"
                   data-testid="payment-details-summary"
                 >
-                  <Container className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
+                  <Container className="flex items-center h-9 w-fit p-2 bg-gray-100 rounded">
                     {paymentInfoMap[selectedPaymentMethod]?.icon || (
                       <CreditCard />
                     )}
                   </Container>
-                  <Text>
+                  <Text className="text-[#0A4C6D] text-base">
                     {isStripeFunc(selectedPaymentMethod) && cardBrand
                       ? cardBrand
-                      : "Another step will appear"}
+                      : isMercadoPago(selectedPaymentMethod)
+                      ? "Mercado Pago"
+                      : "Otro paso aparecerá"}
                   </Text>
                 </div>
               </div>
             </div>
           ) : paidByGiftcard ? (
-            <div className="flex flex-col w-1/3">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment method
+            <div className="flex flex-col">
+              <Text className="text-gray-500 mb-2 text-base">
+                Método de pago
               </Text>
               <Text
-                className="txt-medium text-ui-fg-subtle"
+                className="text-[#0A4C6D] text-base"
                 data-testid="payment-method-summary"
               >
-                Gift card
+                Tarjeta de regalo
               </Text>
             </div>
           ) : null}
         </div>
       </div>
-      <Divider className="mt-8" />
     </div>
   )
 }
