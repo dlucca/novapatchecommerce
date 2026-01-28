@@ -218,8 +218,21 @@
     },
     "whyPatches": {
       "title": "Por Que Adesivos?",
-      "paragraph1": "Você sabia que a maioria dos suplementos vitamínicos contém ingredientes que seu corpo não precisa? Isso é difícil de engolir, então estamos eliminando os comprimidos (e as gomas) da equação e resolvendo o problema com adesivos.",
-      "paragraph2": "Nossos adesivos transdérmicos oferecem uma alternativa revolucionária às vitaminas tradicionais, proporcionando uma absorção direta e eficiente sem passar pelo sistema digestivo.",
+      "paragraph1": "Você sabia que a maioria dos suplementos vitamínicos contém ingredientes que seu corpo não precisa? Por isso decidimos deixar de lado as pílulas e as gomas, e optar por um formato mais simples: adesivos.",
+      "paragraph2": "Uma alternativa prática para quem busca se cuidar sem adicionar passos desnecessários.",
+      "paragraph3": "Nossos adesivos oferecem uma alternativa revolucionária às vitaminas tradicionais, proporcionando uma absorção direta e eficiente sem passar pelo sistema digestivo.",
+      "noFillers": {
+        "title": "Sem enchimentos"
+      },
+      "vegan": {
+        "title": "100% vegano"
+      },
+      "glutenFree": {
+        "title": "Livre de glúten"
+      },
+      "fastAction": {
+        "title": "Ação rápida"
+      },
       "features": {
         "noFillers": "Sem Enchimentos",
         "vegan": "Vegano",
@@ -271,9 +284,10 @@
     },
     "story": {
       "title": "Nossa História",
-      "paragraph1": "NovaPatch nasceu de uma pergunta simples: Por que continuamos tomando vitaminas da mesma maneira que há 50 anos? Em um mundo onde a tecnologia avança constantemente, a suplementação tinha ficado para trás.",
-      "paragraph2": "Nossa equipe de cientistas, médicos e designers se uniu com uma missão clara: criar uma forma mais eficiente, conveniente e eficaz de obter os nutrientes que nosso corpo precisa. Após anos de pesquisa e desenvolvimento, nasceram os adesivos NovaPatch.",
-      "paragraph3": "Hoje, milhares de pessoas em todo o mundo confiam no NovaPatch para seu bem-estar diário. Não somos apenas uma empresa de suplementos; somos uma comunidade comprometida em revolucionar a forma como cuidamos de nossa saúde."
+      "paragraph1": "Novapatch nasce do desejo de <strong>simplificar o cuidado pessoal.</strong>",
+      "paragraph2": "Observamos que muitas pessoas buscam bem-estar, mas nem sempre encontram formatos que se adaptem ao seu ritmo de vida.",
+      "paragraph3": "Por isso desenvolvemos uma alternativa pensada para <strong>integrar-se naturalmente ao dia a dia.</strong>",
+      "paragraph4": "Novapatch não busca mudar tudo, mas sim torná-lo <strong>mais simples.</strong>"
     }
   },
   "store": {
