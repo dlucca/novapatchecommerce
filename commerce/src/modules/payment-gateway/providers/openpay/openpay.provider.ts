@@ -85,10 +85,12 @@ export class OpenpayProvider implements ISubscriptionGateway {
             console.log(`  [${idx}] ${item.title}: unitPrice=${item.unitPrice}, quantity=${item.quantity}, total=${item.unitPrice * item.quantity}`)
         })
 
-        // Calculate total amount from items (Openpay expects amount in pesos, not centavos)
+        // Calculate total amount from items
+        // Medusa prices come in the smallest currency unit (centavos for MXN)
+        // But they're already stored as the actual price value (e.g., 500 = $500 MXN, not 5 pesos)
         const totalAmount = input.items.reduce((sum, item) => {
             return sum + (item.unitPrice * item.quantity)
-        }, 0) / 100 // Convert from centavos to pesos
+        }, 0)
         
         console.log(`Total amount to charge: ${totalAmount} MXN`)
 
@@ -98,10 +100,13 @@ export class OpenpayProvider implements ISubscriptionGateway {
 
         // Prepare checkout data for Openpay
         // By default, Openpay checkouts show ALL available payment methods
+        // Add timestamp to order_id to make it unique (Openpay doesn't allow duplicate order_ids)
+        const uniqueOrderId = `${input.externalReference}-${Date.now()}`
+        
         const checkoutData = {
             amount: totalAmount,
             description: input.items.map((item) => item.title).join(", ").substring(0, 250), // Limit description length
-            order_id: input.externalReference,
+            order_id: uniqueOrderId,
             currency: "MXN",
             redirect_url: input.backUrls.success,
             customer: {
