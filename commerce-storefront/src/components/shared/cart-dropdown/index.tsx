@@ -13,7 +13,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import Thumbnail from "@modules/products/components/thumbnail"
 import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 
 
 const CartDropdown = ({
@@ -71,7 +71,13 @@ const CartDropdown = ({
     itemRef.current = totalItems
   }, [pathname, totalItems])
 
-  const t = useTranslations("myCart");
+  const t = useTranslations("myCart")
+  const locale = useLocale()
+  const closeCartLabel = t.has("closeCart")
+    ? t("closeCart")
+    : locale === "pt"
+      ? "Fechar carrinho"
+      : "Cerrar carrito"
   return (
     <div
       className="h-full z-50"
@@ -121,7 +127,7 @@ const CartDropdown = ({
               <button
                 onClick={close}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
-                aria-label={t("closeCart")}
+                aria-label={closeCartLabel}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
