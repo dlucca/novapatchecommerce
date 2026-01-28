@@ -1,7 +1,7 @@
 "use client"
 
 import { RadioGroup } from "@headlessui/react"
-import { isStripe as isStripeFunc, isMercadoPago, paymentInfoMap } from "@lib/constants"
+import { isStripe as isStripeFunc, isMercadoPago, isOpenpay, paymentInfoMap } from "@lib/constants"
 import { initiatePaymentSession } from "@lib/data/cart"
 import { CreditCard } from "@medusajs/icons"
 import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
@@ -10,6 +10,7 @@ import PaymentContainer, {
   StripeCardContainer,
 } from "@modules/checkout/components/payment-container"
 import MercadoPagoPayment from "@modules/checkout/components/payment/mercadopago-payment"
+import OpenpayPayment from "@modules/checkout/components/payment/openpay-payment"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 
@@ -43,7 +44,7 @@ const Payment = ({
   const setPaymentMethod = async (method: string) => {
     setError(null)
     setSelectedPaymentMethod(method)
-    if (isStripeFunc(method) || isMercadoPago(method)) {
+    if (isStripeFunc(method) || isMercadoPago(method) || isOpenpay(method)) {
       await initiatePaymentSession(cart, {
         provider_id: method,
       })
@@ -171,6 +172,22 @@ const Payment = ({
                           </div>
                         )}
                       </PaymentContainer>
+                    ) : isOpenpay(paymentMethod.id) ? (
+                      <PaymentContainer
+                        paymentInfoMap={paymentInfoMap}
+                        paymentProviderId={paymentMethod.id}
+                        selectedPaymentOptionId={selectedPaymentMethod}
+                      >
+                        {selectedPaymentMethod === paymentMethod.id && activeSession && (
+                          <div className="mt-4">
+                            <OpenpayPayment
+                              cart={cart}
+                              session={activeSession}
+                              onPaymentCompleted={() => handleSubmit()}
+                            />
+                          </div>
+                        )}
+                      </PaymentContainer>
                     ) : (
                       <PaymentContainer
                         paymentInfoMap={paymentInfoMap}
@@ -250,6 +267,8 @@ const Payment = ({
                       ? cardBrand
                       : isMercadoPago(selectedPaymentMethod)
                       ? "Mercado Pago"
+                      : isOpenpay(selectedPaymentMethod)
+                      ? "Openpay"
                       : "Otro paso aparecerá"}
                   </Text>
                 </div>

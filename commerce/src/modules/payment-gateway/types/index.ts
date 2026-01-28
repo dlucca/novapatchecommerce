@@ -1,4 +1,4 @@
-export type PaymentProvider = "mercadopago"
+export type PaymentProvider = "mercadopago" | "openpay"
 
 export type Region = "br" | "mx"
 
@@ -137,7 +137,12 @@ export interface WebhookResult {
 
 export interface PaymentGatewayConfig {
   provider: PaymentProvider
-  accessToken: string
+  // MercadoPago authentication
+  accessToken?: string
+  // Openpay authentication
+  merchantId?: string
+  privateKey?: string
+  // Common fields
   publicKey?: string
   webhookSecret?: string
   sandbox?: boolean

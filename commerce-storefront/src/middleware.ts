@@ -25,6 +25,7 @@ export default clerkMiddleware(async (_auth, req: NextRequest) => {
     const locale = getLocaleFromCountryCode(countryCode)
     const requestHeaders = new Headers(req.headers)
     requestHeaders.set("x-next-intl-locale", locale)
+    requestHeaders.set("x-country-code", countryCode)
 
     const response = NextResponse.next({
       request: {
@@ -33,6 +34,7 @@ export default clerkMiddleware(async (_auth, req: NextRequest) => {
     })
 
     response.headers.set("x-next-intl-locale", locale)
+    response.headers.set("x-country-code", countryCode)
 
     return response
   }

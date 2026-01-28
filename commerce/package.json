@@ -37,6 +37,7 @@
     "util:configure-brazil": "medusa exec ./src/scripts/configure-brazil.ts",
     "util:add-shipping-prices": "medusa exec ./src/scripts/add-shipping-prices.ts",
     "util:diagnose-shipping": "medusa exec ./src/scripts/diagnose-shipping.ts",
+    "util:register-openpay": "medusa exec ./src/scripts/register-openpay-provider.ts",
     "util:check-shipping-db": "medusa exec ./src/scripts/check-shipping-db.ts",
     "util:diagnose-brazil": "medusa exec ./src/scripts/diagnose-brazil-shipping.ts",
     "util:assign-shipping-profiles": "medusa exec ./src/scripts/assign-shipping-profiles.ts",
@@ -60,6 +61,7 @@
     "@react-email/components": "0.5.5",
     "awilix": "^8.0.1",
     "mercadopago": "^2.11.0",
+    "openpay": "^1.0.5",
     "pg": "^8.13.0",
     "resend": "^6.1.2"
   },

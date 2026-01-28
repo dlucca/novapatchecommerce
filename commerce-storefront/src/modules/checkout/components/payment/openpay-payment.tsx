@@ -2,7 +2,6 @@
 
 import { HttpTypes } from "@medusajs/types"
 import { useState } from "react"
-import { useFormState } from "react-dom"
 import { handleOpenpayPayment } from "@/lib/data/openpay"
 
 type OpenpayPaymentProps = {

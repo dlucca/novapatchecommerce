@@ -311,6 +311,7 @@
   },
   "myCart": {
     "myCart": "Mi carrito",
+    "closeCart": "Cerrar carrito",
     "quantity": "Cantidad",
     "total": "Total",
     "subtotal": "Subtotal",

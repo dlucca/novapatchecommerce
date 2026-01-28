@@ -2,6 +2,7 @@ import type { IPaymentGateway, ISubscriptionGateway } from "../interfaces"
 import type { PaymentProvider, PaymentGatewayConfig } from "../types"
 import { getProviderByRegion } from "../config/region-config"
 import { MercadoPagoProvider } from "../providers/mercadopago/mercadopago.provider"
+import { OpenpayProvider } from "../providers/openpay/openpay.provider"
 
 const providerRegistry: Map<PaymentProvider, () => Promise<new () => IPaymentGateway>> = new Map()
 const instanceCache: Map<string, IPaymentGateway> = new Map()
@@ -95,12 +96,23 @@ function getConfigByRegion(region: string, provider: PaymentProvider): PaymentGa
     process.env[`${providerPrefix}_${regionSuffix}_SANDBOX`] === "true" ||
     process.env[`${providerPrefix}_SANDBOX`] === "true"
 
+  // Openpay-specific fields
+  const merchantId = 
+    process.env[`${providerPrefix}_${regionSuffix}_MERCHANT_ID`] ||
+    process.env[`${providerPrefix}_MERCHANT_ID`]
+
+  const privateKey = 
+    process.env[`${providerPrefix}_${regionSuffix}_PRIVATE_KEY`] ||
+    process.env[`${providerPrefix}_PRIVATE_KEY`]
+
   return {
     provider,
     accessToken,
     publicKey,
     webhookSecret,
     sandbox,
+    merchantId,
+    privateKey,
   }
 }
 
@@ -116,4 +128,8 @@ export function getDefaultConfig(): PaymentGatewayConfig {
 
 registerProvider("mercadopago", async () => {
   return MercadoPagoProvider
+})
+
+registerProvider("openpay", async () => {
+  return OpenpayProvider
 })

@@ -34,6 +34,10 @@ export const paymentInfoMap: Record<
     title: "Mercado Pago",
     icon: <CreditCard />,
   },
+  pp_openpay_openpay: {
+    title: "Openpay",
+    icon: <CreditCard />,
+  },
   // Add more payment providers here
 }
 
@@ -49,6 +53,9 @@ export const isManual = (providerId?: string) => {
 }
 export const isMercadoPago = (providerId?: string) => {
   return providerId === "pp_mercadopago_mercadopago" || providerId?.includes("mercadopago")
+}
+export const isOpenpay = (providerId?: string) => {
+  return providerId === "pp_openpay_openpay" || providerId?.includes("openpay")
 }
 
 // Add currencies that don't need to be divided by 100

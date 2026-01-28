@@ -1,9 +1,10 @@
 import { currentUser } from '@clerk/nextjs/server'
-import { listRegions } from "@lib/data/regions"
+import { listRegions, getRegion } from "@lib/data/regions"
 import { retrieveCart } from "@lib/data/cart"
 import { logger } from "@lib/util/logger"
 import { StoreRegion } from "@medusajs/types"
 import { featureFlags } from "@lib/feature-flags"
+import { headers } from 'next/headers'
 import NavClient from "./nav-client"
 
 export default async function Nav() {
@@ -33,10 +34,25 @@ export default async function Nav() {
       })
     : []
 
-  const cart = await retrieveCart().catch((error) => {
+  // Validate cart belongs to current region
+  let cart = null
+  try {
+    const headersList = await headers()
+    const countryCode = headersList.get('x-country-code')
+
+    cart = await retrieveCart()
+    
+    // If we have a countryCode and a cart, validate they match
+    if (cart && countryCode) {
+      const region = await getRegion(countryCode)
+      if (region && cart.region_id !== region.id) {
+        // Cart belongs to different region, don't show it
+        cart = null
+      }
+    }
+  } catch (error) {
     logger.error('Failed to retrieve cart', error as Error, { context: 'Nav' })
-    return null
-  })
+  }
 
   return <NavClient user={user} cart={cart} />
 }

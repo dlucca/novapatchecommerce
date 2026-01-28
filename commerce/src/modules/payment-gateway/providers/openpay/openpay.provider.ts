@@ -34,17 +34,27 @@ export class OpenpayProvider implements ISubscriptionGateway {
         console.log("  Merchant ID:", config.merchantId)
         console.log("  Sandbox:", config.sandbox)
 
-        // Dynamic import of Openpay SDK
-        const Openpay = require("openpay")
+        try {
+            // Dynamic import of Openpay SDK
+            const Openpay = require("openpay")
 
-        // Openpay SDK initialization: new Openpay(merchantId, privateKey, isProduction)
-        this.client = new Openpay(
-            config.merchantId,
-            config.privateKey,
-            !config.sandbox // false = sandbox, true = production
-        )
-        
-        console.log("Openpay client initialized successfully")
+            // Openpay SDK initialization: new Openpay(merchantId, privateKey, isProduction)
+            this.client = new Openpay(
+                config.merchantId,
+                config.privateKey,
+                !config.sandbox // false = sandbox, true = production
+            )
+            
+            console.log("Openpay client initialized")
+            console.log("  Client type:", typeof this.client)
+            console.log("  Client keys:", Object.keys(this.client || {}))
+            console.log("  Has checkouts?", !!this.client?.checkouts)
+            console.log("  Has charges?", !!this.client?.charges)
+            console.log("  Has customers?", !!this.client?.customers)
+        } catch (error: any) {
+            console.error("Failed to initialize Openpay SDK:", error)
+            throw new Error(`Openpay SDK initialization failed: ${error.message}`)
+        }
     }
 
     isConfigured(): boolean {
@@ -61,39 +71,112 @@ export class OpenpayProvider implements ISubscriptionGateway {
         this.ensureConfigured()
 
         console.log("=== Openpay createPreference called ===")
+        console.log("Input validation:")
+        console.log("  External reference:", input.externalReference)
+        console.log("  Payer email:", input.payer.email)
+        console.log("  Items count:", input.items.length)
+        
+        if (!input.items || input.items.length === 0) {
+            throw new Error("No items provided for Openpay checkout")
+        }
+
         console.log("Items received:")
         input.items.forEach((item, idx) => {
             console.log(`  [${idx}] ${item.title}: unitPrice=${item.unitPrice}, quantity=${item.quantity}, total=${item.unitPrice * item.quantity}`)
         })
 
-        // Calculate total amount from items
+        // Calculate total amount from items (Openpay expects amount in pesos, not centavos)
         const totalAmount = input.items.reduce((sum, item) => {
-            return sum + item.unitPrice * item.quantity
-        }, 0)
+            return sum + (item.unitPrice * item.quantity)
+        }, 0) / 100 // Convert from centavos to pesos
         
         console.log(`Total amount to charge: ${totalAmount} MXN`)
 
-        // Create a unique order_id by appending a timestamp
-        const uniqueOrderId = `${input.externalReference}-${Date.now()}`
+        if (totalAmount <= 0) {
+            throw new Error(`Invalid total amount: ${totalAmount}. Amount must be greater than 0`)
+        }
 
-        // For Openpay with direct charges via Openpay.js:
-        // The frontend will use Openpay.js to tokenize card details
-        // The backend will receive the token and create a charge
-        // No hosted checkout URL - customer enters details in Medusa checkout
-        
-        const preferenceId = uniqueOrderId
-        
-        console.log("Openpay preference created")
-        console.log("  Preference ID:", preferenceId)
-        console.log("  Amount to charge:", totalAmount, "MXN")
-        console.log("  Using Openpay.js for frontend tokenization")
+        // Prepare checkout data for Openpay
+        // By default, Openpay checkouts show ALL available payment methods
+        const checkoutData = {
+            amount: totalAmount,
+            description: input.items.map((item) => item.title).join(", ").substring(0, 250), // Limit description length
+            order_id: input.externalReference,
+            currency: "MXN",
+            redirect_url: input.backUrls.success,
+            customer: {
+                name: input.payer.firstName || "Cliente",
+                last_name: input.payer.lastName || "Novapatch",
+                email: input.payer.email,
+            },
+        }
 
-        // Return preference - for Openpay, initPoint is just the preferenceId
-        // (not a URL like MercadoPago, but needed for type compatibility)
-        return {
-            preferenceId,
-            initPoint: `openpay:${preferenceId}`, // Special marker for Openpay.js flow
-            sandboxInitPoint: this.config?.sandbox ? `openpay:${preferenceId}` : undefined,
+        console.log("Creating Openpay checkout with data:")
+        console.log("  Amount:", checkoutData.amount, "MXN")
+        console.log("  Order ID:", checkoutData.order_id)
+        console.log("  Customer email:", checkoutData.customer.email)
+        console.log("  Redirect URL:", checkoutData.redirect_url)
+        console.log("  Merchant ID:", this.config!.merchantId)
+
+        // Use Openpay REST API directly since Node SDK doesn't support checkouts
+        const baseUrl = this.config!.sandbox 
+            ? "https://sandbox-api.openpay.mx/v1" 
+            : "https://api.openpay.mx/v1"
+        
+        const url = `${baseUrl}/${this.config!.merchantId}/checkouts`
+        
+        // Basic auth with private key
+        const auth = Buffer.from(`${this.config!.privateKey}:`).toString('base64')
+        
+        console.log("Calling Openpay REST API:")
+        console.log("  URL:", url)
+        console.log("  Checkout data:", JSON.stringify(checkoutData, null, 2))
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${auth}`,
+                },
+                body: JSON.stringify(checkoutData),
+            })
+
+            const responseText = await response.text()
+            console.log("Openpay API response status:", response.status)
+            console.log("Openpay API response body:", responseText)
+
+            if (!response.ok) {
+                let errorMessage = `Openpay API error: ${response.status}`
+                try {
+                    const errorData = JSON.parse(responseText)
+                    errorMessage = errorData.description || errorData.message || errorMessage
+                } catch (e) {
+                    errorMessage = responseText || errorMessage
+                }
+                throw new Error(errorMessage)
+            }
+
+            const body = JSON.parse(responseText)
+            
+            console.log("Openpay checkout created successfully")
+            console.log("  Checkout ID:", body.id)
+            console.log("  Checkout Link:", body.checkout_link)
+
+            const paymentUrl = body.checkout_link
+            if (!paymentUrl) {
+                console.error("No checkout_link in response:", body)
+                throw new Error("Openpay did not return a checkout link")
+            }
+
+            return {
+                preferenceId: body.id,
+                initPoint: paymentUrl,
+                sandboxInitPoint: this.config?.sandbox ? paymentUrl : undefined,
+            }
+        } catch (error: any) {
+            console.error("Error calling Openpay API:", error)
+            throw new Error(`Openpay checkout error: ${error.message}`)
         }
     }
 
@@ -106,63 +189,6 @@ export class OpenpayProvider implements ISubscriptionGateway {
                     reject(new Error(`Openpay get payment error: ${error.description || error.message}`))
                     return
                 }
-
-                resolve(this.mapPaymentInfo(body))
-            })
-        })
-    }
-
-    async createChargeWithToken(
-        preferenceId: string,
-        tokenId: string,
-        amount: number,
-        description: string,
-        payer: {
-            email: string
-            firstName?: string
-            lastName?: string
-        }
-    ): Promise<PaymentInfo> {
-        this.ensureConfigured()
-
-        console.log("=== Creating Openpay charge with token ===")
-        console.log("  Preference ID:", preferenceId)
-        console.log("  Token ID:", tokenId)
-        console.log("  Amount:", amount, "MXN")
-        console.log("  Description:", description)
-        console.log("  Payer:", payer.email)
-
-        return new Promise((resolve, reject) => {
-            const chargeData = {
-                source_id: tokenId,
-                amount: amount,
-                currency: "MXN",
-                order_id: preferenceId,
-                description: description,
-                customer: {
-                    email: payer.email,
-                    name: payer.firstName || "Customer",
-                    last_name: payer.lastName || "",
-                },
-                device_session_id: "", // Can be added later for fraud detection
-            }
-
-            console.log("Calling charges.create() with:", {
-                ...chargeData,
-                source_id: "[REDACTED]",
-            })
-
-            this.client!.charges.create(chargeData, (error: any, body: any) => {
-                if (error) {
-                    console.error("Openpay charge error:", error)
-                    reject(new Error(`Openpay charge error: ${error.description || error.message}`))
-                    return
-                }
-
-                console.log("Charge created successfully")
-                console.log("  Charge ID:", body.id)
-                console.log("  Status:", body.status)
-                console.log("  Amount:", body.amount)
 
                 resolve(this.mapPaymentInfo(body))
             })

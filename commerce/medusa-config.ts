@@ -140,23 +140,6 @@ module.exports = defineConfig({
         ],
       },
     },
-    {
-      resolve: '@medusajs/medusa/payment',
-      options: {
-        providers: [
-          {
-            resolve: './src/modules/payment-gateway/providers/mercadopago/medusa-provider',
-            id: 'mercadopago',
-            options: {
-              accessToken: process.env.MERCADOPAGO_BR_ACCESS_TOKEN || process.env.MERCADOPAGO_ACCESS_TOKEN,
-              publicKey: process.env.MERCADOPAGO_BR_PUBLIC_KEY || process.env.MERCADOPAGO_PUBLIC_KEY,
-              webhookSecret: process.env.MERCADOPAGO_BR_WEBHOOK_SECRET || process.env.MERCADOPAGO_WEBHOOK_SECRET,
-              sandbox: process.env.MERCADOPAGO_BR_SANDBOX === 'true' || process.env.MERCADOPAGO_SANDBOX === 'true',
-            },
-          },
-        ],
-      },
-    },
   ],
   admin: {
     disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
