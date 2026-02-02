@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text } from "@medusajs/ui"
+import { useTranslations } from "next-intl"
 
 type OrderDetailsProps = {
   order: HttpTypes.StoreOrder
@@ -7,9 +8,11 @@ type OrderDetailsProps = {
 }
 
 const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
+  const t = useTranslations("orderStatus")
+  
   const formatStatus = (str: string) => {
-    const formatted = str.split("_").join(" ")
-    return formatted.slice(0, 1).toUpperCase() + formatted.slice(1)
+    const statusKey = str.toLowerCase().replace(/ /g, "_")
+    return t(statusKey) || (str.split("_").join(" ").slice(0, 1).toUpperCase() + str.slice(1))
   }
 
   const formatDate = (dateInput: string | Date) => {
