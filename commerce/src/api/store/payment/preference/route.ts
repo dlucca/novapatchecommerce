@@ -29,8 +29,16 @@ export async function POST(
         "items.*",
         "items.variant.*",
         "items.variant.product.*",
+        "items.tax_total",
+        "items.subtotal",
+        "items.total",
+        "items.discount_total",
         "shipping_address.*",
-        "shipping_methods.*"
+        "shipping_methods.*",
+        "shipping_methods.tax_total",
+        "shipping_methods.total",
+        "promotions.*",
+        "promotions.code"
       ],
       filters: { id: cartId }
     })
@@ -64,16 +72,19 @@ export async function POST(
 
     const frontendUrl = process.env.STORE_URL || "http://localhost:8000"
 
+    // Usar los totales calculados del cart (incluyendo descuentos)
     const items = cart.items.map((item: any) => ({
       id: item.id,
       title: item.variant?.product?.title || item.title || "Product",
       description: item.variant?.product?.description,
       quantity: item.quantity,
-      unitPrice: Number(item.unit_price || 0),
+      // Usar el total del item (que ya incluye descuentos) dividido por la cantidad
+      unitPrice: Number((item.total || item.unit_price * item.quantity) / item.quantity),
       currencyId: cart.currency_code.toUpperCase(),
     }))
 
-    const shippingTotal = cart.shipping_methods?.[0]?.amount || 0
+    // Agregar envío si existe
+    const shippingTotal = cart.shipping_methods?.[0]?.total || cart.shipping_methods?.[0]?.amount || 0
     if (shippingTotal > 0) {
       items.push({
         id: "shipping",

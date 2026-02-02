@@ -405,5 +405,27 @@
     "myOrders": "Meus Pedidos",
     "mySubscriptions": "Minhas Assinaturas",
     "logout": "Sair"
+  },
+  "orderStatus": {
+    "pending": "Pendente",
+    "processing": "Em processamento",
+    "completed": "Concluído",
+    "canceled": "Cancelado",
+    "requires_action": "Requer ação",
+    "not_fulfilled": "Não cumprido",
+    "partially_fulfilled": "Parcialmente cumprido",
+    "fulfilled": "Cumprido",
+    "partially_shipped": "Parcialmente enviado",
+    "shipped": "Enviado",
+    "partially_returned": "Parcialmente devolvido",
+    "returned": "Devolvido",
+    "awaiting": "Aguardando",
+    "not_paid": "Não pago",
+    "awaiting_payment": "Aguardando pagamento",
+    "paid": "Pago",
+    "partially_refunded": "Parcialmente reembolsado",
+    "refunded": "Reembolsado",
+    "captured": "Capturado",
+    "authorized": "Autorizado"
   }
 }
