@@ -1,4 +1,4 @@
-import { retrieveCart } from "@lib/data/cart"
+import { getOrSetCart } from "@lib/data/cart"
 import { logger } from "@lib/util/logger"
 import CartTemplate from "@modules/cart/pages"
 import { Metadata } from "next"
@@ -10,11 +10,13 @@ export const metadata: Metadata = {
 }
 
 type PageProps = {
-  params: { countryCode: string }
+  params: Promise<{ countryCode: string }>
 }
 
 export default async function Cart({ params }: PageProps) {
-  const cart = await retrieveCart().catch((error) => {
+  const { countryCode } = await params
+  
+  const cart = await getOrSetCart(countryCode).catch((error) => {
     logger.error("Failed to retrieve cart", error as Error, { context: 'CartPage' })
     return null
   })

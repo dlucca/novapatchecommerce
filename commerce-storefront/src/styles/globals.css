@@ -5,10 +5,21 @@
 /* Outfit Font - Default Font */
 :root {
   --font-outfit: 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  --type-hero: clamp(2.75rem, 4.5vw + 0.5rem, 4.25rem);
+  --type-title: clamp(2rem, 3vw + 0.75rem, 3.5rem);
+  --type-subtitle: clamp(1.125rem, 1.5vw + 0.25rem, 1.25rem);
+  --type-hero-subtitle: clamp(1rem, 1.5vw + 0.5rem, 1.375rem);
+  --type-body: clamp(1rem, 1.25vw, 1.125rem);
+  --type-button: clamp(0.875rem, 1vw, 1rem);
 }
 
 html {
   font-family: var(--font-outfit), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Ubuntu', sans-serif;
+}
+
+body {
+  font-size: var(--type-body);
+  line-height: 1.6;
 }
 
 /* Global font weights - Outfit */
@@ -30,21 +41,27 @@ h6 {
 
 /* Global title sizes - Títulos más grandes */
 h1 {
-  font-size: clamp(2.5rem, 4vw + 1rem, 4.5rem);
+  font-size: var(--type-hero);
   line-height: 1.1;
   color: var(--nova-blue-primary);
 }
 
 h2 {
-  font-size: clamp(2rem, 3vw + 0.75rem, 3.5rem);
+  font-size: var(--type-title);
   line-height: 1.2;
   color: var(--nova-blue-primary);
 }
 
 h3 {
-  font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.5rem);
+  font-size: var(--type-subtitle);
   line-height: 1.2;
   color: var(--nova-blue-primary);
+}
+
+p,
+li {
+  font-size: var(--type-body);
+  line-height: 1.6;
 }
 
 /* Novapatch Color Scheme */
@@ -124,6 +141,35 @@ h3 {
 
 @layer components {
   /* Solo mantener clases que no se pueden hacer fácilmente con Tailwind */
+  .type-hero {
+    font-size: var(--type-hero);
+    line-height: 1.05;
+  }
+
+  .type-title {
+    font-size: var(--type-title);
+    line-height: 1.2;
+  }
+
+  .type-subtitle {
+    font-size: var(--type-subtitle);
+    line-height: 1.4;
+  }
+
+  .type-hero-subtitle {
+    font-size: var(--type-hero-subtitle);
+    line-height: 1.6;
+  }
+
+  .type-body {
+    font-size: var(--type-body);
+    line-height: 1.6;
+  }
+
+  .type-button {
+    font-size: var(--type-button);
+    line-height: 1.2;
+  }
 }
 
 @layer utilities {

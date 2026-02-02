@@ -32,8 +32,7 @@ const serveStaticFiles = (req: Request, res: Response, next: NextFunction) => {
   const contentType = contentTypes[ext] || "application/octet-stream"
 
   res.setHeader("Content-Type", contentType)
-  // TODO: Add cache later 1 day (86400)
-  res.setHeader("Cache-Control", "public, max-age=0")
+  res.setHeader("Cache-Control", "public, max-age=86400")
   res.setHeader("Access-Control-Allow-Origin", "*")
 
   return res.sendFile(filePath)

@@ -1,5 +1,5 @@
 /**
- * ⚠️ DISABLED - Medusa Native Login Component
+ * DISABLED - Medusa Native Login Component
  *
  * This component is disabled because the project uses Clerk for authentication.
  * See /sign-in for login with Clerk.

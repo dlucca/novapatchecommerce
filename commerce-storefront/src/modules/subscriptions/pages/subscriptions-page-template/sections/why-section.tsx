@@ -1,139 +1,106 @@
 "use client"
 
-import { Heading, Text } from "@medusajs/ui"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { useTranslations } from "next-intl"
 
+const whySubscribeItems = [
+  {
+    icon: "/assets/suscription/ahorro.png",
+    titleKey: "slide1Title",
+    subtitleKey: "slide1Subtitle",
+  },
+  {
+    icon: "/assets/suscription/personalizar-sus.png",
+    titleKey: "slide2Title",
+    subtitleKey: "slide2Subtitle",
+  },
+  {
+    icon: "/assets/suscription/garantia.png",
+    titleKey: "slide3Title",
+    subtitleKey: "slide3Subtitle",
+  },
+]
+
 export default function SubscriptionsWhySection() {
   const t = useTranslations("subscriptions.whySubscribe")
-  const [titleVisible, setTitleVisible] = useState(false)
-  const titleRef = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setTitleVisible(true)
+            setIsVisible(true)
           }
         })
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     )
 
-    if (titleRef.current) {
-      observer.observe(titleRef.current)
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
     }
 
     return () => {
-      if (titleRef.current) {
-        observer.unobserve(titleRef.current)
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current)
       }
     }
   }, [])
 
   return (
-    <div className="relative" style={{ marginTop: 'clamp(8rem, 10vw, 12rem)' }}>
-      {/* Slide 1 - Con imagen de fondo */}
-      <div className="sticky top-0 min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
-        {/* Imagen de fondo */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/assets/hero/Girls.svg"
-            alt="Background"
-            fill
-            className="object-cover opacity-20"
-            priority
-          />
+    <section ref={sectionRef} className="bg-novapatch-bg-cream pt-24 pb-20 mt-20">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+        <div className="text-center mb-16">
+          <h2 className="type-title text-novapatch-title">
+            ¿Por Qué <span className="font-bold">suscribirse?</span>
+          </h2>
         </div>
-        
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-novapatch-bg-light/95 via-white/90 to-novapatch-bg-cream/95 z-0" />
-        
-        {/* Contenido */}
-        <div className="relative z-10 max-w-3xl px-8 text-center py-20">
-          <div 
-            ref={titleRef}
-            className={`transform transition-all duration-700 mb-12 ${
-              titleVisible 
-                ? 'opacity-100 translate-y-0' 
-                : 'opacity-0 -translate-y-5'
-            }`}
-          >
-            <Heading level="h2" className="text-3xl md:text-4xl font-bold text-novapatch-title mb-4">
-              {t("title")}
-            </Heading>
-          </div>
 
-          <div className="w-48 h-48 bg-white rounded-full flex items-center justify-center mx-auto mb-10 overflow-hidden shadow-2xl border-4 border-novapatch-button/30">
-            <Image
-              src="/assets/suscription/ahorrar-dinero.gif"
-              alt="Ahorra más"
-              width={180}
-              height={180}
-              className="object-contain"
-            />
-          </div>
-          <Heading level="h2" className="text-5xl md:text-6xl font-bold text-novapatch-title mb-8">
-            {t("slide1Title")}
-          </Heading>
-          <Text className="text-2xl text-gray-700 leading-relaxed mb-12">
-            {t("slide1Subtitle")}
-          </Text>
-          
-          {/* Indicador de scroll */}
-          <div className="flex flex-col items-center mt-16 animate-bounce">
-            <Text className="text-sm font-semibold text-novapatch-button mb-2">{t("scrollMore")}</Text>
-            <svg className="w-8 h-8 text-novapatch-button" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          </div>
+        <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 md:gap-0">
+          {whySubscribeItems.map((item, index) => (
+            <div
+              key={index}
+              className={`flex flex-col items-center text-center px-6 md:px-8 lg:px-12 py-4 transform transition-all duration-700 ${
+                isVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
+              } ${
+                index < whySubscribeItems.length - 1 
+                  ? "md:border-r md:border-novapatch-title/20" 
+                  : ""
+              }`}
+              style={{ transitionDelay: `${index * 150}ms` }}
+            >
+              <div className="w-20 h-20 md:w-24 md:h-24 flex items-center justify-center mb-4">
+                <Image
+                  src={item.icon}
+                  alt={t(item.titleKey)}
+                  width={80}
+                  height={80}
+                  className="object-contain"
+                />
+              </div>
+              
+              <h3 className="type-subtitle font-bold text-novapatch-title mb-2">
+                {t(item.titleKey)}
+              </h3>
+              
+              <p className="text-gray-600 type-body max-w-[250px] flex-grow">
+                {t(item.subtitleKey)}
+              </p>
+              
+              <div className="flex items-center gap-1 mt-4">
+                <div className="h-5 w-5 md:h-6 md:w-6 bg-novapatch-subscription-why-circle rounded-full"></div>
+                <div className="h-5 w-5 md:h-6 md:w-6 bg-novapatch-subscription-why-circle rounded-full"></div>
+                <div className="h-5 w-5 md:h-6 md:w-6 bg-novapatch-subscription-why-circle rounded-full"></div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-
-      {/* Slide 2 */}
-      <div className="sticky top-0 min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-novapatch-title/5 via-novapatch-bg-light to-white py-20">
-        <div className="max-w-3xl px-8 text-center">
-          <div className="w-48 h-48 bg-white rounded-full flex items-center justify-center mx-auto mb-10 overflow-hidden shadow-2xl border-4 border-novapatch-primary/40">
-            <Image
-              src="/assets/suscription/redes-sociales.gif"
-              alt="Personaliza tu suscripción"
-              width={180}
-              height={180}
-              className="object-contain"
-            />
-          </div>
-          <Heading level="h2" className="text-5xl md:text-6xl font-bold text-novapatch-title mb-8">
-            {t("slide2Title")}
-          </Heading>
-          <Text className="text-2xl text-gray-700 leading-relaxed">
-            {t("slide2Subtitle")}
-          </Text>
-        </div>
-      </div>
-
-      {/* Slide 3 */}
-      <div className="sticky top-0 min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-novapatch-bg-cream via-novapatch-bg-light to-white py-20">
-        <div className="max-w-3xl px-8 text-center">
-          <div className="w-48 h-48 bg-white rounded-full flex items-center justify-center mx-auto mb-10 overflow-hidden shadow-2xl border-4 border-novapatch-testimonial/40">
-            <Image
-              src="/assets/suscription/blindaje.gif"
-              alt="Garantía de 30 Días"
-              width={180}
-              height={180}
-              className="object-contain"
-            />
-          </div>
-          <Heading level="h2" className="text-5xl md:text-6xl font-bold text-novapatch-title mb-8">
-            {t("slide3Title")}
-          </Heading>
-          <Text className="text-2xl text-gray-700 leading-relaxed">
-            {t("slide3Subtitle")}
-          </Text>
-        </div>
-      </div>
-    </div>
+    </section>
   )
 }
-

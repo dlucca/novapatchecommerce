@@ -106,7 +106,7 @@
       "line2Bold": "cuerpo necesita"
     },
     "description": "Cada uno está formulado para activar un aspecto diferente de tu bienestar natural.",
-    "cta": "Suscribete y ahorra"
+    "cta": "Suscríbete y ahorra"
   },
   "comparison": {
     "title": {
@@ -176,13 +176,13 @@
       "step1Title": "Elige tus Parches",
       "step1Description": "Navega por nuestra tienda y selecciona los parches que necesitas.",
       "step2Title": "Selecciona Suscripción",
-      "step2Description": "Elige la opción 'Suscribirse y Ahorrar' al agregar al carrito.",
+      "step2Description": "Elige la opción 'Suscríbete y ahorra' al agregar al carrito.",
       "step3Title": "Elige Frecuencia",
       "step3Description": "Selecciona cada cuánto quieres recibir tus parches.",
       "step4Title": "Recibe y Disfruta",
       "step4Description": "Tus parches llegarán antes de que se te acaben.",
       "finalNote": "La próxima vez que compres en novapatch.com, selecciona la opción ",
-      "finalNoteHighlight": "Suscribirse y Ahorrar",
+      "finalNoteHighlight": "Suscríbete y ahorra",
       "finalNoteEnd": ", luego agrégalo al carrito. ¡Mira esos ahorros instantáneos! Elige tu calendario de entrega y tus parches llegarán antes de que se te acaben."
     },
     "plansSection": {
@@ -214,12 +214,26 @@
     },
     "hero": {
       "title": "La Ciencia Detrás de NovaPatch",
-      "subtitle": "Descubre por qué los parches son el futuro de la suplementación: una solución sin pastillas, de alta absorción para nutrientes esenciales sin rellenos."
+      "subtitle": "Descubre por qué los parches son el futuro de la suplementación: una solución sin pastillas, de alta absorción para nutrientes esenciales sin rellenos.",
+      "cta": "Suscribirse ahora"
     },
     "whyPatches": {
       "title": "¿Por Qué Parches?",
-      "paragraph1": "¿Sabías que la mayoría de los suplementos vitamínicos contienen ingredientes que tu cuerpo no necesita? Eso es difícil de tragar, así que estamos eliminando las pastillas (y las gomitas) de la ecuación y solucionando el problema con parches.",
-      "paragraph2": "Nuestros parches transdérmicos ofrecen una alternativa revolucionaria a las vitaminas tradicionales, proporcionando una absorción directa y eficiente sin pasar por el sistema digestivo.",
+      "paragraph1": "¿Sabías que la mayoría de los suplementos vitamínicos contienen ingredientes que tu cuerpo no necesita? Por eso decidimos dejar de lado las pastillas y las gomitas, y optar por un formato más simple: parches.",
+      "paragraph2": "Una alternativa práctica para quienes buscan cuidarse sin sumar pasos innecesarios.",
+      "paragraph3": "Nuestros parches ofrecen una alternativa revolucionaria a las vitaminas tradicionales, proporcionando una absorción directa y eficiente sin pasar por el sistema digestivo.",
+      "noFillers": {
+        "title": "Sin rellenos"
+      },
+      "vegan": {
+        "title": "100% vegano"
+      },
+      "glutenFree": {
+        "title": "Libre de gluten"
+      },
+      "fastAction": {
+        "title": "Acción rápida"
+      },
       "features": {
         "noFillers": "Sin Rellenos",
         "vegan": "Vegano",
@@ -271,9 +285,10 @@
     },
     "story": {
       "title": "Nuestra Historia",
-      "paragraph1": "NovaPatch nació de una simple pregunta: ¿Por qué seguimos tomando vitaminas de la misma manera que hace 50 años? En un mundo donde la tecnología avanza constantemente, la suplementación se había quedado atrás.",
-      "paragraph2": "Nuestro equipo de científicos, médicos y diseñadores se unió con una misión clara: crear una forma más eficiente, conveniente y efectiva de obtener los nutrientes que nuestro cuerpo necesita. Después de años de investigación y desarrollo, nacieron los parches NovaPatch.",
-      "paragraph3": "Hoy, miles de personas en todo el mundo confían en NovaPatch para su bienestar diario. No somos solo una empresa de suplementos; somos una comunidad comprometida con revolucionar la forma en que cuidamos nuestra salud."
+      "paragraph1": "Novapatch nace del deseo de <strong>simplificar el cuidado personal.</strong>",
+      "paragraph2": "Observamos que muchas personas buscan bienestar, pero no siempre encuentran formatos que se adapten a su ritmo de vida.",
+      "paragraph3": "Por eso desarrollamos una alternativa pensada para <strong>integrarse naturalmente al día a día.</strong>",
+      "paragraph4": "Novapatch no busca cambiarlo todo, sino hacerlo <strong>más simple.</strong>"
     }
   },
   "store": {
@@ -311,6 +326,7 @@
   },
   "myCart": {
     "myCart": "Mi carrito",
+    "closeCart": "Cerrar carrito",
     "quantity": "Cantidad",
     "total": "Total",
     "subtotal": "Subtotal",

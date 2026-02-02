@@ -50,7 +50,7 @@ export async function generateStaticParams() {
 
     return staticParams
   } catch (error) {
-    console.error('⚠️ Error generating static params for collections:', error)
+    console.error('Error generating static params for collections:', error)
     // Return empty array to allow build to continue
     // Pages will be generated on-demand (ISR)
     return []

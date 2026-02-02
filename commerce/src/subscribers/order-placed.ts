@@ -132,12 +132,12 @@ export default async function orderPlacedHandler({
     })
 
     if (error) {
-      console.error('❌ Error al enviar confirmación de pedido:', error)
+      console.error(' Error al enviar confirmación de pedido:', error)
       return
     }
 
   } catch (error) {
-    console.error('❌ Error al enviar confirmación de pedido:', error)
+    console.error(' Error al enviar confirmación de pedido:', error)
   }
 }
 

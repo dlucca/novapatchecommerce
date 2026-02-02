@@ -48,6 +48,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       }}
     >
       <html lang="es" data-mode="light" className={outfit.variable} suppressHydrationWarning>
+        <head />
         <body className={`${outfit.variable} ${outfit.className}`} suppressHydrationWarning>
           <ClerkMedusaSyncProvider>
             <a href="#main-content" className="skip-to-content">

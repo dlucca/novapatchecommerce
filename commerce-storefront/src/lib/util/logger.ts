@@ -26,7 +26,7 @@ class Logger {
    */
   debug(message: string, ...args: any[]): void {
     if (isDev) {
-      console.log(`🔍 ${message}`, ...args)
+      console.log(`${message}`, ...args)
     }
   }
 
@@ -35,7 +35,7 @@ class Logger {
    */
   info(message: string, ...args: any[]): void {
     if (isDev) {
-      console.info(`ℹ️  ${message}`, ...args)
+      console.info(`ℹ${message}`, ...args)
     }
   }
 
@@ -45,7 +45,7 @@ class Logger {
   warn(message: string, options?: LogOptions, ...args: any[]): void {
     if (isDev || options?.force) {
       const formatted = this.formatMessage('warn', message, options?.context)
-      console.warn(`⚠️  ${formatted}`, ...args)
+      console.warn(`${formatted}`, ...args)
     }
   }
 
@@ -54,7 +54,7 @@ class Logger {
    */
   error(message: string, error?: Error | unknown, options?: LogOptions): void {
     const formatted = this.formatMessage('error', message, options?.context)
-    console.error(`❌ ${formatted}`, error)
+    console.error(`${formatted}`, error)
     
     // In production, you might want to send to error tracking service
     if (!isDev && isClient) {
@@ -68,7 +68,7 @@ class Logger {
    */
   success(message: string, ...args: any[]): void {
     if (isDev) {
-      console.log(`✅ ${message}`, ...args)
+      console.log(`${message}`, ...args)
     }
   }
 

@@ -14,13 +14,16 @@ import {
   setCartId,
 } from "./cookies"
 import { getRegion } from "./regions"
+import { cookies as nextCookies } from "next/headers"
 
 /**
  * Retrieves a cart by its ID. If no ID is provided, it will use the cart ID from the cookies.
  * @param cartId - optional - The ID of the cart to retrieve.
- * @returns The cart object if found, or null if not found.
+ * @param fields - optional - Fields to retrieve
+ * @param expectedRegionId - optional - If provided, validates that the cart belongs to this region
+ * @returns The cart object if found, or null if not found or region doesn't match.
  */
-export async function retrieveCart(cartId?: string, fields?: string) {
+export async function retrieveCart(cartId?: string, fields?: string, expectedRegionId?: string) {
   const id = cartId || (await getCartId())
   fields ??= "*items, *region, *items.product, *items.variant, *items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name, *items.variant.product.images"
 
@@ -46,7 +49,13 @@ export async function retrieveCart(cartId?: string, fields?: string) {
       next,
       cache: "no-store",
     })
-    .then(({ cart }: { cart: HttpTypes.StoreCart }) => cart)
+    .then(({ cart }: { cart: HttpTypes.StoreCart }) => {
+      // If expectedRegionId is provided, validate that the cart belongs to this region
+      if (expectedRegionId && cart.region_id !== expectedRegionId) {
+        return null
+      }
+      return cart
+    })
     .catch(() => null)
 }
 
@@ -57,12 +66,14 @@ export async function getOrSetCart(countryCode: string) {
     throw new Error(`Region not found for country code: ${countryCode}`)
   }
 
-  let cart = await retrieveCart(undefined, 'id,region_id')
+  // Retrieve cart only if it belongs to the correct region - get full cart data
+  let cart = await retrieveCart(undefined, undefined, region.id)
 
   const headers = {
     ...(await getAuthHeaders()),
   }
 
+  // If no cart exists for this region, create one
   if (!cart) {
     const cartResp = await sdk.store.cart.create(
       { region_id: region.id },
@@ -73,12 +84,6 @@ export async function getOrSetCart(countryCode: string) {
 
     await setCartId(cart.id)
 
-    const cartCacheTag = await getCacheTag("carts")
-    revalidateTag(cartCacheTag)
-  }
-
-  if (cart && cart?.region_id !== region.id) {
-    await sdk.store.cart.update(cart.id, { region_id: region.id }, {}, headers)
     const cartCacheTag = await getCacheTag("carts")
     revalidateTag(cartCacheTag)
   }
@@ -130,6 +135,12 @@ export async function addToCart({
 
   if (!cart) {
     throw new Error("Error retrieving or creating cart")
+  }
+
+  // Ensure the cart ID is saved in cookies
+  const currentCartId = await getCartId()
+  if (currentCartId !== cart.id) {
+    await setCartId(cart.id)
   }
 
   const headers = {
@@ -516,4 +527,14 @@ export async function listCartOptions() {
     headers,
     cache: "force-cache",
   })
+}
+
+export async function clearCart() {
+  const cookies = await nextCookies()
+  cookies.set("_medusa_cart_id", "", {
+    maxAge: -1,
+  })
+  
+  const cartCacheTag = await getCacheTag("carts")
+  revalidateTag(cartCacheTag)
 }

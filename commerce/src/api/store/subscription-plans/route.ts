@@ -25,17 +25,10 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
           if (promotions.length > 0) {
             const promotion = promotions[0]
-            console.log(`✅ Promotion found:`, {
-              id: promotion.id,
-              code: promotion.code,
-              application_method: promotion.application_method,
-            })
 
             const applicationMethod = Array.isArray(promotion.application_method)
               ? promotion.application_method[0]
               : promotion.application_method
-
-            console.log(`📊 Application method:`, applicationMethod)
 
             return {
               ...plan,
@@ -56,7 +49,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
             promotion: null,
           }
         } catch (error: any) {
-          console.error(`❌ Error fetching promotion for ${plan.promotion_code}:`, error.message)
+          console.error(` Error fetching promotion for ${plan.promotion_code}:`, error.message)
           return {
             ...plan,
             promotion: null,

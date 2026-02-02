@@ -100,7 +100,7 @@ export default async function customerCreatedHandler({
     })
 
     if (error) {
-      console.error('❌ Error al enviar email:', error)
+      console.error(' Error al enviar email:', error)
       return
     }
 
@@ -113,7 +113,7 @@ export default async function customerCreatedHandler({
     })
 
   } catch (error) {
-    console.error('❌ Error al enviar email de bienvenida:', error)
+    console.error(' Error al enviar email de bienvenida:', error)
   }
 }
 
