@@ -23,6 +23,11 @@ export class MercadoPagoProvider implements ISubscriptionGateway {
 
   initialize(config: PaymentGatewayConfig): void {
     this.config = config
+    
+    if (!config.accessToken) {
+      throw new Error("MercadoPago requires accessToken in config")
+    }
+    
     this.client = new MercadoPagoConfig({
       accessToken: config.accessToken,
       options: { timeout: 10000 },
