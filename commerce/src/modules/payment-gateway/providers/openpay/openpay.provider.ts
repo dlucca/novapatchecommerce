@@ -86,8 +86,8 @@ export class OpenpayProvider implements ISubscriptionGateway {
             currency: "MXN",
             redirect_url: input.backUrls.success,
             customer: {
-                name: input.payer.firstName || "Cliente",
-                last_name: input.payer.lastName || "Novapatch",
+                name: "NovaPatch",
+                last_name: "Store",
                 email: input.payer.email,
             },
         }
