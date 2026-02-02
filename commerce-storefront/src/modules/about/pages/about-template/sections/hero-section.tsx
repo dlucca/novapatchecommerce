@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useTranslations } from "next-intl"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const WAVE_COLOR = "#83b5f4"
 
@@ -69,9 +70,15 @@ export default function AboutHeroSection() {
               {t("title")}
             </h1>
 
-            <p className="text-white font-light leading-relaxed text-[clamp(1rem,1.5vw+0.5rem,1.375rem)] max-w-[clamp(280px,50vw,500px)]">
+            <p className="text-white font-light leading-relaxed text-[clamp(1rem,1.5vw+0.5rem,1.375rem)] max-w-[clamp(280px,50vw,500px)] mb-[clamp(1.5rem,2vw,2rem)]">
               {t("subtitle")}
             </p>
+
+            <LocalizedClientLink href="/store">
+              <button className="bg-novapatch-button text-white font-medium rounded-lg shadow-md hover:opacity-90 transition-opacity px-[clamp(1.5rem,2vw,2rem)] py-[clamp(0.625rem,1vw,0.75rem)] text-[clamp(0.875rem,1vw,1rem)]">
+                {t("cta")}
+              </button>
+            </LocalizedClientLink>
           </div>
         </div>
       </div>

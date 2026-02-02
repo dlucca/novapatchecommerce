@@ -214,7 +214,8 @@
     },
     "hero": {
       "title": "A Ciência por Trás do NovaPatch",
-      "subtitle": "Descubra por que os adesivos são o futuro da suplementação: uma solução sem comprimidos, de alta absorção para nutrientes essenciais sem enchimentos."
+      "subtitle": "Descubra por que os adesivos são o futuro da suplementação: uma solução sem comprimidos, de alta absorção para nutrientes essenciais sem enchimentos.",
+      "cta": "Assine agora"
     },
     "whyPatches": {
       "title": "Por Que Adesivos?",

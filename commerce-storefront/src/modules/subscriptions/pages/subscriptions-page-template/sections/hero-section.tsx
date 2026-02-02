@@ -82,7 +82,7 @@ export default function SubscriptionsHeroSection() {
 
             <LocalizedClientLink href="/store">
               <button className="bg-novapatch-button text-white font-medium rounded-lg shadow-md hover:opacity-90 transition-opacity px-[clamp(1.5rem,2vw,2rem)] py-[clamp(0.625rem,1vw,0.75rem)] text-[clamp(0.875rem,1vw,1rem)]">
-                Suscribirte ahora
+                {t("cta")}
               </button>
             </LocalizedClientLink>
           </div>

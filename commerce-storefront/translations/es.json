@@ -106,7 +106,7 @@
       "line2Bold": "cuerpo necesita"
     },
     "description": "Cada uno está formulado para activar un aspecto diferente de tu bienestar natural.",
-    "cta": "Suscribete y ahorra"
+    "cta": "Suscríbete y ahorra"
   },
   "comparison": {
     "title": {
@@ -176,13 +176,13 @@
       "step1Title": "Elige tus Parches",
       "step1Description": "Navega por nuestra tienda y selecciona los parches que necesitas.",
       "step2Title": "Selecciona Suscripción",
-      "step2Description": "Elige la opción 'Suscribirse y Ahorrar' al agregar al carrito.",
+      "step2Description": "Elige la opción 'Suscríbete y ahorra' al agregar al carrito.",
       "step3Title": "Elige Frecuencia",
       "step3Description": "Selecciona cada cuánto quieres recibir tus parches.",
       "step4Title": "Recibe y Disfruta",
       "step4Description": "Tus parches llegarán antes de que se te acaben.",
       "finalNote": "La próxima vez que compres en novapatch.com, selecciona la opción ",
-      "finalNoteHighlight": "Suscribirse y Ahorrar",
+      "finalNoteHighlight": "Suscríbete y ahorra",
       "finalNoteEnd": ", luego agrégalo al carrito. ¡Mira esos ahorros instantáneos! Elige tu calendario de entrega y tus parches llegarán antes de que se te acaben."
     },
     "plansSection": {
@@ -214,7 +214,8 @@
     },
     "hero": {
       "title": "La Ciencia Detrás de NovaPatch",
-      "subtitle": "Descubre por qué los parches son el futuro de la suplementación: una solución sin pastillas, de alta absorción para nutrientes esenciales sin rellenos."
+      "subtitle": "Descubre por qué los parches son el futuro de la suplementación: una solución sin pastillas, de alta absorción para nutrientes esenciales sin rellenos.",
+      "cta": "Suscríbete y ahorra"
     },
     "whyPatches": {
       "title": "¿Por Qué Parches?",
