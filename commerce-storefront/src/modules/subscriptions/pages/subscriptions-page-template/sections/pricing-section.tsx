@@ -12,75 +12,35 @@ const planColors: Record<string, string> = {
   quarterly: "bg-novapatch-subscription-plan-quarterly",
 }
 
-const planLabels: Record<string, string> = {
-  monthly: "Plan mensual",
-  bimonthly: "Plan bimestral",
-  quarterly: "Plan trimestral",
-}
-
-const planDays: Record<string, string> = {
-  monthly: "Cada 30 días",
-  bimonthly: "Cada 60 días",
-  quarterly: "Cada 90 días",
-}
-
 export default function SubscriptionsPricingSection() {
   const t = useTranslations("subscriptions.plansSection")
-  const [plans] = useState<SubscriptionPlanConfig[]>([
-    {
-      id: '1',
-      code: 'monthly',
-      name: 'Plan Mensual',
-      interval_days: 30,
-      free_shipping_threshold: null,
-      description: 'Recibe tus parches cada 30 días',
-      promotion_code: 'SUB_MONTHLY',
-      is_active: true,
-      sort_order: 1,
-      promotion: null
-    },
-    {
-      id: '2',
-      code: 'bimonthly',
-      name: 'Plan Bimestral',
-      interval_days: 60,
-      free_shipping_threshold: 0,
-      description: 'Recibe tus parches cada 60 días',
-      promotion_code: 'SUB_BIMONTHLY',
-      is_active: true,
-      sort_order: 2,
-      promotion: {
-        id: 'promo1',
-        code: 'SUB_BIMONTHLY',
-        type: 'percentage',
-        value: 10,
-        is_automatic: true,
-        status: 'active'
-      }
-    },
-    {
-      id: '3',
-      code: 'quarterly',
-      name: 'Plan Trimestral',
-      interval_days: 90,
-      free_shipping_threshold: 0,
-      description: 'Recibe tus parches cada 90 días',
-      promotion_code: 'SUB_QUARTERLY',
-      is_active: true,
-      sort_order: 3,
-      promotion: {
-        id: 'promo2',
-        code: 'SUB_QUARTERLY',
-        type: 'percentage',
-        value: 15,
-        is_automatic: true,
-        status: 'active'
-      }
-    }
-  ])
-  const [loading] = useState(false)
+  const [plans, setPlans] = useState<SubscriptionPlanConfig[]>([])
+  const [loading, setLoading] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    let isActive = true
+    const loadPlans = async () => {
+      try {
+        const { subscription_plans } = await getSubscriptionPlans()
+        if (!isActive) return
+        setPlans(subscription_plans)
+      } catch (error) {
+        console.error("Error loading subscription plans:", error)
+      } finally {
+        if (isActive) {
+          setLoading(false)
+        }
+      }
+    }
+
+    loadPlans()
+
+    return () => {
+      isActive = false
+    }
+  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -105,7 +65,14 @@ export default function SubscriptionsPricingSection() {
     }
   }, [])
 
-  const sortedPlans = [...plans].sort((a, b) => a.interval_days - b.interval_days)
+  const sortedPlans = [...plans]
+    .filter((plan) => plan.is_active)
+    .sort((a, b) => {
+      if (a.sort_order !== b.sort_order) {
+        return a.sort_order - b.sort_order
+      }
+      return a.interval_days - b.interval_days
+    })
 
   return (
     <section ref={sectionRef} className="bg-novapatch-bg-cream py-20">
@@ -129,6 +96,18 @@ export default function SubscriptionsPricingSection() {
             {sortedPlans.map((plan, index) => {
               const isPopular = plan.code === "bimonthly"
               const bgColor = planColors[plan.code] || "bg-novapatch-subscription-plan-monthly"
+              const intervalLabel = `Cada ${plan.interval_days} días`
+              const discountLabel = plan.promotion
+                ? plan.promotion.type === "percentage"
+                  ? `${plan.promotion.value}% de descuento`
+                  : `$${plan.promotion.value} de descuento`
+                : null
+              const shippingLabel =
+                plan.free_shipping_threshold === 0
+                  ? "Envío gratis"
+                  : plan.free_shipping_threshold
+                  ? `Envío gratis desde $${plan.free_shipping_threshold}`
+                  : "Envío estándar"
               
               return (
                 <div
@@ -158,22 +137,24 @@ export default function SubscriptionsPricingSection() {
                     </div>
 
                     <h3 className="text-xl font-bold text-white mb-2 text-center">
-                      {planLabels[plan.code] || plan.name}
+                      {plan.name || plan.code}
                     </h3>
                     
                     <p className="text-sm text-white/90 text-center mb-6">
-                      {plan.promotion 
-                        ? `Envío cada ${plan.interval_days} días con ${plan.promotion.value}% de descuento`
-                        : `Envío cada ${plan.interval_days} días`}
+                      {plan.description
+                        ? plan.description
+                        : discountLabel
+                        ? `${intervalLabel} con ${discountLabel}`
+                        : intervalLabel}
                     </p>
                     
                     <div className="text-center mb-2">
                       <span className="text-3xl font-bold text-white">
-                        {planDays[plan.code] || `Cada ${plan.interval_days} días`}
+                        {intervalLabel}
                       </span>
                     </div>
 
-                    <p className="text-center text-white/80 text-sm mb-6">Envío estándar</p>
+                    <p className="text-center text-white/80 text-sm mb-6">{shippingLabel}</p>
                     
                     <ul className="space-y-2 mb-6">
                       <li className="flex items-start gap-2">
@@ -206,4 +187,3 @@ export default function SubscriptionsPricingSection() {
     </section>
   )
 }
-
