@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useTranslations } from "next-intl"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const WAVE_COLOR = "#83b5f4"
 
@@ -65,13 +66,19 @@ export default function AboutHeroSection() {
       <div className="relative z-20 h-full flex items-center pt-32 xsmall:pt-40 md:pt-0">
         <div className="w-full px-8 xsmall:px-12 sm:px-16 md:px-24 lg:px-32 xl:px-40">
           <div className="max-w-md">
-            <h1 className="text-white font-bold leading-[1.05] text-[clamp(2.75rem,4.5vw+0.5rem,4.25rem)] mb-[clamp(1rem,2vw,1.5rem)]">
+            <h1 className="text-white font-bold type-hero mb-[clamp(1rem,2vw,1.5rem)]">
               {t("title")}
             </h1>
 
-            <p className="text-white font-light leading-relaxed text-[clamp(1rem,1.5vw+0.5rem,1.375rem)] max-w-[clamp(280px,50vw,500px)]">
+            <p className="text-white font-light type-hero-subtitle max-w-[clamp(280px,50vw,500px)] mb-[clamp(1.5rem,2vw,2rem)]">
               {t("subtitle")}
             </p>
+
+            <LocalizedClientLink href="/subscriptions">
+              <button className="bg-novapatch-button text-white font-medium rounded-lg shadow-md hover:opacity-90 transition-opacity px-[clamp(1.5rem,2vw,2rem)] py-[clamp(0.625rem,1vw,0.75rem)] type-button">
+                {t("cta")}
+              </button>
+            </LocalizedClientLink>
           </div>
         </div>
       </div>

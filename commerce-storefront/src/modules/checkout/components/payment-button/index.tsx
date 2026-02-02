@@ -1,8 +1,9 @@
 "use client"
 
-import { isManual, isStripe, isMercadoPago } from "@lib/constants"
+import { isManual, isStripe, isMercadoPago, isOpenpay } from "@lib/constants"
 import { placeOrder } from "@lib/data/cart"
 import { createMercadoPagoPreference } from "@lib/data/mercadopago"
+import { createOpenpayPreference } from "@lib/data/openpay"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
@@ -26,6 +27,32 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     (cart.shipping_methods?.length ?? 0) < 1
 
   const paymentSession = cart.payment_collection?.payment_sessions?.[0]
+  
+  // Detectar región del carrito por currency_code
+  const isMexicoRegion = cart.currency_code?.toLowerCase() === 'mxn'
+  const isBrazilRegion = cart.currency_code?.toLowerCase() === 'brl'
+
+  // Si es México, usar Openpay independientemente del payment provider
+  if (isMexicoRegion) {
+    return (
+      <OpenpayPaymentButton 
+        notReady={notReady} 
+        cart={cart}
+        data-testid={dataTestId} 
+      />
+    )
+  }
+
+  // Si es Brasil, usar MercadoPago independientemente del payment provider
+  if (isBrazilRegion) {
+    return (
+      <MercadoPagoPaymentButton 
+        notReady={notReady} 
+        cart={cart}
+        data-testid={dataTestId} 
+      />
+    )
+  }
 
   switch (true) {
     case isStripe(paymentSession?.provider_id):
@@ -39,6 +66,14 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     case isMercadoPago(paymentSession?.provider_id):
       return (
         <MercadoPagoPaymentButton 
+          notReady={notReady} 
+          cart={cart}
+          data-testid={dataTestId} 
+        />
+      )
+    case isOpenpay(paymentSession?.provider_id):
+      return (
+        <OpenpayPaymentButton 
           notReady={notReady} 
           cart={cart}
           data-testid={dataTestId} 
@@ -215,6 +250,65 @@ const MercadoPagoPaymentButton = ({
       <ErrorMessage
         error={errorMessage}
         data-testid="mercadopago-payment-error-message"
+      />
+    </>
+  )
+}
+
+const OpenpayPaymentButton = ({ 
+  notReady,
+  cart 
+}: { 
+  notReady: boolean
+  cart: HttpTypes.StoreCart
+}) => {
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const handlePayment = async () => {
+    setSubmitting(true)
+    setErrorMessage(null)
+
+    try {      
+      // Crear preferencia de pago en Openpay
+      const preference = await createOpenpayPreference(cart.id)
+
+      const openpayEnv = process.env.NEXT_PUBLIC_OPENPAY_ENV
+      const useSandbox = openpayEnv
+        ? openpayEnv !== "production"
+        : process.env.NODE_ENV !== "production"
+
+      const redirectUrl = useSandbox
+        ? (preference.sandboxInitPoint || preference.initPoint)
+        : preference.initPoint
+
+      if (redirectUrl) {
+        window.location.href = redirectUrl
+      } else {
+        throw new Error("No se pudo obtener la URL de pago de Openpay")
+      }
+    } catch (err: any) {
+      console.error("Error creating Openpay preference:", err)
+      setErrorMessage(err.message || "Error al procesar el pago con Openpay")
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <>
+      <Button
+        disabled={notReady}
+        isLoading={submitting}
+        onClick={handlePayment}
+        size="large"
+        data-testid="submit-order-button"
+        className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
+      >
+        {submitting ? "Redirigiendo a Openpay..." : "Pagar con Openpay"}
+      </Button>
+      <ErrorMessage
+        error={errorMessage}
+        data-testid="openpay-payment-error-message"
       />
     </>
   )

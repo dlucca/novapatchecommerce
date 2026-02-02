@@ -51,11 +51,11 @@ export default function SubscriptionsContactSection() {
   }
 
   return (
-    <section ref={sectionRef} className="bg-[#f0f7fa] py-20">
-      <div className="max-w-2xl mx-auto px-4">
+    <section ref={sectionRef} className="bg-[#f0f7fa] pt-24 pb-20">
+      <div className="max-w-2xl mx-auto px-6 sm:px-8">
         {/* Title */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-novapatch-title inline-block relative">
+          <h2 className="type-title font-bold text-novapatch-title inline-block relative">
             ¿Tienes{" "}
             <span className="text-novapatch-button italic font-normal">dudas?</span>
             <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-novapatch-button to-transparent"></div>
@@ -75,11 +75,11 @@ export default function SubscriptionsContactSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-novapatch-title mb-2">¡Mensaje enviado!</h3>
-              <p className="text-gray-600 mb-4">Te responderemos a la brevedad.</p>
+              <h3 className="type-subtitle font-bold text-novapatch-title mb-2">¡Mensaje enviado!</h3>
+              <p className="text-gray-600 type-body mb-4">Te responderemos a la brevedad.</p>
               <button
                 onClick={() => setSubmitted(false)}
-                className="text-novapatch-button font-semibold hover:underline"
+                className="text-novapatch-button font-semibold hover:underline type-button"
               >
                 Enviar otra consulta
               </button>
@@ -92,7 +92,7 @@ export default function SubscriptionsContactSection() {
                   value={formData.reason}
                   onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
                   required
-                  className="w-full px-4 py-3 rounded-full bg-novapatch-button text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-novapatch-title appearance-none cursor-pointer"
+                  className="w-full px-4 py-3 rounded-full bg-novapatch-button text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-novapatch-title appearance-none cursor-pointer type-body"
                   style={{
                     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
                     backgroundRepeat: "no-repeat",
@@ -118,7 +118,7 @@ export default function SubscriptionsContactSection() {
                   onChange={(e) => setFormData({ ...formData, question: e.target.value })}
                   required
                   placeholder="¿Qué quieres saber sobre las suscripciones?"
-                  className="w-full px-4 py-3 rounded-full bg-novapatch-button text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-novapatch-title"
+                  className="w-full px-4 py-3 rounded-full bg-novapatch-button text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-novapatch-title type-body"
                 />
               </div>
 
@@ -130,7 +130,7 @@ export default function SubscriptionsContactSection() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
                   placeholder="E-mail"
-                  className="w-full px-4 py-3 rounded-full bg-novapatch-button text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-novapatch-title"
+                  className="w-full px-4 py-3 rounded-full bg-novapatch-button text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-novapatch-title type-body"
                 />
               </div>
 
@@ -139,7 +139,7 @@ export default function SubscriptionsContactSection() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-novapatch-title hover:bg-novapatch-footer text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-70"
+                  className="w-full bg-novapatch-title hover:bg-novapatch-footer text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-70 type-button"
                 >
                   {isSubmitting ? "Enviando..." : "Conocer más"}
                 </button>

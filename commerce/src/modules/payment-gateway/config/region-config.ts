@@ -2,7 +2,7 @@ import type { Region, RegionProviderConfig, PaymentProvider } from "../types"
 
 export const REGION_PROVIDER_MAP: Record<Region, RegionProviderConfig> = {
   br: { region: "br", provider: "mercadopago", enabled: true },
-  mx: { region: "mx", provider: null, enabled: false },
+  mx: { region: "mx", provider: "openpay", enabled: true },
 }
 
 export function getProviderByRegion(region: string): PaymentProvider {

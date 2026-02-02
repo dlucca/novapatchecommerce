@@ -58,20 +58,20 @@ export default function AboutWhyPatchesSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="bg-[#FEF7ED] py-20 mt-20">
-      <div className="max-w-6xl mx-auto px-4">
+    <section ref={sectionRef} className="bg-[#FEF7ED] pt-24 pb-20 mt-20">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div>
-            <h2 className="leading-tight text-novapatch-title mb-6">
+            <h2 className="type-title text-novapatch-title mb-6">
               ¿Por qué <span className="font-bold">parches?</span>
             </h2>
-            <p className="text-gray-700 text-lg mb-4 leading-relaxed">
+            <p className="text-gray-700 type-body mb-4">
               {t("paragraph1")}
             </p>
-            <p className="text-gray-700 text-lg font-semibold mb-4 leading-relaxed">
+            <p className="text-gray-700 type-body font-semibold mb-4">
               {t("paragraph2")}
             </p>
-            <p className="text-gray-700 text-lg leading-relaxed">
+            <p className="text-gray-700 type-body">
               {t("paragraph3")}
             </p>
           </div>
@@ -99,7 +99,7 @@ export default function AboutWhyPatchesSection() {
                     className="object-contain"
                   />
                 </div>
-                <h3 className="text-white font-semibold text-sm">
+                <h3 className="text-white font-semibold type-body">
                   {t(item.titleKey)}
                 </h3>
                 

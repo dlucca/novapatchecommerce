@@ -33,7 +33,7 @@ const HowItWorksSection = () => {
               </p>
 
               <div className="text-center lg:text-left">
-                <LocalizedClientLink href="/about-patches">
+                <LocalizedClientLink href="/about">
                   <button
                     className="text-white font-medium rounded-lg transition-colors duration-200 hover:opacity-90 shadow-md bg-novapatch-button"
                     style={{ padding: 'clamp(0.625rem, 0.75vw, 0.75rem) clamp(1.5rem, 2vw, 2rem)', fontSize: 'clamp(1rem, 1.25vw, 1.125rem)' }}

@@ -65,9 +65,9 @@ export default function AboutValuesSection() {
 
   return (
     <section ref={sectionRef} className="bg-[#FEF7ED] py-20 relative">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8">
         <div className="text-center mb-12">
-          <h2 className="leading-tight text-novapatch-title">
+          <h2 className="type-title text-novapatch-title">
             {t("title")}
           </h2>
         </div>
@@ -90,7 +90,7 @@ export default function AboutValuesSection() {
           />
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 relative z-10">
+        <div className="max-w-6xl mx-auto px-6 sm:px-8 relative z-10">
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
             {valuesItems.map((item, index) => (
@@ -112,10 +112,10 @@ export default function AboutValuesSection() {
                     className="object-contain"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-novapatch-title mb-3">
+                <h3 className="type-subtitle font-bold text-novapatch-title mb-3">
                   {t(item.titleKey)}
                 </h3>
-                <p className="text-novapatch-title leading-relaxed text-lg">
+                <p className="text-novapatch-title type-body">
                   {t(item.descKey)}
                 </p>
               </div>

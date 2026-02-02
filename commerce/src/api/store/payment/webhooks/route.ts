@@ -50,22 +50,23 @@ export async function POST(req: MedusaRequest, res: MedusaResponse): Promise<voi
       return
     }
 
-    if (result.type === "payment" && result.paymentInfo) {
-      const paymentCartId = result.paymentInfo.externalReference ||
-                     (result.paymentInfo.metadata?.cart_id as string | undefined)
+     if (result.type === "payment" && result.paymentInfo) {
+       const paymentCartId = result.paymentInfo.externalReference ||
+                      (result.paymentInfo.metadata?.cart_id as string | undefined)
 
-      if (!paymentCartId || typeof paymentCartId !== "string") {
-        res.status(400).json({ error: "No cart ID found" })
-        return
-      }
+       if (!paymentCartId || typeof paymentCartId !== "string") {
+         res.status(400).json({ error: "No cart ID found" })
+         return
+       }
 
-      await updateCartPaymentTracking(req, paymentCartId as string, result.paymentInfo)
-      await updatePaymentSessionData(req, paymentCartId as string, result.paymentInfo)
+       const providerName = gateway.provider || "unknown"
+       await updateCartPaymentTracking(req, paymentCartId as string, result.paymentInfo, providerName)
+       await updatePaymentSessionData(req, paymentCartId as string, result.paymentInfo, providerName)
 
-      if (result.paymentInfo.status === "approved") {
-        await handleApprovedPayment(req, paymentCartId as string, result.paymentInfo)
-      }
-    }
+       if (result.paymentInfo.status === "approved") {
+         await handleApprovedPayment(req, paymentCartId as string, result.paymentInfo)
+       }
+     }
 
     res.status(200).json({ received: true })
   } catch (error: any) {
@@ -106,7 +107,7 @@ async function handleApprovedPayment(
 
 
   const paymentSession = cart.payment_collection?.payment_sessions?.find(
-    (s: any) => s.provider_id?.includes("mercadopago")
+    (s: any) => s.provider_id?.includes("mercadopago") || s.provider_id?.includes("openpay")
   )
 
   if (paymentSession && paymentSession.status !== "authorized") {
@@ -177,7 +178,8 @@ async function findOrderByCartId(query: any, cartId: string): Promise<any | null
 async function updateCartPaymentTracking(
   req: MedusaRequest,
   cartId: string,
-  paymentInfo: PaymentInfo
+  paymentInfo: PaymentInfo,
+  providerName: string
 ): Promise<void> {
   try {
     const cartModule = req.scope.resolve(Modules.CART)
@@ -199,7 +201,11 @@ async function updateCartPaymentTracking(
       timestamp: new Date().toISOString(),
     }
 
-    const existingHistory = currentMetadata.mp_payment_history
+    // Support both MercadoPago and Openpay payment history
+    const isOpenpay = providerName === "openpay"
+    const historyKey = isOpenpay ? 'openpay_payment_history' : 'mp_payment_history'
+    
+    const existingHistory = currentMetadata[historyKey]
     const paymentHistory: typeof historyEntry[] = Array.isArray(existingHistory)
       ? [...existingHistory, historyEntry]
       : [historyEntry]
@@ -207,15 +213,20 @@ async function updateCartPaymentTracking(
       paymentHistory.shift()
     }
 
+    const statusKey = isOpenpay ? 'openpay_status' : 'mp_status'
+    const statusDetailKey = isOpenpay ? 'openpay_status_detail' : 'mp_status_detail'
+    const paymentIdKey = isOpenpay ? 'openpay_payment_id' : 'mp_payment_id'
+    const lastWebhookKey = isOpenpay ? 'openpay_last_webhook_at' : 'mp_last_webhook_at'
+
     await cartModule.updateCarts([{
       id: cartId,
       metadata: {
         ...currentMetadata,
-        mp_status: paymentInfo.status,
-        mp_status_detail: paymentInfo.statusDetail,
-        mp_payment_id: paymentInfo.id,
-        mp_last_webhook_at: new Date().toISOString(),
-        mp_payment_history: paymentHistory,
+        [statusKey]: paymentInfo.status,
+        [statusDetailKey]: paymentInfo.statusDetail,
+        [paymentIdKey]: paymentInfo.id,
+        [lastWebhookKey]: new Date().toISOString(),
+        [historyKey]: paymentHistory,
       }
     }])
 
@@ -227,7 +238,8 @@ async function updateCartPaymentTracking(
 async function updatePaymentSessionData(
   req: MedusaRequest,
   cartId: string,
-  paymentInfo: PaymentInfo
+  paymentInfo: PaymentInfo,
+  providerName: string
 ): Promise<void> {
   try {
     const query = req.scope.resolve("query")
@@ -243,32 +255,41 @@ async function updatePaymentSessionData(
       filters: { id: cartId },
     })
 
-    const cart = carts?.[0]
-    const paymentSession = cart?.payment_collection?.payment_sessions?.find(
-      (s: any) => s.provider_id?.includes("mercadopago")
-    )
+     const cart = carts?.[0]
+     const paymentSession = cart?.payment_collection?.payment_sessions?.find(
+       (s: any) => s.provider_id?.includes("mercadopago") || s.provider_id?.includes("openpay")
+     )
 
-    if (!paymentSession) {
-      return
-    }
+     if (!paymentSession) {
+       return
+     }
 
-    const currentData = paymentSession.data || {}
-    await paymentModule.updatePaymentSession({
-      id: paymentSession.id,
-      currency_code: paymentSession.currency_code,
-      amount: paymentSession.amount,
-      data: {
-        ...currentData,
-        mp_status: paymentInfo.status,
-        mp_status_detail: paymentInfo.statusDetail,
-        mp_payment_id: paymentInfo.id,
-        mp_payment_method_id: paymentInfo.paymentMethodId,
-        mp_payment_type_id: paymentInfo.paymentTypeId,
-        mp_last_updated: new Date().toISOString(),
-      }
-    })
+     // Determine payment provider keys
+     const isOpenpay = providerName === "openpay"
+     const statusKey = isOpenpay ? 'openpay_status' : 'mp_status'
+     const statusDetailKey = isOpenpay ? 'openpay_status_detail' : 'mp_status_detail'
+     const paymentIdKey = isOpenpay ? 'openpay_payment_id' : 'mp_payment_id'
+     const methodIdKey = isOpenpay ? 'openpay_payment_method_id' : 'mp_payment_method_id'
+     const typeIdKey = isOpenpay ? 'openpay_payment_type_id' : 'mp_payment_type_id'
+     const lastUpdatedKey = isOpenpay ? 'openpay_last_updated' : 'mp_last_updated'
 
-  } catch (err: any) {
-    console.warn(`Could not update payment session: ${err.message}`)
-  }
+     const currentData = paymentSession.data || {}
+     await paymentModule.updatePaymentSession({
+       id: paymentSession.id,
+       currency_code: paymentSession.currency_code,
+       amount: paymentSession.amount,
+       data: {
+         ...currentData,
+         [statusKey]: paymentInfo.status,
+         [statusDetailKey]: paymentInfo.statusDetail,
+         [paymentIdKey]: paymentInfo.id,
+         [methodIdKey]: paymentInfo.paymentMethodId,
+         [typeIdKey]: paymentInfo.paymentTypeId,
+         [lastUpdatedKey]: new Date().toISOString(),
+       }
+     })
+
+   } catch (err: any) {
+     console.warn(`Could not update payment session: ${err.message}`)
+   }
 }
