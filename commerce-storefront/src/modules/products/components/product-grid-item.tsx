@@ -83,6 +83,8 @@ export default function ProductGridItem({
               fill
               className="object-contain"
               sizes="(max-width: 768px) 50vw, 400px"
+              priority
+              unoptimized
             />
           </div>
         ) : (
