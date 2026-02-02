@@ -53,9 +53,9 @@ export default function SubscriptionsHowItWorksSection() {
         <div className="h-8 w-8 md:h-10 md:w-10 bg-novapatch-bg-cream rounded-full"></div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 relative z-10">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="leading-tight text-novapatch-title">
+          <h2 className="type-title text-novapatch-title">
             ¿Cómo <span className="font-bold">suscribirte?</span>
           </h2>
         </div>
@@ -85,10 +85,10 @@ export default function SubscriptionsHowItWorksSection() {
                     {step.number}
                   </span>
                 </div>
-                <h3 className="text-base md:text-lg font-bold mb-2 text-white">
+                <h3 className="type-subtitle font-bold mb-2 text-white">
                   {t(step.titleKey)}
                 </h3>
-                <p className="text-sm leading-relaxed text-white/90">
+                <p className="type-body text-white/90">
                   {t(step.descKey)}
                 </p>
               </div>
@@ -96,7 +96,7 @@ export default function SubscriptionsHowItWorksSection() {
           ))}
         </div>
 
-        <p className="text-novapatch-title text-base md:text-lg leading-relaxed text-center max-w-4xl mx-auto">
+        <p className="text-novapatch-title type-body text-center max-w-4xl mx-auto">
           {t("finalNote")}{" "}
           <span className="font-bold">{t("finalNoteHighlight")}</span>
           {t("finalNoteEnd")}
@@ -111,4 +111,3 @@ export default function SubscriptionsHowItWorksSection() {
     </section>
   )
 }
-

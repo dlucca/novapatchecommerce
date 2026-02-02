@@ -76,20 +76,20 @@ export default function SubscriptionsPricingSection() {
 
   return (
     <section ref={sectionRef} className="bg-novapatch-bg-cream py-20">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8">
         <div className="text-center mb-16">
-          <h2 className="font-bold leading-tight text-novapatch-title">
+          <h2 className="type-title font-bold text-novapatch-title">
             {t("title")}
           </h2>
         </div>
         
         {loading ? (
           <div className="text-center py-12">
-            <p className="text-gray-600">{t("loading")}</p>
+            <p className="text-gray-600 type-body">{t("loading")}</p>
           </div>
         ) : plans.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-600">{t("noPlans")}</p>
+            <p className="text-gray-600 type-body">{t("noPlans")}</p>
           </div>
         ) : (
           <div className="flex flex-col md:flex-row justify-center items-center md:items-end gap-6 lg:gap-8">
@@ -121,7 +121,7 @@ export default function SubscriptionsPricingSection() {
                 >
                   {isPopular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                      <span className="bg-yellow-400 text-novapatch-title text-sm font-bold px-4 py-1 rounded-full shadow-lg">
+                      <span className="bg-yellow-400 text-novapatch-title type-button font-bold px-4 py-1 rounded-full shadow-lg">
                         Más popular
                       </span>
                     </div>
@@ -136,11 +136,11 @@ export default function SubscriptionsPricingSection() {
                       <div className="w-9 h-9 rounded-full bg-novapatch-bg-cream"></div>
                     </div>
 
-                    <h3 className="text-xl font-bold text-white mb-2 text-center">
+                    <h3 className="type-subtitle font-bold text-white mb-2 text-center">
                       {plan.name || plan.code}
                     </h3>
                     
-                    <p className="text-sm text-white/90 text-center mb-6">
+                    <p className="type-body text-white/90 text-center mb-6">
                       {plan.description
                         ? plan.description
                         : discountLabel
@@ -149,31 +149,31 @@ export default function SubscriptionsPricingSection() {
                     </p>
                     
                     <div className="text-center mb-2">
-                      <span className="text-3xl font-bold text-white">
+                      <span className="type-title font-bold text-white">
                         {intervalLabel}
                       </span>
                     </div>
 
-                    <p className="text-center text-white/80 text-sm mb-6">{shippingLabel}</p>
+                    <p className="text-center text-white/80 type-body mb-6">{shippingLabel}</p>
                     
                     <ul className="space-y-2 mb-6">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
-                        <span className="text-sm text-white">Envío cada {plan.interval_days} días</span>
+                        <span className="type-body text-white">Envío cada {plan.interval_days} días</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
-                        <span className="text-sm text-white">Cancela cuando quieras</span>
+                        <span className="type-body text-white">Cancela cuando quieras</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
-                        <span className="text-sm text-white">Modifica tu pedido</span>
+                        <span className="type-body text-white">Modifica tu pedido</span>
                       </li>
                     </ul>
                     
                     <LocalizedClientLink
                       href="/store"
-                      className="block w-full bg-[#005088] hover:bg-[#003d6b] text-white text-center px-6 py-3 rounded-full font-semibold transition-all duration-200"
+                      className="block w-full bg-[#005088] hover:bg-[#003d6b] text-white text-center px-6 py-3 rounded-full font-semibold transition-all duration-200 type-button"
                     >
                       Comenzar
                     </LocalizedClientLink>

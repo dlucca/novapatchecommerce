@@ -51,10 +51,10 @@ export default function SubscriptionsWhySection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="bg-novapatch-bg-cream py-20 mt-20">
-      <div className="max-w-6xl mx-auto px-4">
+    <section ref={sectionRef} className="bg-novapatch-bg-cream pt-24 pb-20 mt-20">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8">
         <div className="text-center mb-16">
-          <h2 className="leading-tight text-novapatch-title">
+          <h2 className="type-title text-novapatch-title">
             ¿Por Qué <span className="font-bold">suscribirse?</span>
           </h2>
         </div>
@@ -84,11 +84,11 @@ export default function SubscriptionsWhySection() {
                 />
               </div>
               
-              <h3 className="text-base md:text-lg font-bold text-novapatch-title mb-2">
+              <h3 className="type-subtitle font-bold text-novapatch-title mb-2">
                 {t(item.titleKey)}
               </h3>
               
-              <p className="text-gray-600 text-sm leading-relaxed max-w-[250px] flex-grow">
+              <p className="text-gray-600 type-body max-w-[250px] flex-grow">
                 {t(item.subtitleKey)}
               </p>
               
@@ -104,4 +104,3 @@ export default function SubscriptionsWhySection() {
     </section>
   )
 }
-

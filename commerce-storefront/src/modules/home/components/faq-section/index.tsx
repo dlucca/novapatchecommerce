@@ -27,7 +27,7 @@ const FAQSection = () => {
   }
 
   return (
-    <section className="bg-white" style={{ paddingBottom: 'clamp(5rem, 6vw, 6rem)' }}>
+    <section className="bg-white" style={{ paddingTop: 'clamp(4rem, 5vw, 5rem)', paddingBottom: 'clamp(5rem, 6vw, 6rem)' }}>
       <div className="max-w-7xl mx-auto" style={{ paddingLeft: 'clamp(1rem, 2vw, 2rem)', paddingRight: 'clamp(1rem, 2vw, 2rem)' }}>
         <div className="text-center" style={{ marginBottom: 'clamp(2.5rem, 3vw, 3rem)' }}>
           <h2

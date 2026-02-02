@@ -43,9 +43,9 @@ export default function AboutHowToUseSection() {
 
   return (
     <section ref={sectionRef} className="bg-[#FEF7ED] py-20">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8">
         <div className="text-center mb-16">
-          <h2 className="leading-tight text-novapatch-title">
+          <h2 className="type-title text-novapatch-title">
             ¡Solo despega, pega y <span className="font-bold">disfruta!</span>
           </h2>
         </div>
@@ -76,10 +76,10 @@ export default function AboutHowToUseSection() {
                     {step.number}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold mb-3 text-white">
+                <h3 className="type-subtitle font-bold mb-3 text-white">
                   {t(step.titleKey)}
                 </h3>
-                <p className="text-sm leading-relaxed text-white">
+                <p className="type-body text-white">
                   {t(step.descKey)}
                 </p>
               </div>
