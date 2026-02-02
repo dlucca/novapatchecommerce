@@ -72,14 +72,14 @@ export async function POST(
 
     const frontendUrl = process.env.STORE_URL || "http://localhost:8000"
 
-    // Usar los totales calculados del cart (incluyendo descuentos)
+    // Usar precios base sin descuentos aplicados
     const items = cart.items.map((item: any) => ({
       id: item.id,
       title: item.variant?.product?.title || item.title || "Product",
       description: item.variant?.product?.description,
       quantity: item.quantity,
-      // Usar el total del item (que ya incluye descuentos) dividido por la cantidad
-      unitPrice: Number((item.total || item.unit_price * item.quantity) / item.quantity),
+      // Usar subtotal (sin descuentos) o unit_price
+      unitPrice: Number(item.subtotal ? item.subtotal / item.quantity : item.unit_price || 0),
       currencyId: cart.currency_code.toUpperCase(),
     }))
 
@@ -92,6 +92,21 @@ export async function POST(
         description: "Costo de envío",
         quantity: 1,
         unitPrice: Number(shippingTotal),
+        currencyId: cart.currency_code.toUpperCase(),
+      })
+    }
+
+    const totalDiscount = cart.items.reduce((sum: number, item: any) => {
+      return sum + (item.discount_total || 0)
+    }, 0)
+    
+    if (totalDiscount > 0) {
+      items.push({
+        id: "discount",
+        title: cart.promotions?.[0]?.code ? `Descuento (${cart.promotions[0].code})` : "Descuento",
+        description: "Descuento aplicado",
+        quantity: 1,
+        unitPrice: -Number(totalDiscount), 
         currencyId: cart.currency_code.toUpperCase(),
       })
     }
