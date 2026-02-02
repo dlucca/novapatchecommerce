@@ -30,10 +30,6 @@ export class OpenpayProvider implements ISubscriptionGateway {
             throw new Error("Openpay requires merchantId and privateKey in config")
         }
 
-        console.log("Initializing Openpay provider...")
-        console.log("  Merchant ID:", config.merchantId)
-        console.log("  Sandbox:", config.sandbox)
-
         try {
             // Dynamic import of Openpay SDK
             const Openpay = require("openpay")
@@ -44,13 +40,6 @@ export class OpenpayProvider implements ISubscriptionGateway {
                 config.privateKey,
                 !config.sandbox // false = sandbox, true = production
             )
-            
-            console.log("Openpay client initialized")
-            console.log("  Client type:", typeof this.client)
-            console.log("  Client keys:", Object.keys(this.client || {}))
-            console.log("  Has checkouts?", !!this.client?.checkouts)
-            console.log("  Has charges?", !!this.client?.charges)
-            console.log("  Has customers?", !!this.client?.customers)
         } catch (error: any) {
             console.error("Failed to initialize Openpay SDK:", error)
             throw new Error(`Openpay SDK initialization failed: ${error.message}`)
@@ -70,20 +59,9 @@ export class OpenpayProvider implements ISubscriptionGateway {
     async createPreference(input: CreatePreferenceInput): Promise<PreferenceResult> {
         this.ensureConfigured()
 
-        console.log("=== Openpay createPreference called ===")
-        console.log("Input validation:")
-        console.log("  External reference:", input.externalReference)
-        console.log("  Payer email:", input.payer.email)
-        console.log("  Items count:", input.items.length)
-        
         if (!input.items || input.items.length === 0) {
             throw new Error("No items provided for Openpay checkout")
         }
-
-        console.log("Items received:")
-        input.items.forEach((item, idx) => {
-            console.log(`  [${idx}] ${item.title}: unitPrice=${item.unitPrice}, quantity=${item.quantity}, total=${item.unitPrice * item.quantity}`)
-        })
 
         // Calculate total amount from items
         // Medusa prices come in the smallest currency unit (centavos for MXN)
@@ -91,8 +69,6 @@ export class OpenpayProvider implements ISubscriptionGateway {
         const totalAmount = input.items.reduce((sum, item) => {
             return sum + (item.unitPrice * item.quantity)
         }, 0)
-        
-        console.log(`Total amount to charge: ${totalAmount} MXN`)
 
         if (totalAmount <= 0) {
             throw new Error(`Invalid total amount: ${totalAmount}. Amount must be greater than 0`)
@@ -116,13 +92,6 @@ export class OpenpayProvider implements ISubscriptionGateway {
             },
         }
 
-        console.log("Creating Openpay checkout with data:")
-        console.log("  Amount:", checkoutData.amount, "MXN")
-        console.log("  Order ID:", checkoutData.order_id)
-        console.log("  Customer email:", checkoutData.customer.email)
-        console.log("  Redirect URL:", checkoutData.redirect_url)
-        console.log("  Merchant ID:", this.config!.merchantId)
-
         // Use Openpay REST API directly since Node SDK doesn't support checkouts
         const baseUrl = this.config!.sandbox 
             ? "https://sandbox-api.openpay.mx/v1" 
@@ -132,10 +101,6 @@ export class OpenpayProvider implements ISubscriptionGateway {
         
         // Basic auth with private key
         const auth = Buffer.from(`${this.config!.privateKey}:`).toString('base64')
-        
-        console.log("Calling Openpay REST API:")
-        console.log("  URL:", url)
-        console.log("  Checkout data:", JSON.stringify(checkoutData, null, 2))
 
         try {
             const response = await fetch(url, {
@@ -148,8 +113,6 @@ export class OpenpayProvider implements ISubscriptionGateway {
             })
 
             const responseText = await response.text()
-            console.log("Openpay API response status:", response.status)
-            console.log("Openpay API response body:", responseText)
 
             if (!response.ok) {
                 let errorMessage = `Openpay API error: ${response.status}`
@@ -163,14 +126,9 @@ export class OpenpayProvider implements ISubscriptionGateway {
             }
 
             const body = JSON.parse(responseText)
-            
-            console.log("Openpay checkout created successfully")
-            console.log("  Checkout ID:", body.id)
-            console.log("  Checkout Link:", body.checkout_link)
 
             const paymentUrl = body.checkout_link
             if (!paymentUrl) {
-                console.error("No checkout_link in response:", body)
                 throw new Error("Openpay did not return a checkout link")
             }
 
@@ -180,7 +138,6 @@ export class OpenpayProvider implements ISubscriptionGateway {
                 sandboxInitPoint: this.config?.sandbox ? paymentUrl : undefined,
             }
         } catch (error: any) {
-            console.error("Error calling Openpay API:", error)
             throw new Error(`Openpay checkout error: ${error.message}`)
         }
     }

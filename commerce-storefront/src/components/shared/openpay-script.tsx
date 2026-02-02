@@ -11,16 +11,6 @@ export function OpenpayScript() {
     <Script
       src="https://sandbox.openpay.mx/v1/openpay.js"
       strategy="afterInteractive"
-      onLoad={() => {
-        console.log('Openpay.js loaded successfully')
-        // @ts-ignore - Openpay is injected by the script
-        if (window.Openpay) {
-          console.log('Openpay SDK is ready')
-        }
-      }}
-      onError={(error) => {
-        console.error('Failed to load Openpay.js:', error)
-      }}
     />
   )
 }
