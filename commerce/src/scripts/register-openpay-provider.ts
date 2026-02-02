@@ -14,21 +14,14 @@ export default async function registerOpenpayProvider({ container }: ExecArgs) {
     })
 
     if (existingProviders.length > 0) {
-      console.log("✅ Openpay payment provider already exists")
+      console.log("�u2705 Openpay payment provider already exists")
       console.log(`   Provider ID: ${existingProviders[0].id}`)
       return
     }
 
-    // Create Openpay payment provider
-    console.log("Creating Openpay payment provider...")
-    
-    const provider = await paymentModule.createPaymentProviders({
-      id: "pp_openpay_openpay",
-      is_enabled: true,
-    })
-
-    console.log("✅ Openpay payment provider created successfully!")
-    console.log(`   Provider ID: ${provider.id}`)
+    console.log("\u26a0\ufe0f  Openpay provider not found in database.")
+    console.log("   Payment providers should be registered via plugin configuration.")
+    console.log("   Make sure Openpay is properly configured in medusa-config.ts")
 
     // Get Mexico region
     const regions = await regionModule.listRegions({
