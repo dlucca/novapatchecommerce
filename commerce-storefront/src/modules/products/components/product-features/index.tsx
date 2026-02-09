@@ -1,42 +1,46 @@
 import Image from 'next/image'
 
+import { useTranslations } from "next-intl"
+
 // Componente que usa los archivos SVG disponibles
 const ProductFeatures = () => {
+  const tFeatures = useTranslations("features")
+  const tCommon = useTranslations("common")
   // Usamos los archivos SVG que ya existen en la carpeta con tamaños personalizados
   const features = [
     {
       src: "/assets/features/not_sugar-cropped.svg",
-      alt: "Sin azúcar",
+      key: "sugarFree",
       width: 60,
       height: 60
     },
     {
       src: "/assets/features/vegan-cropped.svg",
-      alt: "100% vegano",
+      key: "vegan",
       width: 75, // Hacemos este icono más grande porque parece ser pequeño
       height: 75
     },
     {
       src: "/assets/features/gluten_free-cropped.svg",
-      alt: "Libre de gluten",
+      key: "glutenFree",
       width: 60,
       height: 60
     },
     {
       src: "/assets/features/water_proo-cropped.svg",
-      alt: "Resistente al agua",
+      key: "waterResistant",
       width: 60,
       height: 60
     },
     {
       src: "/assets/features/latex-free.svg",
-      alt: "Sin látex",
+      key: "latexFree",
       width: 60,
       height: 60
     },
     {
       src: "/assets/features/minutes-cropped.svg",
-      alt: "Efecto en minutos",
+      key: "fastEffect",
       width: 60,
       height: 60
     }
@@ -49,7 +53,7 @@ const ProductFeatures = () => {
         <div className="absolute left-1 top-0">
           <Image 
             src="/assets/features/flower.svg" 
-            alt="Decoración floral" 
+            alt={tCommon("decorativeFloralAlt")} 
             width={30} 
             height={30} 
             className=""
@@ -64,14 +68,14 @@ const ProductFeatures = () => {
                   <div className="flex items-center justify-center h-[40px]">
                     <Image
                       src={feature.src}
-                      alt={feature.alt}
+                      alt={tFeatures(feature.key)}
                       width={feature.width}
                       height={feature.height}
                       style={{ objectFit: 'contain' }}
                       className="" /* Hace que los SVG sean blancos */
                     />
                   </div>
-                  <p className="text-white font-bold text-[9px] md:text-[12px] text-center mt-3">{feature.alt}</p>
+                  <p className="text-white font-bold text-[9px] md:text-[12px] text-center mt-3">{tFeatures(feature.key)}</p>
                 </div>
               ))}
             </div>
@@ -83,4 +87,3 @@ const ProductFeatures = () => {
 }
 
 export default ProductFeatures
-

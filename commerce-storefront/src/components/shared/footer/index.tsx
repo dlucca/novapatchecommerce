@@ -8,6 +8,7 @@ import ContactModal from "@/components/shared/contact-modal"
 export default function Footer() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const t = useTranslations("footer")
+  const tCommon = useTranslations("common")
 
   return (
     <>
@@ -187,7 +188,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noreferrer"
                   className="text-white hover:text-white/80 transition-colors duration-200"
-                  aria-label="Instagram"
+                  aria-label={tCommon("instagramLabel")}
                 >
                   <svg
                     className="w-[clamp(28px,3vw,32px)] h-[clamp(28px,3vw,32px)]"
@@ -207,7 +208,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noreferrer"
                   className="text-white hover:text-white/80 transition-colors duration-200"
-                  aria-label="TikTok"
+                  aria-label={tCommon("tiktokLabel")}
                 >
                   <svg
                     className="w-[clamp(28px,3vw,32px)] h-[clamp(28px,3vw,32px)]"

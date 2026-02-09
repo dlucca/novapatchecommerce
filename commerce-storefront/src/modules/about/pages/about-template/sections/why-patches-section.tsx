@@ -63,7 +63,9 @@ export default function AboutWhyPatchesSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div>
             <h2 className="type-title text-novapatch-title mb-6">
-              ¿Por qué <span className="font-bold">parches?</span>
+              {t.rich("title", {
+                highlight: (chunks) => <span className="font-bold">{chunks}</span>,
+              })}
             </h2>
             <p className="text-gray-700 type-body mb-4">
               {t("paragraph1")}

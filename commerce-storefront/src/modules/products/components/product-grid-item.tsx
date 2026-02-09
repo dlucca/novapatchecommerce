@@ -3,6 +3,7 @@
 import { HttpTypes } from "@medusajs/types"
 import Image from "next/image"
 import { transformMediaUrl } from "@lib/util/transform-url"
+import { useTranslations } from "next-intl"
 
 type ProductGridItemProps = {
   product: HttpTypes.StoreProduct
@@ -37,6 +38,8 @@ export default function ProductGridItem({
   isSelected,
   onClick,
 }: ProductGridItemProps) {
+  const tStore = useTranslations("store")
+  const tCommon = useTranslations("common")
   const thumbnail = transformMediaUrl(product.thumbnail || product.images?.[0]?.url)
   
   const bgColor = product.metadata?.bg_color as string | undefined
@@ -79,7 +82,7 @@ export default function ProductGridItem({
           <div className="relative w-full h-full">
             <Image
               src={thumbnail}
-              alt={product.title || "Product"}
+              alt={product.title || tCommon("productFallback")}
               fill
               className="object-contain"
               sizes="(max-width: 768px) 50vw, 400px"
@@ -89,7 +92,7 @@ export default function ProductGridItem({
           </div>
         ) : (
           <div className="flex items-center justify-center w-full h-full text-gray-400">
-            <span className="text-sm">Sin imagen</span>
+            <span className="text-sm">{tStore("noImageAvailable")}</span>
           </div>
         )}
       </div>
@@ -102,4 +105,3 @@ export default function ProductGridItem({
     </div>
   )
 }
-

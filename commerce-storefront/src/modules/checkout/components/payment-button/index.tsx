@@ -8,6 +8,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
 import React, { useState } from "react"
+import { useTranslations } from "next-intl"
 import ErrorMessage from "../error-message"
 
 type PaymentButtonProps = {
@@ -19,6 +20,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
   cart,
   "data-testid": dataTestId,
 }) => {
+  const t = useTranslations("checkout")
   const notReady =
     !cart ||
     !cart.shipping_address ||
@@ -84,7 +86,11 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
         <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
       )
     default:
-      return <Button disabled className="w-full bg-gray-300 text-gray-500 text-base py-3 rounded-full border-0">Selecciona un método de pago</Button>
+      return (
+        <Button disabled className="w-full bg-gray-300 text-gray-500 text-base py-3 rounded-full border-0">
+          {t("payment.selectMethod")}
+        </Button>
+      )
   }
 }
 
@@ -97,6 +103,7 @@ const StripePaymentButton = ({
   notReady: boolean
   "data-testid"?: string
 }) => {
+  const t = useTranslations("checkout")
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -186,7 +193,7 @@ const StripePaymentButton = ({
         data-testid={dataTestId}
         className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
       >
-        Realizar Pedido
+        {t("payment.placeOrder")}
       </Button>
       <ErrorMessage
         error={errorMessage}
@@ -203,6 +210,7 @@ const MercadoPagoPaymentButton = ({
   notReady: boolean
   cart: HttpTypes.StoreCart
 }) => {
+  const t = useTranslations("checkout")
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -226,11 +234,11 @@ const MercadoPagoPaymentButton = ({
       if (redirectUrl) {
         window.location.href = redirectUrl
       } else {
-        throw new Error("No se pudo obtener la URL de pago de Mercado Pago")
+        throw new Error(t("payment.mercadoPagoUrlError"))
       }
     } catch (err: any) {
       console.error("Error creating Mercado Pago preference:", err)
-      setErrorMessage(err.message || "Error al procesar el pago con Mercado Pago")
+      setErrorMessage(err.message || t("payment.mercadoPagoError"))
       setSubmitting(false)
     }
   }
@@ -245,7 +253,7 @@ const MercadoPagoPaymentButton = ({
         data-testid="submit-order-button"
         className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
       >
-        {submitting ? "Redirigiendo a Mercado Pago..." : "Pagar con Mercado Pago"}
+        {submitting ? t("payment.redirectingMercadoPago") : t("payment.payWithMercadoPago")}
       </Button>
       <ErrorMessage
         error={errorMessage}
@@ -262,6 +270,7 @@ const OpenpayPaymentButton = ({
   notReady: boolean
   cart: HttpTypes.StoreCart
 }) => {
+  const t = useTranslations("checkout")
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -285,11 +294,11 @@ const OpenpayPaymentButton = ({
       if (redirectUrl) {
         window.location.href = redirectUrl
       } else {
-        throw new Error("No se pudo obtener la URL de pago de Openpay")
+        throw new Error(t("payment.openpayUrlError"))
       }
     } catch (err: any) {
       console.error("Error creating Openpay preference:", err)
-      setErrorMessage(err.message || "Error al procesar el pago con Openpay")
+      setErrorMessage(err.message || t("payment.openpayError"))
       setSubmitting(false)
     }
   }
@@ -304,7 +313,7 @@ const OpenpayPaymentButton = ({
         data-testid="submit-order-button"
         className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
       >
-        {submitting ? "Redirigiendo a Openpay..." : "Pagar con Openpay"}
+        {submitting ? t("payment.redirectingOpenpay") : t("payment.payWithOpenpay")}
       </Button>
       <ErrorMessage
         error={errorMessage}
@@ -315,6 +324,7 @@ const OpenpayPaymentButton = ({
 }
 
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
+  const t = useTranslations("checkout")
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -344,7 +354,7 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
         data-testid="submit-order-button"
         className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 rounded-full border-0 shadow-none"
       >
-        Realizar Pedido
+        {t("payment.placeOrder")}
       </Button>
       <ErrorMessage
         error={errorMessage}

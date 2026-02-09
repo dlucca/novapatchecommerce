@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { useTranslations } from "next-intl"
 
 export default function SubscriptionsContactSection() {
-  const t = useTranslations("subscriptions.contact")
+  const t = useTranslations("subscriptionsContact")
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
   const [formData, setFormData] = useState({
@@ -56,8 +56,8 @@ export default function SubscriptionsContactSection() {
         {/* Title */}
         <div className="text-center mb-10">
           <h2 className="type-title font-bold text-novapatch-title inline-block relative">
-            ¿Tienes{" "}
-            <span className="text-novapatch-button italic font-normal">dudas?</span>
+            {t("titlePrefix")}{" "}
+            <span className="text-novapatch-button italic font-normal">{t("titleEmphasis")}</span>
             <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-novapatch-button to-transparent"></div>
           </h2>
         </div>
@@ -75,13 +75,13 @@ export default function SubscriptionsContactSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="type-subtitle font-bold text-novapatch-title mb-2">¡Mensaje enviado!</h3>
-              <p className="text-gray-600 type-body mb-4">Te responderemos a la brevedad.</p>
+              <h3 className="type-subtitle font-bold text-novapatch-title mb-2">{t("successTitle")}</h3>
+              <p className="text-gray-600 type-body mb-4">{t("successMessage")}</p>
               <button
                 onClick={() => setSubmitted(false)}
                 className="text-novapatch-button font-semibold hover:underline type-button"
               >
-                Enviar otra consulta
+                {t("sendAnother")}
               </button>
             </div>
           ) : (
@@ -101,12 +101,12 @@ export default function SubscriptionsContactSection() {
                   }}
                 >
                   <option value="" disabled className="text-gray-700">
-                    ¿Por qué nos estás escribiendo?
+                    {t("reasonPlaceholder")}
                   </option>
-                  <option value="subscription" className="text-gray-700">Consulta sobre suscripciones</option>
-                  <option value="products" className="text-gray-700">Consulta sobre productos</option>
-                  <option value="shipping" className="text-gray-700">Consulta sobre envíos</option>
-                  <option value="other" className="text-gray-700">Otro motivo</option>
+                  <option value="subscription" className="text-gray-700">{t("reasonSubscription")}</option>
+                  <option value="products" className="text-gray-700">{t("reasonProducts")}</option>
+                  <option value="shipping" className="text-gray-700">{t("reasonShipping")}</option>
+                  <option value="other" className="text-gray-700">{t("reasonOther")}</option>
                 </select>
               </div>
 
@@ -117,7 +117,7 @@ export default function SubscriptionsContactSection() {
                   value={formData.question}
                   onChange={(e) => setFormData({ ...formData, question: e.target.value })}
                   required
-                  placeholder="¿Qué quieres saber sobre las suscripciones?"
+                  placeholder={t("questionPlaceholder")}
                   className="w-full px-4 py-3 rounded-full bg-novapatch-button text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-novapatch-title type-body"
                 />
               </div>
@@ -129,7 +129,7 @@ export default function SubscriptionsContactSection() {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
-                  placeholder="E-mail"
+                  placeholder={t("emailPlaceholder")}
                   className="w-full px-4 py-3 rounded-full bg-novapatch-button text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-novapatch-title type-body"
                 />
               </div>
@@ -141,7 +141,7 @@ export default function SubscriptionsContactSection() {
                   disabled={isSubmitting}
                   className="w-full bg-novapatch-title hover:bg-novapatch-footer text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-70 type-button"
                 >
-                  {isSubmitting ? "Enviando..." : "Conocer más"}
+                  {isSubmitting ? t("submitLoading") : t("submitDefault")}
                 </button>
               </div>
             </form>

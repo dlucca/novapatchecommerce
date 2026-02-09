@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 import { logger } from "@lib/util/logger"
@@ -16,6 +17,7 @@ interface SearchBoxProps {
 }
 
 const SearchBox = ({ isOpen, close, countryCode, scrolled = false }: SearchBoxProps) => {
+  const t = useTranslations("search")
   const [query, setQuery] = useState("")
   const [results, setResults] = useState<HttpTypes.StoreProduct[]>([])
   const [loading, setLoading] = useState(false)
@@ -124,7 +126,7 @@ const SearchBox = ({ isOpen, close, countryCode, scrolled = false }: SearchBoxPr
                 ref={inputRef}
                 type="text"
                 className="flex-1 outline-none text-base placeholder-gray-400"
-                placeholder="Buscar productos..."
+                placeholder={t("placeholder")}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
@@ -132,7 +134,7 @@ const SearchBox = ({ isOpen, close, countryCode, scrolled = false }: SearchBoxPr
                 type="button"
                 onClick={handleClose}
                 className="ml-3 text-gray-400 hover:text-gray-600 transition-colors"
-                title="Cerrar búsqueda"
+                title={t("closeTitle")}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -165,10 +167,8 @@ const SearchBox = ({ isOpen, close, countryCode, scrolled = false }: SearchBoxPr
                       d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  <p className="text-gray-500 font-medium">No se encontraron productos</p>
-                  <p className="text-gray-400 text-sm mt-1">
-                    Intenta con otros términos de búsqueda
-                  </p>
+                  <p className="text-gray-500 font-medium">{t("noResults")}</p>
+                  <p className="text-gray-400 text-sm mt-1">{t("noResultsHint")}</p>
                 </div>
               )}
 
@@ -242,4 +242,3 @@ const SearchBox = ({ isOpen, close, countryCode, scrolled = false }: SearchBoxPr
 }
 
 export default SearchBox
-

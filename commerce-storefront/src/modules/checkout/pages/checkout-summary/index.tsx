@@ -1,4 +1,5 @@
 import { Heading } from "@medusajs/ui"
+import { useTranslations } from "next-intl"
 
 import ItemsPreviewTemplate from "@modules/cart/pages/preview"
 import DiscountCode from "@modules/checkout/components/discount-code"
@@ -6,6 +7,7 @@ import CartTotals from "@modules/common/components/cart-totals"
 
 const CheckoutSummary = ({ cart }: { cart: any }) => {
   const hasSubscriptionItems = cart?.items?.some((item: any) => item.metadata?.is_subscription)
+  const t = useTranslations("checkout")
 
   return (
     <div className="sticky top-0 flex flex-col gap-y-4 py-8 small:py-0">
@@ -14,7 +16,7 @@ const CheckoutSummary = ({ cart }: { cart: any }) => {
           level="h2"
           className="text-[#0A4C6D] text-xl font-semibold mb-5"
         >
-          En tu Carrito
+          {t("summary.title")}
         </Heading>
 
         {/* Mensaje especial si hay suscripciones */}
@@ -23,10 +25,9 @@ const CheckoutSummary = ({ cart }: { cart: any }) => {
             <div className="flex items-start gap-3">
               <span className="text-[#22b2bd] text-lg">ⓘ</span>
               <div>
-                <p className="font-semibold text-[#0A4C6D] text-base">Suscripción Incluida</p>
+                <p className="font-semibold text-[#0A4C6D] text-base">{t("summary.subscriptionIncluded")}</p>
                 <p className="text-base text-gray-600 mt-1">
-                  Tu suscripción se activará después de completar este pedido.
-                  Recibirás envíos automáticos según el plan seleccionado.
+                  {t("summary.subscriptionMessage")}
                 </p>
               </div>
             </div>

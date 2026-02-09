@@ -2,6 +2,7 @@
 
 import { Dialog, Transition } from "@headlessui/react"
 import { Fragment, useEffect, useState } from "react"
+import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 import { logger } from "@lib/util/logger"
@@ -16,6 +17,7 @@ interface SearchModalProps {
 }
 
 const SearchModal = ({ isOpen, close, countryCode }: SearchModalProps) => {
+  const t = useTranslations("search")
   const [query, setQuery] = useState("")
   const [results, setResults] = useState<HttpTypes.StoreProduct[]>([])
   const [loading, setLoading] = useState(false)
@@ -110,7 +112,7 @@ const SearchModal = ({ isOpen, close, countryCode }: SearchModalProps) => {
                     <input
                       type="text"
                       className="flex-1 outline-none text-lg placeholder-gray-400"
-                      placeholder="Buscar productos..."
+                      placeholder={t("placeholder")}
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       autoFocus
@@ -152,10 +154,8 @@ const SearchModal = ({ isOpen, close, countryCode }: SearchModalProps) => {
                           d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>
-                      <p className="text-gray-500 text-lg">No se encontraron productos</p>
-                      <p className="text-gray-400 text-sm mt-2">
-                        Intenta con otros términos de búsqueda
-                      </p>
+                      <p className="text-gray-500 text-lg">{t("noResults")}</p>
+                      <p className="text-gray-400 text-sm mt-2">{t("noResultsHint")}</p>
                     </div>
                   )}
 
@@ -225,10 +225,8 @@ const SearchModal = ({ isOpen, close, countryCode }: SearchModalProps) => {
                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                         />
                       </svg>
-                      <p className="text-gray-500 text-lg">Busca tus productos favoritos</p>
-                      <p className="text-gray-400 text-sm mt-2">
-                        Escribe el nombre del producto que buscas
-                      </p>
+                      <p className="text-gray-500 text-lg">{t("prompt")}</p>
+                      <p className="text-gray-400 text-sm mt-2">{t("promptHint")}</p>
                     </div>
                   )}
                 </div>
@@ -242,4 +240,3 @@ const SearchModal = ({ isOpen, close, countryCode }: SearchModalProps) => {
 }
 
 export default SearchModal
-

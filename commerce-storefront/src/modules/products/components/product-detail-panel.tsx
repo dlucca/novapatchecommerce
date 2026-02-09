@@ -30,6 +30,7 @@ export default function ProductDetailPanel({
   const [isAdding, setIsAdding] = useState(false)
   const [itemAdded, setItemAdded] = useState(false)
   const [defaultPlan, setDefaultPlan] = useState<SubscriptionPlanConfig | null>(null)
+  const tDescription = useTranslations("description")
 
   const getLocalizedMetaString = (baseKey: string): string | null => {
     const md = product.metadata as Record<string, unknown> | undefined
@@ -272,7 +273,7 @@ export default function ProductDetailPanel({
         {/* <div className="border-t border-gray-200 pt-6 space-y-4"> */}
           {(getLocalizedMetaString("description") ?? (typeof product.description === "string" ? product.description : null)) ? (
             <div>
-              <h3 className="text-base font-semibold text-gray-900 mb-2">Descripción</h3>
+              <h3 className="text-base font-semibold text-gray-900 mb-2">{t("descriptionTitle")}</h3>
               <p className="text-sm text-gray-700 leading-relaxed">
                 {getLocalizedMetaString("description") ?? product.description}
               </p>
@@ -281,7 +282,7 @@ export default function ProductDetailPanel({
 
           {getLocalizedMetaString("beneficios") ? (
             <div>
-              <h3 className="text-base font-semibold text-gray-900 mb-2">Beneficios</h3>
+              <h3 className="text-base font-semibold text-gray-900 mb-2">{tDescription("benefits")}</h3>
               <p className="text-sm text-gray-700 leading-relaxed">
                 {getLocalizedMetaString("beneficios")}
               </p>
@@ -290,7 +291,7 @@ export default function ProductDetailPanel({
 
           {getLocalizedMetaString("uso") ? (
             <div>
-              <h3 className="text-base font-semibold text-gray-900 mb-2">Modo de Uso</h3>
+              <h3 className="text-base font-semibold text-gray-900 mb-2">{tDescription("usage")}</h3>
               <p className="text-sm text-gray-700 leading-relaxed">
                 {getLocalizedMetaString("uso")}
               </p>
@@ -299,7 +300,7 @@ export default function ProductDetailPanel({
 
           {product.metadata && Object.keys(product.metadata).filter(key => !['uso', 'beneficios'].includes(key)).length > 0 ? (
             <div>
-              <h3 className="text-base font-semibold text-gray-900 mb-3">Características</h3>
+              <h3 className="text-base font-semibold text-gray-900 mb-3">{tDescription("features")}</h3>
               <div className="grid grid-cols-2 gap-3">
                 {Object.entries(product.metadata)
                   .filter(([key]) => !['uso', 'beneficios'].includes(key))
@@ -321,4 +322,3 @@ export default function ProductDetailPanel({
     </div>
   )
 }
-

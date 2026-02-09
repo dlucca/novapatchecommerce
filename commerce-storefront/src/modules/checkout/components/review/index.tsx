@@ -1,12 +1,14 @@
 "use client"
 
 import { Heading, Text, clx } from "@medusajs/ui"
+import { useTranslations } from "next-intl"
 
 import PaymentButton from "../payment-button"
 import { useSearchParams } from "next/navigation"
 
 const Review = ({ cart }: { cart: any }) => {
   const searchParams = useSearchParams()
+  const t = useTranslations("checkout")
 
   const isOpen = searchParams.get("step") === "review"
 
@@ -30,7 +32,7 @@ const Review = ({ cart }: { cart: any }) => {
             }
           )}
         >
-          Revisión
+          {t("review.title")}
         </Heading>
       </div>
       {isOpen && previousStepsCompleted && (
@@ -38,14 +40,20 @@ const Review = ({ cart }: { cart: any }) => {
           <div className="flex items-start gap-x-1 w-full mb-6">
             <div className="w-full">
               <Text className="text-gray-600 text-base leading-relaxed">
-                Al hacer clic en el botón Realizar Pedido, confirmas que has
-                leído, comprendido y aceptas nuestros{" "}
-                <a href="/terms" className="text-[#22b2bd] hover:underline">Términos de Uso</a>,{" "}
-                <a href="/terms" className="text-[#22b2bd] hover:underline">Términos de Venta</a> y{" "}
-                <a href="/terms" className="text-[#22b2bd] hover:underline">Política de Devoluciones</a>,{" "}
-                y confirmas que has leído la{" "}
-                <a href="/privacy" className="text-[#22b2bd] hover:underline">Política de Privacidad</a>{" "}
-                de Novapatch Store.
+                {t.rich("review.termsAgreement", {
+                  termsOfUse: (chunks) => (
+                    <a href="/terms" className="text-[#22b2bd] hover:underline">{chunks}</a>
+                  ),
+                  termsOfSale: (chunks) => (
+                    <a href="/terms" className="text-[#22b2bd] hover:underline">{chunks}</a>
+                  ),
+                  returnsPolicy: (chunks) => (
+                    <a href="/terms" className="text-[#22b2bd] hover:underline">{chunks}</a>
+                  ),
+                  privacyPolicy: (chunks) => (
+                    <a href="/privacy" className="text-[#22b2bd] hover:underline">{chunks}</a>
+                  )
+                })}
               </Text>
             </div>
           </div>

@@ -1,5 +1,8 @@
 import { Metadata } from "next"
 import Link from "next/link"
+import { getTranslations } from "next-intl/server"
+import { getLocaleFromCountryCode } from "@/i18n"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Pago Pendiente",
@@ -14,6 +17,8 @@ type Props = {
 export default async function PaymentPendingPage({ params, searchParams }: Props) {
   const { countryCode } = await params
   const { cartId } = await searchParams
+  const locale = getLocaleFromCountryCode(countryCode)
+  const t = await getTranslations({ locale, namespace: "checkout" })
 
   return (
     <div className="min-h-screen bg-novapatch-bg-cream py-12 px-4">
@@ -36,10 +41,10 @@ export default async function PaymentPendingPage({ params, searchParams }: Props
             </svg>
           </div>
           <h1 className="text-[#0A4C6D] text-3xl font-semibold mb-2">
-            Pago Pendiente
+            {t("pending.title")}
           </h1>
           <p className="text-gray-600 text-lg">
-            Tu pago está siendo procesado
+            {t("pending.subtitle")}
           </p>
         </div>
 
@@ -53,15 +58,15 @@ export default async function PaymentPendingPage({ params, searchParams }: Props
             </div>
             <div>
               <h2 className="text-[#0A4C6D] font-medium mb-2">
-                ¿Qué significa esto?
+                {t("pending.whatMeansTitle")}
               </h2>
               <p className="text-gray-600 text-sm mb-3">
-                Tu pago está siendo verificado por la entidad financiera. Este proceso puede tomar algunos minutos.
+                {t("pending.whatMeansDescription")}
               </p>
               <ul className="text-gray-600 text-sm space-y-1">
-                <li>• Te enviaremos un email cuando se confirme</li>
-                <li>• No es necesario realizar otro pago</li>
-                <li>• Puedes cerrar esta página de forma segura</li>
+                <li>• {t("pending.bullet1")}</li>
+                <li>• {t("pending.bullet2")}</li>
+                <li>• {t("pending.bullet3")}</li>
               </ul>
             </div>
           </div>
@@ -72,7 +77,7 @@ export default async function PaymentPendingPage({ params, searchParams }: Props
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              <span className="text-sm font-medium">Verificando pago...</span>
+              <span className="text-sm font-medium">{t("pending.verifyingPayment")}</span>
             </div>
           </div>
         </div>
@@ -84,14 +89,14 @@ export default async function PaymentPendingPage({ params, searchParams }: Props
 	          href={`/${countryCode}/checkout/success?cartId=${cartId}`}
 	          className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 px-6 rounded-full text-center transition-colors"
 	        >
-	          Verificar estado del pedido
+	          {t("pending.checkOrderStatus")}
 	        </Link>
 	      )}
 	      <Link
 	        href={`/${countryCode}`}
 	        className="w-full bg-white border border-gray-300 text-gray-700 text-base font-medium py-3 px-6 rounded-full text-center hover:bg-gray-50 transition-colors"
 	      >
-	        Volver a la Tienda
+	        {t("pending.backToStore")}
 	      </Link>
 	    </div>
 
@@ -101,7 +106,7 @@ export default async function PaymentPendingPage({ params, searchParams }: Props
             href={`/${countryCode}/contact`}
             className="text-[#22b2bd] hover:underline text-sm"
           >
-            ¿Tienes dudas? Contáctanos
+            {t("pending.contactUs")}
           </Link>
         </div>
       </div>
