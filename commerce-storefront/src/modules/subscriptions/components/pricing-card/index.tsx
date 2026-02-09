@@ -83,7 +83,7 @@ export default function PricingCard({
           {plan.name}
         </Heading>
         <Text className="text-gray-600">
-          {plan.description || discountLabel || intervalLabel}
+          {discountLabel || plan.description || intervalLabel}
         </Text>
       </div>
       

@@ -133,9 +133,7 @@ export default function SubscriptionsPricingSection() {
                     </h3>
                     
                     <p className="type-body text-white/90 text-center mb-6">
-                      {plan.description
-                        ? plan.description
-                        : discountLabel || intervalLabel}
+                      {discountLabel || plan.description || intervalLabel}
                     </p>
                     
                     <div className="text-center mb-2">
