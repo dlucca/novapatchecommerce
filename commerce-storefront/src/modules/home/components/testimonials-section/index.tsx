@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl'
 const TestimonialsSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const t = useTranslations('testimonials')
+  const tCommon = useTranslations("common")
 
   const testimonialsConfig = [
     {
@@ -69,7 +70,7 @@ const TestimonialsSection = () => {
             onClick={prevSlide}
             className="absolute top-1/2 transform -translate-y-1/2 z-20 w-[clamp(40px,4vw,48px)] h-[clamp(40px,4vw,48px)] bg-black bg-opacity-20 rounded-full flex items-center justify-center text-white hover:bg-opacity-30 transition-all duration-200"
             style={{ left: 'clamp(0.5rem, 1vw, 1rem)' }}
-            aria-label="Anterior testimonio"
+            aria-label={tCommon("previousTestimonial")}
           >
             <svg className="w-[clamp(20px,2vw,24px)] h-[clamp(20px,2vw,24px)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -80,7 +81,7 @@ const TestimonialsSection = () => {
             onClick={nextSlide}
             className="absolute top-1/2 transform -translate-y-1/2 z-20 w-[clamp(40px,4vw,48px)] h-[clamp(40px,4vw,48px)] bg-black bg-opacity-20 rounded-full flex items-center justify-center text-white hover:bg-opacity-30 transition-all duration-200"
             style={{ right: 'clamp(0.5rem, 1vw, 1rem)' }}
-            aria-label="Siguiente testimonio"
+            aria-label={tCommon("nextTestimonial")}
           >
             <svg className="w-[clamp(20px,2vw,24px)] h-[clamp(20px,2vw,24px)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -107,7 +108,7 @@ const TestimonialsSection = () => {
                             <div className="w-[clamp(176px,20vw,224px)] h-[clamp(176px,20vw,224px)] mx-auto overflow-hidden bg-gray-200 shadow-lg" style={{ borderRadius: 'clamp(1rem, 1.5vw, 1.5rem)' }}>
                               <Image
                                 src={currentTestimonial.image}
-                                alt="Testimonio"
+                                alt={tCommon("testimonialImageAlt")}
                                 width={224}
                                 height={224}
                                 className="w-full h-full object-cover"

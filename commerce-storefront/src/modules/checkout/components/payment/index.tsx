@@ -12,6 +12,7 @@ import PaymentContainer, {
 import MercadoPagoPayment from "@modules/checkout/components/payment/mercadopago-payment"
 import OpenpayPayment from "@modules/checkout/components/payment/openpay-payment"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { useCallback, useEffect, useState } from "react"
 
 const Payment = ({
@@ -36,6 +37,14 @@ const Payment = ({
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
+  const t = useTranslations("checkout")
+  const tPaymentMethods = useTranslations("paymentMethods")
+
+  const getPaymentTitle = (providerId?: string | null) => {
+    if (!providerId) return tPaymentMethods("unknown")
+    const titleKey = paymentInfoMap[providerId]?.titleKey
+    return titleKey ? tPaymentMethods(titleKey) : providerId
+  }
 
   const isOpen = searchParams.get("step") === "payment"
 
@@ -111,18 +120,18 @@ const Payment = ({
     <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
       <div className="flex flex-row items-center justify-between mb-5">
         <div className="flex items-center gap-2">
-          <Heading
-            level="h2"
-            className={clx(
-              "text-[#0A4C6D] text-xl font-semibold",
-              {
-                "opacity-50 pointer-events-none select-none":
-                  !isOpen && !paymentReady,
-              }
-            )}
-          >
-            Pago
-          </Heading>
+            <Heading
+              level="h2"
+              className={clx(
+                "text-[#0A4C6D] text-xl font-semibold",
+                {
+                  "opacity-50 pointer-events-none select-none":
+                    !isOpen && !paymentReady,
+                }
+              )}
+            >
+              {t("payment.title")}
+            </Heading>
           {!isOpen && paymentReady && (
             <div className="w-2.5 h-2.5 bg-[#22b2bd] rounded-full"></div>
           )}
@@ -133,7 +142,7 @@ const Payment = ({
             className="text-[#22b2bd] text-base hover:underline font-medium"
             data-testid="edit-payment-button"
           >
-            Editar
+            {t("payment.edit")}
           </button>
         )}
       </div>
@@ -204,13 +213,13 @@ const Payment = ({
           {paidByGiftcard && (
             <div className="flex flex-col">
               <Text className="text-gray-500 mb-2 text-base">
-                Método de pago
+                {t("payment.method")}
               </Text>
               <Text
                 className="text-[#0A4C6D] text-base"
                 data-testid="payment-method-summary"
               >
-                Tarjeta de regalo
+                {t("payment.giftCard")}
               </Text>
             </div>
           )}
@@ -232,8 +241,8 @@ const Payment = ({
             data-testid="submit-payment-button"
           >
             {!activeSession && isStripeFunc(selectedPaymentMethod)
-              ? "Ingresar datos de tarjeta"
-              : "Continuar a revisión"}
+              ? t("payment.enterCardDetails")
+              : t("payment.continueReview")}
           </Button>
         </div>
 
@@ -242,14 +251,13 @@ const Payment = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col">
                 <Text className="text-gray-500 mb-2 text-base">
-                  Método de Pago
+                  {t("payment.method")}
                 </Text>
                 <Text
                   className="text-[#0A4C6D] text-base"
                   data-testid="payment-method-summary"
                 >
-                  {paymentInfoMap[activeSession?.provider_id]?.title ||
-                    activeSession?.provider_id}
+                  {getPaymentTitle(activeSession?.provider_id)}
                 </Text>
               </div>
               <div className="flex flex-col">

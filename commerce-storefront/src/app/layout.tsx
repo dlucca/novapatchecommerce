@@ -1,9 +1,10 @@
-import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
 import { ClerkProvider } from '@clerk/nextjs'
 import ClerkMedusaSyncProvider from "@/providers/clerk-medusa-sync"
 import { Outfit } from 'next/font/google'
 import "../styles/globals.css"
+import { getTranslations } from "next-intl/server"
+import { getBaseURL } from "@lib/util/env"
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -28,7 +29,8 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default async function RootLayout(props: { children: React.ReactNode }) {
+  const tCommon = await getTranslations("common")
   return (
     <ClerkProvider
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
@@ -52,7 +54,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         <body className={`${outfit.variable} ${outfit.className}`} suppressHydrationWarning>
           <ClerkMedusaSyncProvider>
             <a href="#main-content" className="skip-to-content">
-              Saltar al contenido principal
+              {tCommon("skipToContent")}
             </a>
             
             <main id="main-content" className="relative">{props.children}</main>

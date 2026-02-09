@@ -1,6 +1,7 @@
 "use client"
 
 import FilterRadioGroup from "@modules/common/components/filter-radio-group"
+import { useTranslations } from "next-intl"
 
 export type SortOptions = "price_asc" | "price_desc" | "created_at"
 
@@ -10,33 +11,33 @@ type SortProductsProps = {
   "data-testid"?: string
 }
 
-const sortOptions = [
-  {
-    value: "created_at",
-    label: "Latest Arrivals",
-  },
-  {
-    value: "price_asc",
-    label: "Price: Low -> High",
-  },
-  {
-    value: "price_desc",
-    label: "Price: High -> Low",
-  },
-]
-
 const SortProducts = ({
   "data-testid": dataTestId,
   sortBy,
   setQueryParams,
 }: SortProductsProps) => {
+  const t = useTranslations("storeSort")
+  const sortOptions = [
+    {
+      value: "created_at",
+      label: t("latest"),
+    },
+    {
+      value: "price_asc",
+      label: t("priceLowHigh"),
+    },
+    {
+      value: "price_desc",
+      label: t("priceHighLow"),
+    },
+  ]
   const handleChange = (value: SortOptions) => {
     setQueryParams("sortBy", value)
   }
 
   return (
     <FilterRadioGroup
-      title="Sort by"
+      title={t("title")}
       items={sortOptions}
       value={sortBy}
       handleChange={handleChange}

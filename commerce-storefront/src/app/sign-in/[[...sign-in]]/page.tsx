@@ -1,12 +1,24 @@
 import { SignIn } from '@clerk/nextjs'
-import Image from 'next/image'
+import Image from "next/image"
+import { cookies } from "next/headers"
+import { getTranslations } from "next-intl/server"
+import { getLocaleFromCountryCode } from "@/i18n"
+import type { Metadata } from "next"
 
-export const metadata = {
+const getLocaleFromCookie = () => {
+  const country = cookies().get("country")?.value
+  return country ? getLocaleFromCountryCode(country) : "es"
+}
+
+export const metadata: Metadata = {
   title: "Iniciar Sesión - NovaPatch",
   description: "Inicia sesión en tu cuenta de NovaPatch para acceder a productos exclusivos y suscripciones.",
 }
 
-export default function Page() {
+export default async function Page() {
+  const locale = getLocaleFromCookie()
+  const t = await getTranslations({ locale, namespace: "auth" })
+  const tCommon = await getTranslations({ locale, namespace: "common" })
   return (
     <div className="min-h-screen bg-gradient-to-br from-novapatch-bg-light to-blue-50 flex items-center justify-center py-12 px-4">
       <div className="w-full max-w-md">
@@ -14,7 +26,7 @@ export default function Page() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <Image
               src="/assets/nav/LOGO-1.svg"
-              alt="Logo de NovaPatch"
+              alt={tCommon("brandLogoAlt")}
               width={300}
               height={300}
               priority
@@ -48,9 +60,9 @@ export default function Page() {
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-sm text-gray-500">
-            ¿Problemas para iniciar sesión?{' '}
+            {t("help")} {" "}
             <a href="/info" className="text-novapatch-button hover:text-novapatch-footer font-medium">
-              Contáctanos
+              {t("contactUs")}
             </a>
           </p>
         </div>

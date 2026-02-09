@@ -1,5 +1,8 @@
 import { Metadata } from "next"
 import Link from "next/link"
+import { getTranslations } from "next-intl/server"
+import { getLocaleFromCountryCode } from "@/i18n"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Pago Rechazado",
@@ -14,6 +17,8 @@ type Props = {
 export default async function PaymentFailurePage({ params, searchParams }: Props) {
   const { countryCode } = await params
   const { cartId, payment_id } = await searchParams
+  const locale = getLocaleFromCountryCode(countryCode)
+  const t = await getTranslations({ locale, namespace: "checkout" })
 
   return (
     <div className="min-h-screen bg-novapatch-bg-cream py-12 px-4">
@@ -36,10 +41,10 @@ export default async function PaymentFailurePage({ params, searchParams }: Props
             </svg>
           </div>
           <h1 className="text-[#0A4C6D] text-3xl font-semibold mb-2">
-            Pago Rechazado
+            {t("failure.title")}
           </h1>
           <p className="text-gray-600 text-lg">
-            No pudimos procesar tu pago
+            {t("failure.subtitle")}
           </p>
         </div>
 
@@ -51,32 +56,32 @@ export default async function PaymentFailurePage({ params, searchParams }: Props
             </div>
             <div>
               <h2 className="text-[#0A4C6D] font-medium mb-1">
-                ¿Qué pudo haber pasado?
+                {t("failure.whatHappenedTitle")}
               </h2>
               <ul className="text-gray-600 text-sm space-y-1">
-                <li>• Fondos insuficientes en tu tarjeta</li>
-                <li>• Datos de la tarjeta incorrectos</li>
-                <li>• Tu banco rechazó la transacción</li>
-                <li>• Límite de compra excedido</li>
+                <li>• {t("failure.reason1")}</li>
+                <li>• {t("failure.reason2")}</li>
+                <li>• {t("failure.reason3")}</li>
+                <li>• {t("failure.reason4")}</li>
               </ul>
             </div>
           </div>
 
           <div className="border-t border-gray-100 pt-4">
             <p className="text-gray-600 text-sm">
-              Te sugerimos verificar los datos de tu tarjeta o intentar con otro método de pago.
+              {t("failure.suggestion")}
             </p>
 	            {(cartId || payment_id) && (
 	              <div className="mt-4 bg-gray-50 p-3 rounded-lg border border-gray-100 text-xs text-gray-600">
 	                {cartId && (
 	                  <p>
-	                    <span className="font-medium text-[#0A4C6D]">Cart ID:</span>{" "}
+	                    <span className="font-medium text-[#0A4C6D]">{t("failure.cartIdLabel")}</span>{" "}
 	                    <span className="font-mono">{cartId}</span>
 	                  </p>
 	                )}
 	                {payment_id && (
 	                  <p className="mt-1">
-	                    <span className="font-medium text-[#0A4C6D]">Payment ID:</span>{" "}
+	                    <span className="font-medium text-[#0A4C6D]">{t("failure.paymentIdLabel")}</span>{" "}
 	                    <span className="font-mono">{payment_id}</span>
 	                  </p>
 	                )}
@@ -91,13 +96,13 @@ export default async function PaymentFailurePage({ params, searchParams }: Props
             href={`/${countryCode}/checkout?step=payment`}
             className="w-full bg-[#22b2bd] hover:bg-[#1a9aa5] text-white text-base font-medium py-3 px-6 rounded-full text-center transition-colors"
           >
-            Intentar de Nuevo
+            {t("failure.retry")}
           </Link>
           <Link
             href={`/${countryCode}/cart`}
             className="w-full bg-white border border-gray-300 text-gray-700 text-base font-medium py-3 px-6 rounded-full text-center hover:bg-gray-50 transition-colors"
           >
-            Volver al Carrito
+            {t("failure.backToCart")}
           </Link>
         </div>
 
@@ -107,7 +112,7 @@ export default async function PaymentFailurePage({ params, searchParams }: Props
             href={`/${countryCode}/contact`}
             className="text-[#22b2bd] hover:underline text-sm"
           >
-            ¿Necesitas ayuda? Contáctanos
+            {t("failure.needHelp")}
           </Link>
         </div>
       </div>

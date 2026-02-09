@@ -14,6 +14,7 @@ const planColors: Record<string, string> = {
 
 export default function SubscriptionsPricingSection() {
   const t = useTranslations("subscriptions.plansSection")
+  const tPricing = useTranslations("subscriptions.pricing")
   const [plans, setPlans] = useState<SubscriptionPlanConfig[]>([])
   const [loading, setLoading] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
@@ -94,20 +95,19 @@ export default function SubscriptionsPricingSection() {
         ) : (
           <div className="flex flex-col md:flex-row justify-center items-center md:items-end gap-6 lg:gap-8">
             {sortedPlans.map((plan, index) => {
-              const isPopular = plan.code === "bimonthly"
               const bgColor = planColors[plan.code] || "bg-novapatch-subscription-plan-monthly"
-              const intervalLabel = `Cada ${plan.interval_days} días`
+              const intervalLabel = tPricing("everyDays", { days: plan.interval_days })
               const discountLabel = plan.promotion
                 ? plan.promotion.type === "percentage"
-                  ? `${plan.promotion.value}% de descuento`
-                  : `$${plan.promotion.value} de descuento`
+                  ? tPricing("discount", { days: plan.interval_days, value: plan.promotion.value })
+                  : tPricing("discountAmount", { days: plan.interval_days, value: plan.promotion.value })
                 : null
               const shippingLabel =
                 plan.free_shipping_threshold === 0
-                  ? "Envío gratis"
+                  ? tPricing("shippingAlwaysFree")
                   : plan.free_shipping_threshold
-                  ? `Envío gratis desde $${plan.free_shipping_threshold}`
-                  : "Envío estándar"
+                  ? tPricing("shippingFreeOver", { amount: plan.free_shipping_threshold })
+                  : tPricing("shippingStandard")
               
               return (
                 <div
@@ -116,19 +116,11 @@ export default function SubscriptionsPricingSection() {
                     isVisible
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-10"
-                  } ${isPopular ? "md:scale-110 md:z-10" : "md:max-w-[280px]"}`}
+                  } md:max-w-[280px]`}
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
-                  {isPopular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                      <span className="bg-yellow-400 text-novapatch-title type-button font-bold px-4 py-1 rounded-full shadow-lg">
-                        Más popular
-                      </span>
-                    </div>
-                  )}
-                  
-                  <div 
-                    className={`rounded-3xl p-6 h-full transition-all duration-300 relative overflow-hidden ${bgColor}`}
+                  <div
+                    className={`rounded-3xl p-6 h-full transition-all duration-300 relative overflow-hidden ${bgColor} hover:scale-[1.015]`}
                   >
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-1">
                       <div className="w-9 h-9 rounded-full bg-novapatch-bg-cream"></div>
@@ -143,9 +135,7 @@ export default function SubscriptionsPricingSection() {
                     <p className="type-body text-white/90 text-center mb-6">
                       {plan.description
                         ? plan.description
-                        : discountLabel
-                        ? `${intervalLabel} con ${discountLabel}`
-                        : intervalLabel}
+                        : discountLabel || intervalLabel}
                     </p>
                     
                     <div className="text-center mb-2">
@@ -159,23 +149,25 @@ export default function SubscriptionsPricingSection() {
                     <ul className="space-y-2 mb-6">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
-                        <span className="type-body text-white">Envío cada {plan.interval_days} días</span>
+                        <span className="type-body text-white">
+                          {tPricing("shippingEvery", { days: plan.interval_days })}
+                        </span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
-                        <span className="type-body text-white">Cancela cuando quieras</span>
+                        <span className="type-body text-white">{tPricing("cancelAnytime")}</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
-                        <span className="type-body text-white">Modifica tu pedido</span>
+                        <span className="type-body text-white">{tPricing("modifyEasily")}</span>
                       </li>
                     </ul>
                     
                     <LocalizedClientLink
                       href="/store"
-                      className="block w-full bg-[#005088] hover:bg-[#003d6b] text-white text-center px-6 py-3 rounded-full font-semibold transition-all duration-200 type-button"
+                      className="block w-full bg-[#005088] hover:bg-[#003d6b] text-white text-center px-6 py-3 rounded-full font-semibold transition-all duration-200 type-button shadow-md hover:shadow-lg hover:-translate-y-0.5"
                     >
-                      Comenzar
+                      {tPricing("startCta")}
                     </LocalizedClientLink>
                   </div>
                 </div>

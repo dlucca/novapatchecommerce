@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { verifyAndCompleteOrder } from "@lib/data/mercadopago"
+import { useTranslations } from "next-intl"
 
 interface SuccessPollerProps {
   cartId: string
@@ -22,6 +23,7 @@ export default function SuccessPoller({
   intervalMs = 3000,
 }: SuccessPollerProps) {
   const router = useRouter()
+  const t = useTranslations("checkout")
   const [status, setStatus] = useState<Status>("checking")
   const [error, setError] = useState<string | null>(null)
   const [attempts, setAttempts] = useState(0)
@@ -30,12 +32,12 @@ export default function SuccessPoller({
     try {
       const result = await verifyAndCompleteOrder(cartId, paymentId)
 
-	      if (result.success && result.orderId) {
+      if (result.success && result.orderId) {
         setStatus("success")
         router.push(`/${countryCode}/order/${result.orderId}/confirmed`)
         return true
       } else if (result.error?.includes("rejected") || result.error?.includes("not approved")) {
-        setError(result.error || "Payment failed")
+        setError(result.error || t("status.paymentFailed"))
         setStatus("error")
         return true
       } else {
@@ -54,7 +56,7 @@ export default function SuccessPoller({
     const poll = async () => {
       if (attempts >= maxAttempts) {
         setStatus("error")
-        setError("Order creation is taking longer than expected. Please check your email or contact support.")
+        setError(t("status.orderTakingLonger"))
         return
       }
 
@@ -80,8 +82,8 @@ export default function SuccessPoller({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-[#0A4C6D] text-xl font-semibold mb-2">¡Pedido Creado!</h2>
-        <p className="text-gray-600">Redirigiendo a tu confirmación...</p>
+        <h2 className="text-[#0A4C6D] text-xl font-semibold mb-2">{t("status.orderCreated")}</h2>
+        <p className="text-gray-600">{t("status.redirecting")}</p>
         <div className="flex items-center justify-center gap-2 mt-4 text-[#22b2bd]">
           <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -102,19 +104,19 @@ export default function SuccessPoller({
             />
           </svg>
         </div>
-        <h2 className="text-[#0A4C6D] text-xl font-semibold mb-2">Procesando tu Pedido</h2>
+        <h2 className="text-[#0A4C6D] text-xl font-semibold mb-2">{t("status.processingTitle")}</h2>
         <p className="text-gray-600 mb-4">{error}</p>
 
         <div className="bg-gray-50 p-4 rounded-lg text-left text-sm mb-6 border border-gray-100">
-          <p className="text-gray-600"><span className="font-medium text-[#0A4C6D]">Cart ID:</span> <span className="font-mono text-xs">{cartId}</span></p>
-          {paymentId && <p className="text-gray-600 mt-1"><span className="font-medium text-[#0A4C6D]">Payment ID:</span> <span className="font-mono text-xs">{paymentId}</span></p>}
+          <p className="text-gray-600"><span className="font-medium text-[#0A4C6D]">{t("status.cartIdLabel")}</span> <span className="font-mono text-xs">{cartId}</span></p>
+          {paymentId && <p className="text-gray-600 mt-1"><span className="font-medium text-[#0A4C6D]">{t("status.paymentIdLabel")}</span> <span className="font-mono text-xs">{paymentId}</span></p>}
         </div>
 
         <a
           href="mailto:support@novapatch.com"
           className="inline-block bg-[#22b2bd] hover:bg-[#1a9aa5] text-white px-6 py-3 rounded-full font-medium transition-colors"
         >
-          Contactar Soporte
+          {t("status.contactSupport")}
         </a>
       </div>
     )
@@ -128,9 +130,9 @@ export default function SuccessPoller({
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
       </div>
-      <h2 className="text-[#0A4C6D] text-xl font-semibold mb-2">Procesando tu Pedido</h2>
+      <h2 className="text-[#0A4C6D] text-xl font-semibold mb-2">{t("status.processingTitle")}</h2>
       <p className="text-gray-600 mb-4">
-        Estamos verificando tu pago y creando tu pedido...
+        {t("status.processingDescription")}
       </p>
       <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
         <div
@@ -139,9 +141,8 @@ export default function SuccessPoller({
         />
       </div>
       <p className="text-sm text-gray-400">
-        Verificando... ({attempts + 1}/{maxAttempts})
+        {t("status.verifying")} ({attempts + 1}/{maxAttempts})
       </p>
     </div>
   )
 }
-
