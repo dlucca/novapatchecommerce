@@ -1,5 +1,3 @@
-import { Badge } from "@medusajs/ui"
-
 import { useTranslations } from "next-intl"
 import { Badge } from "@medusajs/ui"
 
