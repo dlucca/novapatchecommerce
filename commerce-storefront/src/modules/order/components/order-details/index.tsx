@@ -1,6 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text } from "@medusajs/ui"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 
 type OrderDetailsProps = {
   order: HttpTypes.StoreOrder
@@ -8,16 +8,19 @@ type OrderDetailsProps = {
 }
 
 const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
-  const t = useTranslations("orderStatus")
+  const tStatus = useTranslations("orderStatus")
+  const tOrder = useTranslations("order")
+  const locale = useLocale()
+  const dateLocale = locale === "pt" ? "pt-BR" : "es-MX"
   
   const formatStatus = (str: string) => {
     const statusKey = str.toLowerCase().replace(/ /g, "_")
-    return t(statusKey) || (str.split("_").join(" ").slice(0, 1).toUpperCase() + str.slice(1))
+    return tStatus(statusKey) || (str.split("_").join(" ").slice(0, 1).toUpperCase() + str.slice(1))
   }
 
   const formatDate = (dateInput: string | Date) => {
     const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput
-    return date.toLocaleDateString('es-ES', {
+    return date.toLocaleDateString(dateLocale, {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -28,7 +31,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
     <div>
       <div className="flex items-center gap-2 mb-4">
         <Heading level="h2" className="text-[#0A4C6D] text-xl font-semibold">
-          Detalles del Pedido
+          {tOrder("details.title")}
         </Heading>
         <div className="w-2.5 h-2.5 bg-[#22b2bd] rounded-full"></div>
       </div>
@@ -36,7 +39,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="flex flex-col">
           <Text className="text-gray-500 mb-2 text-base">
-            Número de Pedido
+            {tOrder("details.number")}
           </Text>
           <Text
             className="text-[#0A4C6D] font-medium text-lg"
@@ -48,7 +51,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
 
         <div className="flex flex-col">
           <Text className="text-gray-500 mb-2 text-base">
-            Fecha del Pedido
+            {tOrder("details.date")}
           </Text>
           <Text className="text-gray-700 text-base" data-testid="order-date">
             {formatDate(order.created_at)}
@@ -57,7 +60,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
 
         <div className="flex flex-col">
           <Text className="text-gray-500 mb-2 text-base">
-            Correo de Confirmación
+            {tOrder("details.email")}
           </Text>
           <Text
             className="text-gray-700 text-base"
@@ -72,7 +75,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-gray-100">
           <div className="flex flex-col">
             <Text className="text-gray-500 mb-2 text-base">
-              Estado del Pedido
+              {tOrder("details.status")}
             </Text>
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-[#22b2bd]/10 text-[#22b2bd] font-medium">
@@ -82,7 +85,7 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
           </div>
           <div className="flex flex-col">
             <Text className="text-gray-500 mb-2 text-base">
-              Estado del Pago
+              {tOrder("details.paymentStatus")}
             </Text>
             <div className="flex items-center gap-2">
               <span

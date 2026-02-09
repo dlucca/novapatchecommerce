@@ -90,6 +90,7 @@ const HeroSection = () => {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const tHero = useTranslations("hero")
   const tFeatures = useTranslations("features")
+  const tCommon = useTranslations("common")
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -187,7 +188,7 @@ const HeroSection = () => {
       <button
         onClick={goToPrevSlide}
         className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white p-2 rounded-full transition-all duration-200 hover:scale-110"
-        aria-label="Slide anterior"
+        aria-label={tCommon("previousSlide")}
       >
         <svg
           className="w-6 h-6"
@@ -207,7 +208,7 @@ const HeroSection = () => {
       <button
         onClick={goToNextSlide}
         className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white p-2 rounded-full transition-all duration-200 hover:scale-110"
-        aria-label="Slide siguiente"
+        aria-label={tCommon("nextSlide")}
       >
         <svg
           className="w-6 h-6"
@@ -289,7 +290,7 @@ const HeroSection = () => {
           <div className="absolute left-[8%] bottom-[25%] z-10 hidden md:block">
             <Image
               src="/assets/features/flower.svg"
-              alt="Decoración floral"
+              alt={tCommon("decorativeFloralAlt")}
               width={60}
               height={60}
               className="w-[clamp(50px,6vw,80px)] h-[clamp(50px,6vw,80px)]"

@@ -55,7 +55,9 @@ export default function SubscriptionsWhySection() {
       <div className="max-w-6xl mx-auto px-6 sm:px-8">
         <div className="text-center mb-16">
           <h2 className="type-title text-novapatch-title">
-            ¿Por Qué <span className="font-bold">suscribirse?</span>
+            {t.rich("title", {
+              highlight: (chunks) => <span className="font-bold">{chunks}</span>,
+            })}
           </h2>
         </div>
 

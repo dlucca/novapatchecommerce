@@ -33,6 +33,7 @@ export default function NavClient({ cart }: NavClientProps) {
   const params = useParams()
   const countryCode = (params?.countryCode as string) || "mx"
   const t = useTranslations('nav')
+  const tCommon = useTranslations("common")
 
   const cartFallback = (
     <LocalizedClientLink
@@ -42,7 +43,7 @@ export default function NavClient({ cart }: NavClientProps) {
     >
       <Image
         src="/assets/nav/cart.svg"
-        alt="Carrito"
+        alt={tCommon("cartIconAlt")}
         width={20}
         height={20}
         className="w-5 h-5"
@@ -62,7 +63,7 @@ export default function NavClient({ cart }: NavClientProps) {
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
       <header
-        className="relative h-12 sm:h-14 lg:h-16 xl:h-14 2xl:h-12 mx-auto bg-white shadow-sm"
+        className="relative h-12 sm:h-14 lg:h-16 xl:h-14 2xl:h-12 mx-auto bg-novapatch-bg-cream shadow-sm"
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between w-full h-full relative">
           <div className="flex items-center gap-3 md:hidden">
@@ -106,7 +107,7 @@ export default function NavClient({ cart }: NavClientProps) {
             >
               <Image
                 src="/assets/nav/LOGO-1.svg"
-                alt="Logo de NovaPatch"
+                alt={tCommon("brandLogoAlt")}
                 width={170}
                 height={170}
                 priority
@@ -119,12 +120,12 @@ export default function NavClient({ cart }: NavClientProps) {
             <button
               onClick={() => setSearchOpen(true)}
               className="p-2 text-gray-700 hover:text-blue-600 transition-all duration-200"
-              aria-label="Buscar productos"
+              aria-label={tCommon("searchProducts")}
               data-testid="nav-search-button"
             >
               <Image
                 src="/assets/nav/lupa.svg"
-                alt="Buscar"
+                alt={tCommon("searchIconAlt")}
                 width={20}
                 height={20}
                 className="w-5 h-5"
@@ -140,12 +141,12 @@ export default function NavClient({ cart }: NavClientProps) {
             <button
               onClick={() => setSearchOpen(true)}
               className="p-2 text-gray-700 hover:text-blue-600 transition-all duration-200"
-              aria-label="Buscar productos"
+              aria-label={tCommon("searchProducts")}
               data-testid="nav-search-button"
             >
               <Image
                 src="/assets/nav/lupa.svg"
-                alt="Buscar"
+                alt={tCommon("searchIconAlt")}
                 width={20}
                 height={20}
                 className="w-5 h-5"

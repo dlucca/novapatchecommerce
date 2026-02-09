@@ -39,6 +39,7 @@ const valuesItems = [
 
 export default function AboutValuesSection() {
   const t = useTranslations("about.values")
+  const tCommon = useTranslations("common")
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
 
@@ -83,7 +84,7 @@ export default function AboutValuesSection() {
         <div className="absolute -top-10 -right-10 z-10">
           <Image
             src="/assets/features/flower.svg"
-            alt="Decoración floral"
+            alt={tCommon("decorativeFloralAlt")}
             width={200}
             height={200}
             className="opacity-70"

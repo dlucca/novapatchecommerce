@@ -2,6 +2,7 @@
 
 import { useParams, usePathname } from 'next/navigation'
 import { useState, useRef, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { getAllCountries, type CountryCode } from '@lib/util/region-detection'
 
 /**
@@ -16,6 +17,7 @@ export default function CountrySelectorClient() {
   const currentCountry = (params?.countryCode as CountryCode) || 'mx'
   const countries = getAllCountries()
   const currentCountryInfo = countries.find(c => c?.code === currentCountry)
+  const tCommon = useTranslations("common")
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -43,7 +45,7 @@ export default function CountrySelectorClient() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-        aria-label="Seleccionar país"
+        aria-label={tCommon("selectCountry")}
       >
         <span className="text-xl">{currentCountryInfo?.flag}</span>
         <span className="text-sm font-medium text-gray-700 hidden sm:inline">
@@ -95,4 +97,3 @@ export default function CountrySelectorClient() {
     </div>
   )
 }
-

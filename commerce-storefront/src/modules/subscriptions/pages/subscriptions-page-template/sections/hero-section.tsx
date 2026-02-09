@@ -48,35 +48,33 @@ const WAVE_COLOR = "#83b5f4"
 export default function SubscriptionsHeroSection() {
   const t = useTranslations("subscriptions.hero")
   const tFeatures = useTranslations("features")
+  const tCommon = useTranslations("common")
   
   return (
     <section className="relative overflow-visible h-screen min-h-[600px]">
       <div className="absolute inset-0">
         <Image
           src="/assets/suscription/suscripcion.webp"
-          alt="Tu rutina de bienestar"
+          alt={t("imageAlt")}
           fill
           className="object-cover object-center"
           priority
         />
-        <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent w-full sm:w-[85%] md:w-[65%] lg:w-[58%] xl:w-[52%]"></div>
+        <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-white/60 via-white/40 to-transparent w-full sm:w-[85%] md:w-[65%] lg:w-[58%] xl:w-[52%]"></div>
       </div>
 
       <div className="relative z-20 h-full flex items-center pt-32 xsmall:pt-40 md:pt-0">
         <div className="w-full px-8 xsmall:px-12 sm:px-16 md:px-24 lg:px-32 xl:px-40">
           <div className="max-w-md">
-            <h1 className="text-white font-bold type-hero mb-[clamp(1rem,2vw,1.5rem)]">
-              Tu rutina<br />
-              de bienestar<br />
-              <span 
-                className="text-white px-2"
-                style={{ backgroundColor: WAVE_COLOR }}
-              >
-                comienza aquí
-              </span>
+            <h1 className="type-hero mb-[clamp(1rem,2vw,1.5rem)]" style={{ color: '#003B73' }}>
+              {t("line1")}
+              <br />
+              {t("line2")}
+              <br />
+              {t("line3")}
             </h1>
 
-            <p className="text-white font-light type-hero-subtitle mb-[clamp(1.5rem,2vw,2rem)] max-w-[clamp(280px,50vw,500px)]">
+            <p className="text-black font-light type-hero-subtitle mb-[clamp(1.5rem,2vw,2rem)] max-w-[clamp(280px,50vw,500px)]">
               {t("subtitle")}
             </p>
 
@@ -111,7 +109,7 @@ export default function SubscriptionsHeroSection() {
           <div className="absolute left-[8%] bottom-[25%] z-10 hidden md:block">
             <Image
               src="/assets/features/flower.svg"
-              alt="Decoración floral"
+              alt={tCommon("decorativeFloralAlt")}
               width={60}
               height={60}
               className="w-[clamp(50px,6vw,80px)] h-[clamp(50px,6vw,80px)]"

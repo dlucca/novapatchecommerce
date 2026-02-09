@@ -1,6 +1,7 @@
 import { Container, clx } from "@medusajs/ui"
 import Image from "next/image"
 import React from "react"
+import { useTranslations } from "next-intl"
 
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
 import { transformMediaUrl } from "@lib/util/transform-url"
@@ -51,10 +52,11 @@ const ImageOrPlaceholder = ({
   image,
   size,
 }: Pick<ThumbnailProps, "size"> & { image?: string | null }) => {
+  const tCommon = useTranslations("common")
   return image ? (
     <Image
       src={image}
-      alt="Thumbnail"
+      alt={tCommon("thumbnailAlt")}
       className="absolute inset-0 object-cover object-center"
       draggable={false}
       quality={50}

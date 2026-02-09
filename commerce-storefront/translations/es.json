@@ -2,9 +2,7 @@
   "nav": {
     "store": "Tienda",
     "subscriptions": "Suscripciones",
-    "about": "Nosotros",
-    "cart": "Carrito",
-    "search": "Buscar productos"
+    "about": "Nosotros"
   },
   "account": {
     "hello": "Hola",
@@ -26,24 +24,21 @@
     "price": "Precio",
     "total": "Total",
     "orderSummary": "Resumen del pedido",
-    "addPromotionCode": "Add Promotion Code(s)",
-    "promotionApplied": "Promotion(s) applied:",
-    "checkout": "Proceder al pago",
     "continueShopping": "← Continuar comprando",
     "itemsInCart": "productos en tu carrito"
   },
   "footer": {
     "shop": "Comprar",
     "help": "Ayuda",
-    "welfares": "Bem-estar",
-    "protection": "Proteção da Pele",
-    "contact": "Contactanos",
+    "welfares": "Bienestar",
+    "protection": "Protección de la piel",
+    "contact": "Contáctanos",
     "faq": "Preguntas frecuentes",
     "about": "Nosotros",
-    "whyChooseUs": "Porque elegirnos",
-    "subscribeAndSave": "Suscribete y ahorra",
+    "whyChooseUs": "Por qué elegirnos",
+    "subscribeAndSave": "Suscríbete y ahorra",
     "reserve": "NovaPatch. Todos los derechos reservados.",
-    "subscribe": "Suscribete"
+    "subscribe": "Suscríbete"
   },
   "hero": {
     "slide1": {
@@ -131,11 +126,7 @@
     "title": "Cómo funciona",
     "subtitle": "Parches inteligentes, absorción natural",
     "description": "Nuestros parches liberan vitaminas y minerales a través de la piel, sin pasar por el sistema digestivo. Esto permite una absorción más directa, rápida y sin interferencias.",
-    "cta": "Ver ahora",
-    "image": "Imagen",
-    "vitamins": "Vitaminas y extractos",
-    "patch": "Parche vitaminico",
-    "absorption": "Los nutrientes se absorben a través de la piel"
+    "cta": "Ver ahora"
   },
   "testimonials": {
     "testimonial1": "Usé el de energía por la mañana y el de sueño en la noche. ¡Una maravilla!",
@@ -144,9 +135,12 @@
   },
   "subscriptions": {
     "hero": {
-      "title": "Tu Rutina de Bienestar Comienza Aquí",
       "subtitle": "Personaliza una suscripción que funcione para ti y ahorra en cada pedido.",
-      "cta": "Suscríbete y ahorra"
+      "cta": "Suscríbete y ahorra",
+      "imageAlt": "Tu rutina de bienestar",
+      "line1": "Tu rutina",
+      "line2": "de bienestar",
+      "line3": "comienza aquí"
     },
     "pricing": {
       "mostPopular": "Más Popular",
@@ -159,10 +153,11 @@
       "cancelAnytime": "Cancela cuando quieras",
       "modifyEasily": "Modifica tu pedido fácilmente",
       "shippingIncluded": "Envío gratis incluido",
-      "startCta": "Comenzar"
+      "startCta": "Comenzar",
+      "discountAmount": "Envío cada {days} días con ${value} de descuento"
     },
     "whySubscribe": {
-      "title": "¿Por Qué Suscribirse?",
+      "title": "¿Por qué <highlight>suscribirse?</highlight>",
       "slide1Title": "Ahorra más",
       "slide1Subtitle": "Ahorra más con cada caja y nunca te preocupes por quedarte sin parches.",
       "slide2Title": "Personaliza tu suscripción",
@@ -172,7 +167,7 @@
       "scrollMore": "Desliza para ver más"
     },
     "howItWorks": {
-      "title": "¿Cómo Suscribirte?",
+      "title": "¿Cómo <highlight>suscribirte?</highlight>",
       "step1Title": "Elige tus Parches",
       "step1Description": "Navega por nuestra tienda y selecciona los parches que necesitas.",
       "step2Title": "Selecciona Suscripción",
@@ -208,17 +203,14 @@
     "answer6": "Los pedidos se procesan en 1-2 días hábiles. El envío estándar toma 3-5 días hábiles, mientras que el envío express llega en 1-2 días hábiles."
   },
   "about": {
-    "metadata": {
-      "title": "Sobre NovaPatch - Nuestra Historia",
-      "description": "Descubre la ciencia detrás de los parches de vitaminas NovaPatch: una solución sin pastillas, de alta absorción para nutrientes esenciales."
-    },
     "hero": {
       "title": "La Ciencia Detrás de NovaPatch",
       "subtitle": "Descubre por qué los parches son el futuro de la suplementación: una solución sin pastillas, de alta absorción para nutrientes esenciales sin rellenos.",
-      "cta": "Suscribirse ahora"
+      "cta": "Suscribirse ahora",
+      "imageAlt": "Sobre NovaPatch"
     },
     "whyPatches": {
-      "title": "¿Por Qué Parches?",
+      "title": "¿Por qué <highlight>parches?</highlight>",
       "paragraph1": "¿Sabías que la mayoría de los suplementos vitamínicos contienen ingredientes que tu cuerpo no necesita? Por eso decidimos dejar de lado las pastillas y las gomitas, y optar por un formato más simple: parches.",
       "paragraph2": "Una alternativa práctica para quienes buscan cuidarse sin sumar pasos innecesarios.",
       "paragraph3": "Nuestros parches ofrecen una alternativa revolucionaria a las vitaminas tradicionales, proporcionando una absorción directa y eficiente sin pasar por el sistema digestivo.",
@@ -242,7 +234,7 @@
       }
     },
     "howToUse": {
-      "title": "¡Solo Despega, Pega y Disfruta!",
+      "title": "¡Solo despega, pega y <highlight>disfruta!</highlight>",
       "step1": {
         "title": "Despega",
         "description": "Retira el protector del parche con cuidado. Asegúrate de que tu piel esté limpia y seca."
@@ -316,19 +308,27 @@
       "bimonthly": "Plan bimensual",
       "trimonthly": "Plan trimestral",
       "quarterly": "Plan trimestral"
+    },
+    "outOfStock": "Agotado",
+    "selectVariant": "Selecciona una variante",
+    "store": {
+      "addToCart": "Agregar al carrito",
+      "added": "¡Agregado!",
+      "adding": "Agregando...",
+      "goToCart": "Ir al carrito"
     }
   },
   "description": {
     "howItWorks": "Cómo funciona",
     "benefits": "Beneficios",
     "usage": "Modo de uso",
-    "whatIncludes": "Qué incluye"
+    "whatIncludes": "Qué incluye",
+    "features": "Características"
   },
   "myCart": {
     "myCart": "Mi carrito",
     "closeCart": "Cerrar carrito",
     "quantity": "Cantidad",
-    "total": "Total",
     "subtotal": "Subtotal",
     "viewCart": "Ver carrito",
     "checkout": "Finalizar compra",
@@ -338,14 +338,13 @@
   "discount": {
     "addDiscount": "Agregar código de descuento",
     "apply": "Aplicar",
-    "placeholder": "Ingresa tu código de descuento",
-    "subtotal": "Subtotal (sin envío e impuestos)",
+    "subtotal": "Subtotal",
     "shipping": "Envío",
-    "subscriptionDiscount": "Descuento de suscripción",
+    "subscriptionDiscount": "Descuento por suscripción",
     "taxes": "Impuestos",
     "total": "Total",
     "proceedToPayment": "Proceder al pago",
-    "continueShopping": "Continuar comprando"
+    "discount": "Descuento"
   },
   "myAccount": {
     "title": "Mi Cuenta",
@@ -362,7 +361,6 @@
     "button": "Eliminar mi cuenta",
     "question": "¿Estás seguro?",
     "warning": "Esta acción es irreversible. Todos tus datos serán eliminados permanentemente, incluyendo:",
-    "data": "Tu información personal, historial de pedidos, direcciones guardadas, suscripciones activas, etc.",
     "deleting": "Eliminando...",
     "confirm": "Sim, excluir minha conta",
     "cancel": "Cancelar"
@@ -378,10 +376,6 @@
     "subtitle": "Ver tus pedidos anteriores y su estado",
     "noOrders": "No tienes pedidos",
     "warning": "Cuando realices tu primera compra, aparecerá aquí",
-    "orderNumber": "Número de pedido",
-    "date": "Fecha",
-    "total": "Total",
-    "status": "Estado",
     "goToStore": "Ir a la tienda"
   },
   "mySubscriptions": {
@@ -389,12 +383,7 @@
     "subtitle": "Gestiona tus suscripciones activas",
     "noSubscriptions": "No tienes suscripciones activas",
     "warning": "Suscríbete a nuestros productos y recibe envíos automáticos con descuentos exclusivos",
-    "plan": "Plan",
-    "status": "Estado",
-    "nextPayment": "Próximo pago",
-    "viewSubscription": "Planes de suscripción",
-    "pauseSubscription": "Pausar suscripción",
-    "cancelSubscription": "Cancelar suscripción"
+    "viewSubscription": "Planes de suscripción"
   },
   "menu": {
     "home": "Inicio",
@@ -427,5 +416,361 @@
     "refunded": "Reembolsado",
     "captured": "Capturado",
     "authorized": "Autorizado"
+  },
+  "common": {
+    "skipToContent": "Saltar al contenido principal",
+    "openMenu": "Abrir menú",
+    "searchProducts": "Buscar productos",
+    "previousSlide": "Slide anterior",
+    "nextSlide": "Slide siguiente",
+    "previousTestimonial": "Testimonio anterior",
+    "nextTestimonial": "Testimonio siguiente",
+    "selectCountry": "Seleccionar país",
+    "from": "Desde",
+    "originalLabel": "Original:",
+    "item": "artículo",
+    "items": "artículos",
+    "more": "más",
+    "seeDetails": "Ver detalles",
+    "backgroundAlt": "Fondo",
+    "decorativeFloralAlt": "Decoración floral",
+    "brandLogoAlt": "Logo de NovaPatch",
+    "cartIconAlt": "Carrito",
+    "searchIconAlt": "Buscar",
+    "thumbnailAlt": "Miniatura",
+    "testimonialImageAlt": "Testimonio",
+    "novapatchAlt": "NovaPatch",
+    "patchAlt": "Parche",
+    "bearAlt": "Osito",
+    "instagramLabel": "Instagram",
+    "tiktokLabel": "TikTok",
+    "productFallback": "Producto"
+  },
+  "accountOverview": {
+    "signedInAs": "Conectado como:",
+    "completed": "Completado",
+    "saved": "Guardadas",
+    "datePlaced": "Fecha",
+    "orderNumber": "Número de pedido",
+    "totalAmount": "Total",
+    "goToOrder": "Ir al pedido #{id}",
+    "noRecentOrders": "No hay pedidos recientes"
+  },
+  "accountSubscriptions": {
+    "nextOrder": "Próxima orden:",
+    "pause": "Pausar",
+    "cancel": "Cancelar",
+    "cancelPermanent": "Cancelar definitivamente",
+    "processing": "Procesando...",
+    "cancelledOn": "Suscripción cancelada el {date}",
+    "statusActive": "Activa",
+    "statusPaused": "Pausada",
+    "statusCancelled": "Cancelada",
+    "intervalEveryDays": "Cada {days} días",
+    "shippingAlwaysFree": "Envío gratis siempre",
+    "shippingFreeOver": "Envío gratis si gastas más de ${amount}",
+    "shippingStandard": "Envío estándar",
+    "discountPercentage": "{value}% de descuento",
+    "discountAmount": "${value} de descuento",
+    "noDiscount": "Sin descuento",
+    "defaultPlanName": "Plan de suscripción",
+    "defaultDiscount": "Descuento aplicado",
+    "defaultInterval": "Envío automático",
+    "defaultShipping": "Según plan",
+    "pauseConfirm": "¿Estás seguro de que quieres pausar esta suscripción?",
+    "pauseError": "Error al pausar la suscripción. Por favor intenta de nuevo.",
+    "cancelConfirm": "¿Estás seguro de que quieres cancelar esta suscripción? Esta acción no se puede deshacer.",
+    "cancelError": "Error al cancelar la suscripción. Por favor intenta de nuevo."
+  },
+  "addressBook": {
+    "newAddress": "Nueva dirección",
+    "addAddress": "Agregar dirección",
+    "editAddress": "Editar dirección",
+    "edit": "Editar",
+    "remove": "Eliminar",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  },
+  "auth": {
+    "disabledTitle": "Autenticación deshabilitada",
+    "disabledDescription": "Este proyecto usa Clerk para autenticación. Por favor, ve a /sign-in para iniciar sesión.",
+    "disabledDescriptionSignUp": "Este proyecto usa Clerk para autenticación. Por favor, ve a /sign-up para crear una cuenta.",
+    "goToSignIn": "Ir a iniciar sesión",
+    "goToSignUp": "Ir a crear cuenta",
+    "help": "¿Problemas para iniciar sesión?",
+    "contactUs": "Contáctanos",
+    "signUpAgreement": "Al crear una cuenta, aceptas nuestros <terms>Términos y Condiciones</terms> y <privacy>Política de Privacidad</privacy>."
+  },
+  "checkout": {
+    "header": {
+      "backToCart": "Volver al carrito",
+      "back": "Volver"
+    },
+    "summary": {
+      "title": "En tu carrito",
+      "subscriptionIncluded": "Suscripción incluida",
+      "subscriptionMessage": "Tu suscripción se activará después de completar este pedido. Recibirás envíos automáticos según el plan seleccionado."
+    },
+    "review": {
+      "title": "Revisión",
+      "termsAgreement": "Al hacer clic en el botón Realizar pedido, confirmas que has leído, comprendido y aceptas nuestros <termsOfUse>Términos de Uso</termsOfUse>, <termsOfSale>Términos de Venta</termsOfSale> y <returnsPolicy>Política de Devoluciones</returnsPolicy>, y confirmas que has leído la <privacyPolicy>Política de Privacidad</privacyPolicy> de NovaPatch Store."
+    },
+    "payment": {
+      "title": "Pago",
+      "edit": "Editar",
+      "method": "Método de pago",
+      "giftCard": "Tarjeta de regalo",
+      "enterCardDetails": "Ingresar datos de tarjeta",
+      "continueReview": "Continuar a revisión",
+      "selectMethod": "Selecciona un método de pago",
+      "placeOrder": "Realizar pedido",
+      "payWithMercadoPago": "Pagar con Mercado Pago",
+      "redirectingMercadoPago": "Redirigiendo a Mercado Pago...",
+      "mercadoPagoUrlError": "No se pudo obtener la URL de pago de Mercado Pago",
+      "mercadoPagoError": "Error al procesar el pago con Mercado Pago",
+      "payWithOpenpay": "Pagar con Openpay",
+      "redirectingOpenpay": "Redirigiendo a Openpay...",
+      "openpayUrlError": "No se pudo obtener la URL de pago de Openpay",
+      "openpayError": "Error al procesar el pago con Openpay",
+      "cardDetailsLabel": "Ingresa los datos de tu tarjeta:"
+    },
+    "paymentTest": {
+      "attention": "Atención:",
+      "message": "Solo para pruebas."
+    },
+    "status": {
+      "orderCreated": "¡Pedido creado!",
+      "redirecting": "Redirigiendo a tu confirmación...",
+      "processingTitle": "Procesando tu pedido",
+      "processingDescription": "Estamos verificando tu pago y creando tu pedido...",
+      "verifying": "Verificando...",
+      "cartIdLabel": "ID del carrito:",
+      "paymentIdLabel": "ID de pago:",
+      "contactSupport": "Contactar soporte",
+      "orderTakingLonger": "La creación del pedido está tomando más de lo esperado. Por favor revisa tu email o contacta a soporte.",
+      "paymentFailed": "El pago fue rechazado"
+    },
+    "pending": {
+      "title": "Pago pendiente",
+      "subtitle": "Tu pago está siendo procesado",
+      "whatMeansTitle": "¿Qué significa esto?",
+      "whatMeansDescription": "Tu pago está siendo verificado por la entidad financiera. Este proceso puede tomar algunos minutos.",
+      "bullet1": "Te enviaremos un email cuando se confirme",
+      "bullet2": "No es necesario realizar otro pago",
+      "bullet3": "Puedes cerrar esta página de forma segura",
+      "verifyingPayment": "Verificando pago...",
+      "checkOrderStatus": "Verificar estado del pedido",
+      "backToStore": "Volver a la tienda",
+      "contactUs": "¿Tienes dudas? Contáctanos"
+    },
+    "failure": {
+      "title": "Pago rechazado",
+      "subtitle": "No pudimos procesar tu pago",
+      "whatHappenedTitle": "¿Qué pudo haber pasado?",
+      "reason1": "Fondos insuficientes en tu tarjeta",
+      "reason2": "Datos de la tarjeta incorrectos",
+      "reason3": "Tu banco rechazó la transacción",
+      "reason4": "Límite de compra excedido",
+      "suggestion": "Te sugerimos verificar los datos de tu tarjeta o intentar con otro método de pago.",
+      "retry": "Intentar de nuevo",
+      "backToCart": "Volver al carrito",
+      "needHelp": "¿Necesitas ayuda? Contáctanos",
+      "cartIdLabel": "ID del carrito:",
+      "paymentIdLabel": "ID de pago:"
+    },
+    "openpay": {
+      "selectedTitle": "Openpay seleccionado",
+      "intro": "Ingresa los detalles de tu tarjeta de crédito para procesar el pago de forma segura.",
+      "totalLabel": "Total:",
+      "secureConnection": "✓ Conexión segura con Openpay",
+      "enterPaymentData": "Ingresar datos de pago",
+      "cardNumberLabel": "Número de tarjeta",
+      "cardNumberPlaceholder": "1234 5678 9012 3456",
+      "cardNameLabel": "Titular de la tarjeta",
+      "cardNamePlaceholder": "Juan Pérez",
+      "monthLabel": "Mes",
+      "monthPlaceholder": "MM",
+      "yearLabel": "Año",
+      "yearPlaceholder": "YY",
+      "cvvLabel": "CVV",
+      "cvvPlaceholder": "123",
+      "cancel": "Cancelar",
+      "pay": "Pagar",
+      "processing": "Procesando...",
+      "errorTokenize": "Error al tokenizar la tarjeta",
+      "errorSdk": "Openpay SDK no cargó correctamente",
+      "errorPublicKey": "Public key de Openpay no configurada",
+      "errorProcess": "Error procesando el pago"
+    },
+    "mercadoPago": {
+      "selectedTitle": "Mercado Pago seleccionado",
+      "description": "Después de confirmar tu pedido, serás redirigido a Mercado Pago para completar el pago de forma segura con el método de tu preferencia.",
+      "totalLabel": "Total:",
+      "methods": "✓ Tarjeta de crédito • Débito • Pix • Boleto"
+    }
+  },
+  "contactModal": {
+    "title": "Contáctanos",
+    "subtitle": "¿Tienes alguna pregunta? Estamos aquí para ayudarte. Completa el formulario y te responderemos pronto.",
+    "nameLabel": "Nombre completo *",
+    "namePlaceholder": "Tu nombre",
+    "emailLabel": "Email *",
+    "emailPlaceholder": "tu@email.com",
+    "phoneLabel": "Teléfono",
+    "phonePlaceholder": "+52 123 456 7890",
+    "subjectLabel": "Asunto *",
+    "subjectPlaceholder": "Selecciona un asunto",
+    "subjectGeneral": "Consulta general",
+    "subjectProduct": "Información de productos",
+    "subjectOrder": "Estado de pedido",
+    "subjectSubscription": "Suscripciones",
+    "subjectSupport": "Soporte técnico",
+    "subjectWholesale": "Ventas al por mayor",
+    "subjectOther": "Otro",
+    "messageLabel": "Mensaje *",
+    "messagePlaceholder": "Cuéntanos cómo podemos ayudarte...",
+    "successTitle": "¡Mensaje enviado!",
+    "successMessage": "Gracias por contactarnos. Te responderemos pronto.",
+    "errorTitle": "Error al enviar",
+    "errorMessage": "Hubo un problema. Por favor, intenta de nuevo.",
+    "cancel": "Cancelar",
+    "sending": "Enviando...",
+    "sendMessage": "Enviar mensaje",
+    "emailContact": "contacto@novapatch.com",
+    "phoneContact": "+52 123 456 7890",
+    "closeLabel": "Cerrar"
+  },
+  "countrySelect": {
+    "shippingTo": "Envío a:"
+  },
+  "forms": {
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "address": "Dirección",
+    "company": "Empresa",
+    "postalCode": "Código postal",
+    "city": "Ciudad",
+    "stateProvince": "Estado / Provincia",
+    "province": "Provincia",
+    "country": "País",
+    "billingSameAsShipping": "La dirección de facturación es la misma que la de envío",
+    "email": "Email",
+    "emailValidation": "Ingresa un email válido.",
+    "phone": "Teléfono",
+    "apartment": "Departamento, suite, etc.",
+    "name": "Nombre",
+    "password": "Contraseña",
+    "oldPassword": "Contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "billingAddress": "Dirección de facturación",
+    "useSavedAddressPrompt": "Hola {name}, ¿quieres usar alguna de tus direcciones guardadas?",
+    "passwordHidden": "La contraseña no se muestra por seguridad.",
+    "passwordUpdateNotImplemented": "La actualización de contraseña no está implementada.",
+    "noBillingAddress": "Sin dirección de facturación"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que intentaste acceder no existe.",
+    "cartDescription": "El carrito que intentaste acceder no existe. Borra tus cookies e intenta de nuevo.",
+    "goHome": "Ir al inicio"
+  },
+  "order": {
+    "detailsPageTitle": "Detalles del pedido",
+    "backToOverview": "Volver al resumen",
+    "summaryTitle": "Resumen del pedido",
+    "subtotal": "Subtotal",
+    "discount": "Descuento",
+    "shipping": "Envío",
+    "taxes": "Impuestos",
+    "total": "Total",
+    "details": {
+      "title": "Detalles del pedido",
+      "number": "Número de pedido",
+      "date": "Fecha del pedido",
+      "email": "Correo de confirmación",
+      "status": "Estado del pedido",
+      "paymentStatus": "Estado del pago"
+    },
+    "payment": {
+      "title": "Pago",
+      "method": "Método de pago",
+      "details": "Detalles del pago",
+      "cardEnding": "Tarjeta terminada en {last4}",
+      "paidAt": "Pagado el {date}",
+      "cardLabel": "Tarjeta"
+    }
+  },
+  "orderOverview": {
+    "emptyTitle": "No hay pedidos",
+    "emptyMessage": "Aún no tienes pedidos. Vamos a cambiar eso.",
+    "continueShopping": "Seguir comprando"
+  },
+  "orderTransfer": {
+    "title": "Transferencias de pedidos",
+    "subtitle": "¿No encuentras el pedido que buscas?",
+    "subtitleLine2": "Conecta un pedido a tu cuenta.",
+    "placeholder": "ID de pedido",
+    "requestTransfer": "Solicitar transferencia",
+    "successTitle": "Transferencia solicitada para el pedido {id}",
+    "successMessage": "Email de solicitud enviado a {email}"
+  },
+  "paymentMethods": {
+    "creditCard": "Tarjeta de crédito",
+    "ideal": "iDEAL",
+    "bancontact": "Bancontact",
+    "paypal": "PayPal",
+    "manualPayment": "Pago manual",
+    "mercadoPago": "Mercado Pago",
+    "openpay": "Openpay",
+    "unknown": "Método de pago"
+  },
+  "productTabs": {
+    "productInfoTab": "Información del producto",
+    "shippingReturnsTab": "Envío y devoluciones",
+    "material": "Material",
+    "countryOfOrigin": "País de origen",
+    "type": "Tipo",
+    "weight": "Peso",
+    "dimensions": "Dimensiones",
+    "fastDelivery": "Entrega rápida",
+    "fastDeliveryDescription": "Tu paquete llegará en 3-5 días hábiles a tu punto de retiro o a la comodidad de tu hogar.",
+    "simpleExchanges": "Cambios simples",
+    "simpleExchangesDescription": "¿El ajuste no es el correcto? No te preocupes, cambiaremos tu producto por uno nuevo.",
+    "easyReturns": "Devoluciones fáciles",
+    "easyReturnsDescription": "Solo devuelve tu producto y reembolsaremos tu dinero. Sin preguntas, haremos todo lo posible para que tu devolución sea sencilla."
+  },
+  "search": {
+    "placeholder": "Buscar productos...",
+    "closeTitle": "Cerrar búsqueda",
+    "noResults": "No se encontraron productos",
+    "noResultsHint": "Intenta con otros términos de búsqueda",
+    "prompt": "Busca tus productos favoritos",
+    "promptHint": "Escribe el nombre del producto que buscas"
+  },
+  "storePage": {
+    "title": "Todos los productos"
+  },
+  "storeSort": {
+    "title": "Ordenar por",
+    "latest": "Novedades",
+    "priceLowHigh": "Precio: menor a mayor",
+    "priceHighLow": "Precio: mayor a menor"
+  },
+  "subscriptionsContact": {
+    "titlePrefix": "¿Tienes",
+    "titleEmphasis": "dudas?",
+    "successTitle": "¡Mensaje enviado!",
+    "successMessage": "Te responderemos a la brevedad.",
+    "sendAnother": "Enviar otra consulta",
+    "reasonPlaceholder": "¿Por qué nos estás escribiendo?",
+    "reasonSubscription": "Consulta sobre suscripciones",
+    "reasonProducts": "Consulta sobre productos",
+    "reasonShipping": "Consulta sobre envíos",
+    "reasonOther": "Otro motivo",
+    "questionPlaceholder": "¿Qué quieres saber sobre las suscripciones?",
+    "emailPlaceholder": "Email",
+    "submitDefault": "Conocer más",
+    "submitLoading": "Enviando..."
   }
 }

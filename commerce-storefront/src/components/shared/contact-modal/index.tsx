@@ -2,6 +2,7 @@
 
 import { Dialog, Transition } from "@headlessui/react"
 import { Fragment, useState } from "react"
+import { useTranslations } from "next-intl"
 
 interface ContactModalProps {
   isOpen: boolean
@@ -9,6 +10,7 @@ interface ContactModalProps {
 }
 
 export default function ContactModal({ isOpen, close }: ContactModalProps) {
+  const t = useTranslations("contactModal")
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -91,12 +93,12 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                       as="h3"
                       className="text-2xl font-bold text-white"
                     >
-                      📧 Contáctanos
+                      {t("title")}
                     </Dialog.Title>
                     <button
                       onClick={close}
                       className="text-white hover:text-gray-200 transition-colors"
-                      aria-label="Cerrar"
+                      aria-label={t("closeLabel")}
                     >
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -104,7 +106,7 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                     </button>
                   </div>
                   <p className="mt-2 text-sm text-white/90">
-                    ¿Tienes alguna pregunta? Estamos aquí para ayudarte. Completa el formulario y te responderemos pronto.
+                    {t("subtitle")}
                   </p>
                 </div>
 
@@ -114,7 +116,7 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                     {/* Nombre */}
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                        Nombre completo *
+                        {t("nameLabel")}
                       </label>
                       <input
                         type="text"
@@ -124,7 +126,7 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                         value={formData.name}
                         onChange={handleChange}
                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-novapatch-primary focus:border-transparent transition-all"
-                        placeholder="Tu nombre"
+                        placeholder={t("namePlaceholder")}
                       />
                     </div>
 
@@ -132,7 +134,7 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                          Email *
+                          {t("emailLabel")}
                         </label>
                         <input
                           type="email"
@@ -142,12 +144,12 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                           value={formData.email}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-novapatch-primary focus:border-transparent transition-all"
-                          placeholder="tu@email.com"
+                          placeholder={t("emailPlaceholder")}
                         />
                       </div>
                       <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                          Teléfono
+                          {t("phoneLabel")}
                         </label>
                         <input
                           type="tel"
@@ -156,7 +158,7 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                           value={formData.phone}
                           onChange={handleChange}
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-novapatch-primary focus:border-transparent transition-all"
-                          placeholder="+52 123 456 7890"
+                          placeholder={t("phonePlaceholder")}
                         />
                       </div>
                     </div>
@@ -164,7 +166,7 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                     {/* Asunto */}
                     <div>
                       <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-                        Asunto *
+                        {t("subjectLabel")}
                       </label>
                       <select
                         id="subject"
@@ -174,21 +176,21 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                         onChange={handleChange}
                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-novapatch-primary focus:border-transparent transition-all"
                       >
-                        <option value="">Selecciona un asunto</option>
-                        <option value="general">Consulta general</option>
-                        <option value="product">Información de productos</option>
-                        <option value="order">Estado de pedido</option>
-                        <option value="subscription">Suscripciones</option>
-                        <option value="support">Soporte técnico</option>
-                        <option value="wholesale">Ventas al por mayor</option>
-                        <option value="other">Otro</option>
+                        <option value="">{t("subjectPlaceholder")}</option>
+                        <option value="general">{t("subjectGeneral")}</option>
+                        <option value="product">{t("subjectProduct")}</option>
+                        <option value="order">{t("subjectOrder")}</option>
+                        <option value="subscription">{t("subjectSubscription")}</option>
+                        <option value="support">{t("subjectSupport")}</option>
+                        <option value="wholesale">{t("subjectWholesale")}</option>
+                        <option value="other">{t("subjectOther")}</option>
                       </select>
                     </div>
 
                     {/* Mensaje */}
                     <div>
                       <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                        Mensaje *
+                        {t("messageLabel")}
                       </label>
                       <textarea
                         id="message"
@@ -198,7 +200,7 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                         value={formData.message}
                         onChange={handleChange}
                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-novapatch-primary focus:border-transparent transition-all resize-none"
-                        placeholder="Cuéntanos cómo podemos ayudarte..."
+                        placeholder={t("messagePlaceholder")}
                       />
                     </div>
 
@@ -209,9 +211,9 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         <div>
-                          <p className="font-semibold text-green-900">¡Mensaje enviado!</p>
+                          <p className="font-semibold text-green-900">{t("successTitle")}</p>
                           <p className="text-sm text-green-700 mt-1">
-                            Gracias por contactarnos. Te responderemos pronto.
+                            {t("successMessage")}
                           </p>
                         </div>
                       </div>
@@ -223,9 +225,9 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                         <div>
-                          <p className="font-semibold text-red-900">Error al enviar</p>
+                          <p className="font-semibold text-red-900">{t("errorTitle")}</p>
                           <p className="text-sm text-red-700 mt-1">
-                            Hubo un problema. Por favor, intenta de nuevo.
+                            {t("errorMessage")}
                           </p>
                         </div>
                       </div>
@@ -239,7 +241,7 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                       onClick={close}
                       className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
                     >
-                      Cancelar
+                      {t("cancel")}
                     </button>
                     <button
                       type="submit"
@@ -252,14 +254,14 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
-                          Enviando...
+                          {t("sending")}
                         </>
                       ) : (
                         <>
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                           </svg>
-                          Enviar mensaje
+                          {t("sendMessage")}
                         </>
                       )}
                     </button>
@@ -273,13 +275,13 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
                       <svg className="w-5 h-5 text-novapatch-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
-                      <span>contacto@novapatch.com</span>
+                      <span>{t("emailContact")}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <svg className="w-5 h-5 text-novapatch-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
-                      <span>+52 123 456 7890</span>
+                      <span>{t("phoneContact")}</span>
                     </div>
                   </div>
                 </div>
@@ -291,4 +293,3 @@ export default function ContactModal({ isOpen, close }: ContactModalProps) {
     </Transition>
   )
 }
-

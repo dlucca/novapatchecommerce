@@ -5,6 +5,7 @@ import { CheckCircle } from "lucide-react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useEffect, useRef, useState } from "react"
 import { SubscriptionPlanConfig } from "@lib/data/subscriptions"
+import { useTranslations } from "next-intl"
 
 type PricingCardProps = {
   plan: SubscriptionPlanConfig
@@ -17,8 +18,21 @@ export default function PricingCard({
   isPopular = false,
   delay = 0 
 }: PricingCardProps) {
+  const t = useTranslations("subscriptions.pricing")
   const [isVisible, setIsVisible] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
+  const intervalLabel = t("everyDays", { days: plan.interval_days })
+  const discountLabel = plan.promotion
+    ? plan.promotion.type === "percentage"
+      ? t("discount", { days: plan.interval_days, value: plan.promotion.value })
+      : t("discountAmount", { days: plan.interval_days, value: plan.promotion.value })
+    : null
+  const shippingLabel =
+    plan.free_shipping_threshold === null
+      ? t("shippingStandard")
+      : plan.free_shipping_threshold === 0
+        ? t("shippingAlwaysFree")
+        : t("shippingFreeOver", { amount: plan.free_shipping_threshold / 100 })
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -60,7 +74,7 @@ export default function PricingCard({
     >
       {isPopular && (
         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-novapatch-testimonial text-white px-6 py-1 rounded-full text-sm font-semibold animate-pulse">
-          Más Popular
+          {t("mostPopular")}
         </div>
       )}
       
@@ -69,44 +83,39 @@ export default function PricingCard({
           {plan.name}
         </Heading>
         <Text className="text-gray-600">
-          {plan.promotion 
-            ? `Envío cada ${plan.interval_days} días con ${plan.promotion.value}% de descuento`
-            : plan.description}
+          {discountLabel || plan.description || intervalLabel}
         </Text>
       </div>
       
       <div className="text-center mb-6">
         <span className="text-3xl font-bold text-novapatch-button">
-          Cada {plan.interval_days} días
+          {intervalLabel}
         </span>
         <Text className="text-gray-600 mt-2">
-          {plan.free_shipping_threshold === null && "Envío estándar"}
-          {plan.free_shipping_threshold === 0 && "Envío gratis siempre"}
-          {plan.free_shipping_threshold && plan.free_shipping_threshold > 0 && 
-            `Envío gratis en pedidos +$${plan.free_shipping_threshold / 100}`}
+          {shippingLabel}
         </Text>
       </div>
       
       <ul className="space-y-4 mb-8">
         <li className="flex items-start">
           <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-          <Text className="text-gray-700">Envío cada {plan.interval_days} días</Text>
+          <Text className="text-gray-700">{t("shippingEvery", { days: plan.interval_days })}</Text>
         </li>
         <li className="flex items-start">
           <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-          <Text className="text-gray-700">Cancela cuando quieras</Text>
+          <Text className="text-gray-700">{t("cancelAnytime")}</Text>
         </li>
         <li className="flex items-start">
           <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-          <Text className="text-gray-700">Modifica tu pedido fácilmente</Text>
+          <Text className="text-gray-700">{t("modifyEasily")}</Text>
         </li>
         {plan.free_shipping_threshold !== null && (
           <li className="flex items-start">
             <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
             <Text className="text-gray-700">
-              {plan.free_shipping_threshold === 0 
-                ? "Envío gratis incluido" 
-                : `Envío gratis en pedidos +$${plan.free_shipping_threshold / 100}`}
+              {plan.free_shipping_threshold === 0
+                ? t("shippingIncluded")
+                : t("shippingFreeOver", { amount: plan.free_shipping_threshold / 100 })}
             </Text>
           </li>
         )}
@@ -116,9 +125,8 @@ export default function PricingCard({
         href="/store"
         className="block w-full bg-novapatch-button hover:bg-novapatch-footer text-white text-center px-6 py-3 rounded-full font-semibold transition-all duration-200 hover:shadow-lg"
       >
-        Comenzar
+        {t("startCta")}
       </LocalizedClientLink>
     </div>
   )
 }
-

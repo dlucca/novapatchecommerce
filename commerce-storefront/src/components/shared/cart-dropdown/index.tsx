@@ -72,6 +72,7 @@ const CartDropdown = ({
   }, [pathname, totalItems])
 
   const t = useTranslations("myCart")
+  const tCommon = useTranslations("common")
   const locale = useLocale()
   const closeCartLabel = t.has("closeCart")
     ? t("closeCart")
@@ -94,7 +95,7 @@ const CartDropdown = ({
             <div className="relative">
               <Image
                 src="/assets/nav/cart.svg"
-                alt="Carrito"
+                alt={tCommon("cartIconAlt")}
                 width={24}
                 height={24}
                 className="w-6 h-6 transition-all duration-200"

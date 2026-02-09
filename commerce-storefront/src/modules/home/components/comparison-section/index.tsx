@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 
 const ComparisonSection = () => {
   const t = useTranslations('comparison')
+  const tCommon = useTranslations("common")
   
   const featuresConfig = [
     { key: "highAbsorption", novapatch: true, pills: false, gummies: false },
@@ -76,7 +77,7 @@ const ComparisonSection = () => {
                             src="/assets/nav/LOGO-1.svg"
                             width={140}
                             height={56}
-                            alt="Novapatch"
+                            alt={tCommon("novapatchAlt")}
                             className="object-contain"
                           />
                         </div>
@@ -95,7 +96,7 @@ const ComparisonSection = () => {
                             src="/assets/comparison/parche.svg"
                             width={48}
                             height={56}
-                            alt="Parche"
+                            alt={tCommon("patchAlt")}
                             className="object-contain"
                           />
                         </div>
@@ -114,7 +115,7 @@ const ComparisonSection = () => {
                             src="/assets/comparison/bear.svg"
                             width={36}
                             height={56}
-                            alt="Osito"
+                            alt={tCommon("bearAlt")}
                             className="object-contain"
                           />
                         </div>
@@ -163,7 +164,7 @@ const ComparisonSection = () => {
             <div className="absolute -right-12 -top-28 z-10">
               <Image
                 src="/assets/features/flower.svg"
-                alt="Decoración floral"
+                alt={tCommon("decorativeFloralAlt")}
                 width={215}
                 height={215}
                 className=""
@@ -181,7 +182,7 @@ const ComparisonSection = () => {
                       className="text-left py-4 px-2 font-normal text-sm"
                       style={{ color: "#3d6a96" }}
                     >
-                      Característica
+                      {t('feature')}
                     </th>
                     <th className="text-center py-4 px-1 w-16">
                       <div className="flex flex-col items-center gap-1">
@@ -190,7 +191,7 @@ const ComparisonSection = () => {
                             src="/assets/nav/LOGO-1.svg"
                             width={40}
                             height={32}
-                            alt="Novapatch"
+                            alt={tCommon("novapatchAlt")}
                             className="object-contain"
                           />
                         </div>
@@ -203,7 +204,7 @@ const ComparisonSection = () => {
                             src="/assets/comparison/parche.svg"
                             width={20}
                             height={32}
-                            alt="Parche"
+                            alt={tCommon("patchAlt")}
                             className="object-contain"
                           />
                         </div>
@@ -216,7 +217,7 @@ const ComparisonSection = () => {
                             src="/assets/comparison/bear.svg"
                             width={16}
                             height={32}
-                            alt="Osito"
+                            alt={tCommon("bearAlt")}
                             className="object-contain"
                           />
                         </div>

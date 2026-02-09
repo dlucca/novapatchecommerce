@@ -13,6 +13,7 @@ type OverviewProps = {
 
 const Overview = ({ customer, orders }: OverviewProps) => {
   const t = useTranslations("account")
+  const tOverview = useTranslations("accountOverview")
   return (
     <div data-testid="overview-page-wrapper">
       <div className="hidden small:block">
@@ -21,7 +22,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
             {t("hello")} {customer?.first_name}
           </span>
           <span className="text-small-regular text-ui-fg-base">
-            Signed in as:{" "}
+            {tOverview("signedInAs")} {" "}
             <span
               className="font-semibold"
               data-testid="customer-email"
@@ -45,7 +46,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                     {getProfileCompletion(customer)}%
                   </span>
                   <span className="uppercase text-base-regular text-ui-fg-subtle">
-                    Completed
+                    {tOverview("completed")}
                   </span>
                 </div>
               </div>
@@ -61,7 +62,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                     {customer?.addresses?.length || 0}
                   </span>
                   <span className="uppercase text-base-regular text-ui-fg-subtle">
-                    Saved
+                    {tOverview("saved")}
                   </span>
                 </div>
               </div>
@@ -88,12 +89,12 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                         >
                           <Container className="bg-gray-50 flex justify-between items-center p-4">
                             <div className="grid grid-cols-3 grid-rows-2 text-small-regular gap-x-4 flex-1">
-                              <span className="font-semibold">Date placed</span>
+                              <span className="font-semibold">{tOverview("datePlaced")}</span>
                               <span className="font-semibold">
-                                Order number
+                                {tOverview("orderNumber")}
                               </span>
                               <span className="font-semibold">
-                                Total amount
+                                {tOverview("totalAmount")}
                               </span>
                               <span data-testid="order-created-date">
                                 {new Date(order.created_at).toDateString()}
@@ -116,7 +117,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                               data-testid="open-order-button"
                             >
                               <span className="sr-only">
-                                Go to order #{order.display_id}
+                                {tOverview("goToOrder", { id: order.display_id })}
                               </span>
                               <ChevronDown className="-rotate-90" />
                             </button>
@@ -126,7 +127,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                     )
                   })
                 ) : (
-                  <span data-testid="no-orders-message">No recent orders</span>
+                  <span data-testid="no-orders-message">{tOverview("noRecentOrders")}</span>
                 )}
               </ul>
             </div>

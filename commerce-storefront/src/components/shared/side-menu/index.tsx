@@ -43,6 +43,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
   void regions
   const tFooter = useTranslations("footer")
   const t = useTranslations("menu")
+  const tCommon = useTranslations("common")
   return (
     <>
       <button
@@ -53,7 +54,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
         data-testid="nav-menu-button"
         className="inline-flex items-center justify-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-novapatch-primary/40 transition-colors duration-200"
       >
-        <span className="sr-only">Abrir menú</span>
+        <span className="sr-only">{tCommon("openMenu")}</span>
         <svg
           className="w-6 h-6"
           aria-hidden="true"
@@ -90,7 +91,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
               src="/assets/nav/LOGO-1.svg"
               width={120}
               height={80}
-              alt="Novapatch"
+              alt={tCommon("novapatchAlt")}
               className="object-contain"
             />
           </div>

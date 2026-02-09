@@ -2,12 +2,15 @@ import Image from "next/image"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ChevronDown from "@modules/common/icons/chevron-down"
 import MedusaCTA from "@/components/shared/medusa-cta"
+import { useTranslations } from "next-intl"
 
 export default function CheckoutLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const t = useTranslations("checkout")
+  const tCommon = useTranslations("common")
   return (
     <div className="w-full bg-[#FFF8F0] relative small:min-h-screen font-outfit">
       {/* Header */}
@@ -20,10 +23,10 @@ export default function CheckoutLayout({
           >
             <ChevronDown className="rotate-90" size={16} />
             <span className="mt-px hidden small:block text-sm font-medium tracking-wide">
-              VOLVER AL CARRITO
+              {t("header.backToCart").toUpperCase()}
             </span>
             <span className="mt-px block small:hidden text-sm font-medium">
-              Volver
+              {t("header.back")}
             </span>
           </LocalizedClientLink>
           <LocalizedClientLink
@@ -33,7 +36,7 @@ export default function CheckoutLayout({
           >
             <Image
               src="/assets/nav/LOGO-1.svg"
-              alt="Logo de NovaPatch"
+              alt={tCommon("brandLogoAlt")}
               width={140}
               height={40}
               priority

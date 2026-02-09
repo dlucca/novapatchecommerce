@@ -37,6 +37,7 @@ export default function StoreGridClient({
 }: StoreGridClientProps) {
   const router = useRouter()
   const t = useTranslations("store")
+  const tCommon = useTranslations("common")
 
   const initialProduct = selectedHandle
     ? products.find(p => p.handle === selectedHandle) || products[0]
@@ -107,7 +108,7 @@ export default function StoreGridClient({
               <div className="absolute bottom-0 left-0 w-full h-full z-0 pointer-events-none">
                 <Image
                   src="/assets/products/flower-big.webp"
-                  alt="Background"
+                  alt={tCommon("backgroundAlt")}
                   fill
                   className="object-contain object-left-bottom scale-90 translate-y-12 -translate-x-8"
                   priority

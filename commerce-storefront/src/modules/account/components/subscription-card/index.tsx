@@ -2,6 +2,7 @@
 
 import { Badge, Button, Heading, Text } from "@medusajs/ui"
 import { useState, useEffect } from "react"
+import { useLocale, useTranslations } from "next-intl"
 import {
   pauseSubscription,
   cancelSubscription,
@@ -16,6 +17,9 @@ type SubscriptionCardProps = {
 }
 
 const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => {
+  const t = useTranslations("accountSubscriptions")
+  const locale = useLocale()
+  const dateLocale = locale === "pt" ? "pt-BR" : "es-MX"
   const [loading, setLoading] = useState(false)
   const [planConfig, setPlanConfig] = useState<SubscriptionPlanConfig | null>(null)
 
@@ -36,21 +40,20 @@ const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => 
     if (planConfig) {
       const intervalDays = planConfig.interval_days
       const intervalText =
-        intervalDays === 30 ? "Cada 30 días" :
-        intervalDays === 60 ? "Cada 60 días" :
-        intervalDays === 90 ? "Cada 90 días" :
-        `Cada ${intervalDays} días`
+        t("intervalEveryDays", { days: intervalDays })
 
       const shippingText =
-        planConfig.free_shipping_threshold === 0 ? "Envío gratis siempre" :
-        planConfig.free_shipping_threshold ? `Envío gratis si gastas más de $${planConfig.free_shipping_threshold}` :
-        "Envío estándar"
+        planConfig.free_shipping_threshold === 0
+          ? t("shippingAlwaysFree")
+          : planConfig.free_shipping_threshold
+          ? t("shippingFreeOver", { amount: planConfig.free_shipping_threshold })
+          : t("shippingStandard")
 
       const discountText = planConfig.promotion?.type === 'percentage'
-        ? `${planConfig.promotion.value}% de descuento`
+        ? t("discountPercentage", { value: planConfig.promotion.value })
         : planConfig.promotion?.type === 'fixed'
-        ? `$${planConfig.promotion.value} de descuento`
-        : "Sin descuento"
+        ? t("discountAmount", { value: planConfig.promotion.value })
+        : t("noDiscount")
 
       return {
         name: planConfig.name,
@@ -61,10 +64,10 @@ const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => 
     }
 
     return {
-      name: "Plan de Suscripción",
-      discount: "Descuento aplicado",
-      interval: "Envío automático",
-      shipping: "Según plan",
+      name: t("defaultPlanName"),
+      discount: t("defaultDiscount"),
+      interval: t("defaultInterval"),
+      shipping: t("defaultShipping"),
     }
   }
 
@@ -79,15 +82,15 @@ const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => 
 
   const getStatusLabel = (status: string) => {
     const labels: Record<string, string> = {
-      active: "Activa",
-      paused: "Pausada",
-      cancelled: "Cancelada",
+      active: t("statusActive"),
+      paused: t("statusPaused"),
+      cancelled: t("statusCancelled"),
     }
     return labels[status] || status
   }
 
   const handlePause = async () => {
-    if (!confirm("¿Estás seguro de que quieres pausar esta suscripción?")) {
+    if (!confirm(t("pauseConfirm"))) {
       return
     }
 
@@ -97,7 +100,7 @@ const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => 
       onUpdate()
     } catch (error) {
       console.error("Error pausing subscription:", error)
-      alert("Error al pausar la suscripción. Por favor intenta de nuevo.")
+      alert(t("pauseError"))
     } finally {
       setLoading(false)
     }
@@ -106,7 +109,7 @@ const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => 
   const handleCancel = async () => {
     if (
       !confirm(
-        "¿Estás seguro de que quieres cancelar esta suscripción? Esta acción no se puede deshacer."
+        t("cancelConfirm")
       )
     ) {
       return
@@ -118,7 +121,7 @@ const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => 
       onUpdate()
     } catch (error) {
       console.error("Error cancelling subscription:", error)
-      alert("Error al cancelar la suscripción. Por favor intenta de nuevo.")
+      alert(t("cancelError"))
     } finally {
       setLoading(false)
     }
@@ -157,8 +160,8 @@ const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => 
       {subscription.status === "active" && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
           <Text className="text-sm text-blue-800">
-            <strong>Próxima orden:</strong>{" "}
-            {new Date(subscription.next_order_date).toLocaleDateString("es-ES", {
+            <strong>{t("nextOrder")}</strong>{" "}
+            {new Date(subscription.next_order_date).toLocaleDateString(dateLocale, {
               year: "numeric",
               month: "long",
               day: "numeric",
@@ -176,14 +179,14 @@ const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => 
               onClick={handlePause}
               disabled={loading}
             >
-              {loading ? "Procesando..." : "Pausar"}
+              {loading ? t("processing") : t("pause")}
             </Button>
             <button
               className="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleCancel}
               disabled={loading}
             >
-              {loading ? "Procesando..." : "Cancelar"}
+              {loading ? t("processing") : t("cancel")}
             </button>
           </>
         )}
@@ -193,15 +196,14 @@ const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => 
             onClick={handleCancel}
             disabled={loading}
           >
-            {loading ? "Procesando..." : "Cancelar definitivamente"}
+            {loading ? t("processing") : t("cancelPermanent")}
           </button>
         )}
         {subscription.status === "cancelled" && (
           <Text className="text-sm text-gray-500">
-            Suscripción cancelada el{" "}
-            {new Date(subscription.updated_at || subscription.created_at).toLocaleDateString(
-              "es-ES"
-            )}
+            {t("cancelledOn", {
+              date: new Date(subscription.updated_at || subscription.created_at).toLocaleDateString(dateLocale),
+            })}
           </Text>
         )}
       </div>
@@ -210,4 +212,3 @@ const SubscriptionCard = ({ subscription, onUpdate }: SubscriptionCardProps) => 
 }
 
 export default SubscriptionCard
-
