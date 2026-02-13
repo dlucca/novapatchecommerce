@@ -1,11 +1,12 @@
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import SubscriptionsList from "@modules/account/components/subscriptions-list"
 import { HttpTypes } from "@medusajs/types"
 import { useTranslations } from "next-intl"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import type { Subscription } from "@lib/data/subscriptions"
 
 type SubscriptionsTemplateProps = {
   customer: HttpTypes.StoreCustomer | null
-  subscriptions: any[] // TODO: Type this properly when subscription type is defined
+  subscriptions: Subscription[]
   countryCode: string
 }
 
@@ -14,9 +15,9 @@ export default function SubscriptionsTemplate({
   subscriptions,
   countryCode,
 }: SubscriptionsTemplateProps) {
+  const t = useTranslations("mySubscriptions")
   // If no customer, show empty state
   if (!customer) {
-    const t = useTranslations("mySubscriptions")
     return (
       <div className="w-full" data-testid="subscriptions-page-wrapper">
         <div className="mb-8 flex flex-col gap-y-4">

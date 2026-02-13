@@ -16,6 +16,7 @@ import Image from "next/image"
 export default function AuthUserButton() {
   const { isSignedIn, isLoaded, user } = useUser()
   const { signOut } = useClerk()
+  const t = useTranslations("menu")
 
   if (!isLoaded) {
     return (
@@ -27,7 +28,6 @@ export default function AuthUserButton() {
   }
 
   if (isSignedIn && user) {
-    const t = useTranslations("menu")
     return (
       <Popover className="relative h-full" suppressHydrationWarning>
         {() => (

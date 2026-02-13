@@ -15,7 +15,7 @@ export type Subscription = {
   product_variants: Array<{ variant_id: string; quantity: number }>
   shipping_address_id: string | null
   region_id: string
-  metadata: any
+  metadata: Record<string, unknown>
   created_at: string
   updated_at: string
 }
@@ -203,4 +203,3 @@ export async function cancelSubscription(
     .then((data) => data)
     .catch(medusaError)
 }
-

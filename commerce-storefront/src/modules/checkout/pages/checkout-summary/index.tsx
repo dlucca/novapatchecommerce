@@ -1,12 +1,15 @@
-import { Heading } from "@medusajs/ui"
 import { useTranslations } from "next-intl"
 
 import ItemsPreviewTemplate from "@modules/cart/pages/preview"
 import DiscountCode from "@modules/checkout/components/discount-code"
 import CartTotals from "@modules/common/components/cart-totals"
+import { Heading } from "@medusajs/ui"
+import { HttpTypes } from "@medusajs/types"
 
-const CheckoutSummary = ({ cart }: { cart: any }) => {
-  const hasSubscriptionItems = cart?.items?.some((item: any) => item.metadata?.is_subscription)
+const CheckoutSummary = ({ cart }: { cart: HttpTypes.StoreCart }) => {
+  const hasSubscriptionItems = cart?.items?.some(
+    (item) => item.metadata?.is_subscription
+  )
   const t = useTranslations("checkout")
 
   return (
@@ -37,11 +40,11 @@ const CheckoutSummary = ({ cart }: { cart: any }) => {
         <ItemsPreviewTemplate cart={cart} />
 
         <div className="border-t border-gray-200 mt-5 pt-5">
-          <CartTotals totals={cart} />
+          <CartTotals totals={cart as unknown as Parameters<typeof CartTotals>[0]['totals']} />
         </div>
 
         <div className="mt-5">
-          <DiscountCode cart={cart} />
+          <DiscountCode cart={cart as unknown as Parameters<typeof DiscountCode>[0]['cart']} />
         </div>
       </div>
     </div>

@@ -31,8 +31,8 @@ const SortProducts = ({
       label: t("priceHighLow"),
     },
   ]
-  const handleChange = (value: SortOptions) => {
-    setQueryParams("sortBy", value)
+  const handleChange = (value: string) => {
+    setQueryParams("sortBy", value as SortOptions)
   }
 
   return (

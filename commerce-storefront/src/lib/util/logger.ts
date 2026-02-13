@@ -24,7 +24,7 @@ class Logger {
   /**
    * Debug level - only in development
    */
-  debug(message: string, ...args: any[]): void {
+  debug(message: string, ...args: unknown[]): void {
     if (isDev) {
       console.log(`${message}`, ...args)
     }
@@ -33,7 +33,7 @@ class Logger {
   /**
    * Info level - only in development
    */
-  info(message: string, ...args: any[]): void {
+  info(message: string, ...args: unknown[]): void {
     if (isDev) {
       console.info(`ℹ${message}`, ...args)
     }
@@ -42,7 +42,7 @@ class Logger {
   /**
    * Warning level - only in development unless forced
    */
-  warn(message: string, options?: LogOptions, ...args: any[]): void {
+  warn(message: string, options?: LogOptions, ...args: unknown[]): void {
     if (isDev || options?.force) {
       const formatted = this.formatMessage('warn', message, options?.context)
       console.warn(`${formatted}`, ...args)
@@ -66,7 +66,7 @@ class Logger {
   /**
    * Success level - only in development
    */
-  success(message: string, ...args: any[]): void {
+  success(message: string, ...args: unknown[]): void {
     if (isDev) {
       console.log(`${message}`, ...args)
     }

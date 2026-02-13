@@ -1,4 +1,3 @@
-import { Metadata } from "next"
 import Link from "next/link"
 import { getTranslations } from "next-intl/server"
 import { getLocaleFromCountryCode } from "@/i18n"

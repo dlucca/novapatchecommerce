@@ -30,9 +30,9 @@ export const retrieveOrder = async (id: string) => {
 }
 
 export const listOrders = async (
-  limit: number = 10,
-  offset: number = 0,
-  filters?: Record<string, any>
+  limit = 10,
+  offset = 0,
+  filters?: Record<string, unknown>
 ) => {
   const headers = {
     ...(await getAuthHeaders()),

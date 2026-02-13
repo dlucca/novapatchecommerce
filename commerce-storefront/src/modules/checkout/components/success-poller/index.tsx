@@ -44,11 +44,11 @@ export default function SuccessPoller({
         setStatus("processing")
         return false
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Polling error:", err)
       return false
     }
-  }, [cartId, paymentId, countryCode, router])
+  }, [cartId, paymentId, countryCode, router, t])
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout
@@ -72,7 +72,7 @@ export default function SuccessPoller({
     return () => {
       if (timeoutId) clearTimeout(timeoutId)
     }
-  }, [attempts, maxAttempts, intervalMs, checkStatus])
+  }, [attempts, maxAttempts, intervalMs, checkStatus, t])
 
   if (status === "success") {
     return (

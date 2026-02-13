@@ -9,7 +9,7 @@ import { transformMediaUrl } from "@lib/util/transform-url"
 type ThumbnailProps = {
   thumbnail?: string | null
   // TODO: Fix image typings
-  images?: any[] | null
+  images?: Array<{ url?: string | null }> | null
   size?: "small" | "medium" | "large" | "full" | "square"
   isFeatured?: boolean
   className?: string

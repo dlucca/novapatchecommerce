@@ -29,15 +29,15 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
       return
     }
     const input = document.getElementById("promotion-input") as HTMLInputElement
-    const codes = promotions
-      .filter((p) => p.code !== undefined)
-      .map((p) => p.code!)
+    const codes = promotions.flatMap((promotion) =>
+      promotion.code ? [promotion.code] : []
+    )
     codes.push(code.toString())
 
     try {
       await applyPromotions(codes)
-    } catch (e: any) {
-      setErrorMessage(e.message)
+    } catch (e: unknown) {
+      setErrorMessage(e instanceof Error ? e.message : "Failed to apply discount")
     }
 
     if (input) {

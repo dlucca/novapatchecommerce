@@ -1,12 +1,29 @@
-import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text } from "@medusajs/ui"
+import { convertToLocale } from "@lib/util/money"
 
 type ShippingDetailsProps = {
   order: HttpTypes.StoreOrder
 }
 
 const ShippingDetails = ({ order }: ShippingDetailsProps) => {
+  const shippingMethods = (
+    order as HttpTypes.StoreOrder & {
+      shipping_methods?: Array<{
+        name?: string
+        amount?: number
+        tax_total?: number
+        total?: number
+      }>
+    }
+  ).shipping_methods
+  const shippingMethod = shippingMethods?.[0]
+  const shippingAmount = Number(
+    shippingMethod?.amount ?? shippingMethod?.total ?? 0
+  )
+  const shippingTaxTotal = Number(shippingMethod?.tax_total ?? 0)
+  const shippingTotal = shippingAmount + shippingTaxTotal
+
   return (
     <div>
       <div className="flex items-center gap-2 mb-5">
@@ -67,11 +84,11 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
             Método de Envío
           </Text>
           <Text className="text-[#0A4C6D] font-medium text-base">
-            {(order as any).shipping_methods?.[0]?.name}
+            {shippingMethod?.name}
           </Text>
           <Text className="text-gray-700 text-base">
             {convertToLocale({
-              amount: order.shipping_methods?.[0]?.total ?? 0,
+              amount: shippingTotal,
               currency_code: order.currency_code,
             })}
           </Text>

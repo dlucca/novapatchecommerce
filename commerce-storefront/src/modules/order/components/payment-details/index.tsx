@@ -66,7 +66,7 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
               data-testid="payment-amount"
             >
               {isStripe(payment.provider_id) && payment.data?.card_last4
-                ? tOrder("payment.cardEnding", { last4: payment.data.card_last4 })
+                ? tOrder("payment.cardEnding", { last4: String(payment.data.card_last4) })
                 : `${convertToLocale({
                     amount: payment.amount,
                     currency_code: order.currency_code,

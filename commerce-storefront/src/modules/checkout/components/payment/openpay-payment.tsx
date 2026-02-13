@@ -5,6 +5,29 @@ import { useState } from "react"
 import { useTranslations } from "next-intl"
 import { handleOpenpayPayment } from "@/lib/data/openpay"
 
+type OpenpayTokenResponse = {
+    data?: { id?: string }
+    error?: { description?: string }
+}
+
+type OpenpaySDK = {
+    setProductionReady: (ready: boolean) => void
+    setId: (id: string) => void
+    setApiKey: (key: string) => void
+    token: {
+        create: (
+            data: {
+                card_number: string
+                holder_name: string
+                expiration_month: string
+                expiration_year: string
+                cvv2: string
+            },
+            callback: (response: OpenpayTokenResponse) => void
+        ) => void
+    }
+}
+
 type OpenpayPaymentProps = {
     cart: HttpTypes.StoreCart
     session: HttpTypes.StorePaymentSession
@@ -42,14 +65,13 @@ export default function OpenpayPayment({
         setError(null)
 
         try {
-            // Tokenize the card with Openpay.js
-            // @ts-ignore - Openpay is injected by script
-            if (!window.Openpay) {
+            const openpay = (window as Window & { Openpay?: OpenpaySDK }).Openpay
+
+            if (!openpay) {
                 throw new Error(t("openpay.errorSdk"))
             }
 
-            // @ts-ignore
-            Openpay.setProductionReady(false) // Using sandbox
+            openpay.setProductionReady(false) // Using sandbox
             
             // Get Openpay public key from environment
             const publicKey = process.env.NEXT_PUBLIC_OPENPAY_PUBLIC_KEY
@@ -57,24 +79,25 @@ export default function OpenpayPayment({
                 throw new Error(t("openpay.errorPublicKey"))
             }
 
-            // @ts-ignore
-            Openpay.setId(publicKey.split('_')[1] || '') // Extract merchant ID from public key
-            // @ts-ignore
-            Openpay.setApiKey(publicKey)
+            openpay.setId(publicKey.split('_')[1] || '') // Extract merchant ID from public key
+            openpay.setApiKey(publicKey)
 
             // Create token from card data
-            // @ts-ignore
-            Openpay.token.create({
+            openpay.token.create({
                 card_number: formData.cardNumber.replace(/\s/g, ''),
                 holder_name: formData.cardName,
                 expiration_month: formData.expiryMonth,
                 expiration_year: formData.expiryYear,
                 cvv2: formData.cvv,
-            }, (response: any) => {
+            }, (response: OpenpayTokenResponse) => {
                 if (response.data?.id) {
                     // Token created successfully, now process payment
-                    const preferenceId = session.data && typeof session.data === 'object' && 'preferenceId' in session.data 
-                        ? (session.data as any).preferenceId 
+                    const rawPreferenceId =
+                        session.data && typeof session.data === 'object' && 'preferenceId' in session.data
+                            ? (session.data as { preferenceId?: string }).preferenceId
+                            : undefined
+                    const preferenceId = rawPreferenceId
+                        ? String(rawPreferenceId)
                         : `order-${Date.now()}`
                     
                     handleOpenpayPayment({
@@ -85,8 +108,8 @@ export default function OpenpayPayment({
                     }).then(() => {
                         setShowForm(false)
                         onPaymentCompleted()
-                    }).catch((err: any) => {
-                        setError(err.message)
+                    }).catch((err: unknown) => {
+                        setError(err instanceof Error ? err.message : t("openpay.errorProcess"))
                     }).finally(() => {
                         setLoading(false)
                     })
@@ -95,8 +118,8 @@ export default function OpenpayPayment({
                     setLoading(false)
                 }
             })
-        } catch (err: any) {
-            setError(err.message || t("openpay.errorProcess"))
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : t("openpay.errorProcess"))
             setLoading(false)
         }
     }
