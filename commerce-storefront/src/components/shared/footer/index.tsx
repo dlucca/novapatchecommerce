@@ -184,7 +184,7 @@ export default function Footer() {
                 style={{ gap: "clamp(0.75rem, 1vw, 1rem)" }}
               >
                 <a
-                  href="https://instagram.com/novapatch"
+                  href="https://instagram.com/novapatch.mx"
                   target="_blank"
                   rel="noreferrer"
                   className="text-white hover:text-white/80 transition-colors duration-200"

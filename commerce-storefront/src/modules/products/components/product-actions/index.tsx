@@ -172,6 +172,10 @@ export default function ProductActions({
       metadata: Object.keys(metadata).length > 0 ? metadata : undefined,
     })
 
+    // Note: Do NOT apply subscription promotion to cart level
+    // The discount is stored in item metadata and applied at display/payment time
+    // Applying at cart level would apply the discount to ALL items, not just the subscription item
+
     setIsAdding(false)
     setShowSuccess(true)
 

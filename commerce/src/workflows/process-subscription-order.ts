@@ -112,9 +112,10 @@ const applySubscriptionDiscountStep = createStep(
     },
     { container }
   ) => {
+    const cartModuleService = container.resolve(Modules.CART)
     const promotionModuleService = container.resolve(Modules.PROMOTION)
     const planConfig = await getSubscriptionPlanConfig(input.plan, container)
-    
+
     if (!planConfig) {
       throw new Error(`Subscription plan ${input.plan} not found or inactive`)
     }
@@ -130,14 +131,65 @@ const applySubscriptionDiscountStep = createStep(
     }
 
     const promotion = promotions[0]
-    
+
     if (promotion.status !== "active") {
       throw new Error(
         `Promotion ${planConfig.promotion_code} is not active (status: ${promotion.status}). Please activate it in Medusa Admin.`
       )
     }
 
+    // Aplicar la promoción al carrito
+    await cartModuleService.updateCarts({
+      id: input.cart_id,
+      promo_codes: [planConfig.promotion_code],
+    })
+
     return new StepResponse({ promotion_id: promotion.id })
+  }
+)
+
+const completeSubscriptionCartStep = createStep(
+  "complete-subscription-cart-step",
+  async (
+    input: {
+      cart_id: string
+    },
+    { container }
+  ) => {
+    const cartModuleService = container.resolve(Modules.CART)
+    const orderModuleService = container.resolve(Modules.ORDER)
+
+    // Obtener el carrito
+    const carts = await cartModuleService.retrieveCarts({
+      id: [input.cart_id],
+    })
+
+    if (!carts || carts.length === 0) {
+      throw new Error(`Cart ${input.cart_id} not found`)
+    }
+
+    const cart = carts[0]
+
+    // Crear la orden a partir del carrito
+    const order = await orderModuleService.createOrders({
+      currency_code: cart.currency_code,
+      customer_id: cart.customer_id,
+      region_id: cart.region_id,
+      items: cart.items?.map((item: any) => ({
+        variant_id: item.variant_id,
+        quantity: item.quantity,
+        unit_price: item.unit_price,
+      })) || [],
+      shipping_address: cart.shipping_address,
+      billing_address: cart.billing_address,
+      email: cart.email,
+      metadata: {
+        is_subscription_order: true,
+        subscription_cart_id: input.cart_id,
+      },
+    })
+
+    return new StepResponse(order[0], order[0].id)
   }
 )
 
@@ -151,7 +203,7 @@ const updateNextOrderDateStep = createStep(
     { container }
   ) => {
     const planConfig = await getSubscriptionPlanConfig(input.plan, container)
-    
+
     if (!planConfig) {
       throw new Error(`Subscription plan ${input.plan} not found or inactive`)
     }
@@ -186,6 +238,11 @@ export const processSubscriptionOrderWorkflow = createWorkflow(
       plan: subscription.plan,
     })
 
+    // Crear la orden a partir del carrito
+    const order = completeSubscriptionCartStep({
+      cart_id: cart.id,
+    })
+
     updateNextOrderDateStep({
       subscription_id: input.subscription_id,
       plan: subscription.plan,
@@ -194,6 +251,7 @@ export const processSubscriptionOrderWorkflow = createWorkflow(
     return new WorkflowResponse({
       subscription,
       cart,
+      order,
       message: "Subscription order processed successfully",
     })
   }
