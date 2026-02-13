@@ -1,6 +1,6 @@
 import { Radio as RadioGroupOption } from "@headlessui/react"
 import { Text, clx } from "@medusajs/ui"
-import React, { useContext, useMemo, type JSX } from "react"
+import React, { useContext, useMemo, useState, useEffect, type JSX } from "react"
 import { useTranslations } from "next-intl"
 
 import Radio from "@/components/ui/radio"
@@ -27,12 +27,16 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
   disabled = false,
   children,
 }) => {
-  const isDevelopment = process.env.NODE_ENV === "development"
+  const [isDevelopment, setIsDevelopment] = useState(false)
   const tPaymentMethods = useTranslations("paymentMethods")
   const paymentTitleKey = paymentInfoMap[paymentProviderId]?.titleKey
   const paymentTitle = paymentTitleKey
     ? tPaymentMethods(paymentTitleKey)
     : paymentProviderId
+
+  useEffect(() => {
+    setIsDevelopment(process.env.NODE_ENV === "development")
+  }, [])
 
   return (
     <RadioGroupOption
