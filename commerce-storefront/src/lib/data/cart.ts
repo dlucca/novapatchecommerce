@@ -25,7 +25,7 @@ import { cookies as nextCookies } from "next/headers"
  */
 export async function retrieveCart(cartId?: string, fields?: string, expectedRegionId?: string) {
   const id = cartId || (await getCartId())
-  fields ??= "*items, *region, *items.product, *items.variant, *items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name, *items.variant.product.images"
+  fields ??= "*items, *region, *items.product, *items.variant, *items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name, *items.variant.product.images, +subtotal, +discount_total, +shipping_total, +tax_total, +total"
 
   if (!id) {
     return null
