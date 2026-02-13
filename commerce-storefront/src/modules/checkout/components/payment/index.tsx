@@ -11,6 +11,7 @@ import PaymentContainer, {
 } from "@modules/checkout/components/payment-container"
 import MercadoPagoPayment from "@modules/checkout/components/payment/mercadopago-payment"
 import OpenpayPayment from "@modules/checkout/components/payment/openpay-payment"
+import { HttpTypes } from "@medusajs/types"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { useCallback, useEffect, useState } from "react"
@@ -19,11 +20,11 @@ const Payment = ({
   cart,
   availablePaymentMethods,
 }: {
-  cart: any
-  availablePaymentMethods: any[]
+  cart: HttpTypes.StoreCart
+  availablePaymentMethods: HttpTypes.StorePaymentProvider[]
 }) => {
   const activeSession = cart.payment_collection?.payment_sessions?.find(
-    (paymentSession: any) => paymentSession.status === "pending"
+    (paymentSession) => paymentSession.status === "pending"
   )
 
   const [isLoading, setIsLoading] = useState(false)
@@ -60,11 +61,10 @@ const Payment = ({
     }
   }
 
-  const paidByGiftcard =
-    cart?.gift_cards && cart?.gift_cards?.length > 0 && cart?.total === 0
+  const paidByGiftcard = cart?.total === 0
 
   const paymentReady =
-    (activeSession && cart?.shipping_methods.length !== 0) || paidByGiftcard
+    (activeSession && (cart?.shipping_methods?.length ?? 0) !== 0) || paidByGiftcard
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -105,8 +105,8 @@ const Payment = ({
           }
         )
       }
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to set payment method")
     } finally {
       setIsLoading(false)
     }
@@ -148,7 +148,7 @@ const Payment = ({
       </div>
       <div>
         <div className={isOpen ? "block" : "hidden"}>
-          {!paidByGiftcard && availablePaymentMethods?.length && (
+          {!paidByGiftcard && availablePaymentMethods?.length > 0 && (
             <>
               <RadioGroup
                 value={selectedPaymentMethod}

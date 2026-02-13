@@ -22,12 +22,14 @@ type ProductActionsProps = {
 }
 
 const optionsAsKeymap = (
-  variantOptions: HttpTypes.StoreProductVariant["options"]
+  variantOptions: HttpTypes.StoreProductVariant["options"] = []
 ) => {
-  return variantOptions?.reduce((acc: Record<string, string>, varopt: any) => {
-    acc[varopt.option_id] = varopt.value
+  return (variantOptions || []).reduce((acc, varopt) => {
+    if (varopt?.option_id) {
+      acc[varopt.option_id] = varopt.value
+    }
     return acc
-  }, {})
+  }, {} as Record<string, string>)
 }
 
 export default function ProductActions({
@@ -153,7 +155,7 @@ export default function ProductActions({
 
     setIsAdding(true)
 
-    const metadata: Record<string, any> = {}
+    const metadata: Record<string, unknown> = {}
 
     if (purchaseType === 'subscription' && selectedPlan) {
       metadata.is_subscription = true
@@ -169,6 +171,10 @@ export default function ProductActions({
       countryCode,
       metadata: Object.keys(metadata).length > 0 ? metadata : undefined,
     })
+
+    // Note: Do NOT apply subscription promotion to cart level
+    // The discount is stored in item metadata and applied at display/payment time
+    // Applying at cart level would apply the discount to ALL items, not just the subscription item
 
     setIsAdding(false)
     setShowSuccess(true)

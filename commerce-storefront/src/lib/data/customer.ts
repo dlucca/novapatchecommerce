@@ -175,11 +175,11 @@ export async function transferCart() {
 }
 
 export const addCustomerAddress = async (
-  currentState: Record<string, unknown>,
+  currentState: { success: boolean; error: string | null; isDefaultShipping?: boolean; isDefaultBilling?: boolean },
   formData: FormData
-): Promise<any> => {
-  const isDefaultBilling = (currentState.isDefaultBilling as boolean) || false
-  const isDefaultShipping = (currentState.isDefaultShipping as boolean) || false
+): Promise<{ success: boolean; error: string | null; isDefaultShipping?: boolean; isDefaultBilling?: boolean }> => {
+  const isDefaultBilling = currentState.isDefaultBilling || false
+  const isDefaultShipping = currentState.isDefaultShipping || false
 
   const address = {
     first_name: formData.get("first_name") as string,
@@ -205,10 +205,20 @@ export const addCustomerAddress = async (
     .then(async ({ customer }) => {
       const customerCacheTag = await getCacheTag("customers")
       revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+      return { 
+        success: true, 
+        error: null,
+        isDefaultShipping: currentState.isDefaultShipping,
+        isDefaultBilling: currentState.isDefaultBilling
+      }
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
+      return { 
+        success: false, 
+        error: err instanceof Error ? err.message : String(err),
+        isDefaultShipping: currentState.isDefaultShipping,
+        isDefaultBilling: currentState.isDefaultBilling
+      }
     })
 }
 
@@ -232,14 +242,14 @@ export const deleteCustomerAddress = async (
 }
 
 export const updateCustomerAddress = async (
-  currentState: Record<string, unknown>,
+  currentState: { success: boolean; error: string | null; addressId?: string },
   formData: FormData
-): Promise<any> => {
+): Promise<{ success: boolean; error: string | null; addressId?: string }> => {
   const addressId =
-    (currentState.addressId as string) || (formData.get("addressId") as string)
+    currentState.addressId || (formData.get("addressId") as string)
 
   if (!addressId) {
-    return { success: false, error: "Address ID is required" }
+    return { success: false, error: "Address ID is required", addressId: currentState.addressId }
   }
 
   const address = {
@@ -269,9 +279,9 @@ export const updateCustomerAddress = async (
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers")
       revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+      return { success: true, error: null, addressId: currentState.addressId }
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
+      return { success: false, error: err instanceof Error ? err.message : String(err), addressId: currentState.addressId }
     })
 }

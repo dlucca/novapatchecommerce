@@ -31,7 +31,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       }
     }, [type, showPassword])
 
-    useImperativeHandle(ref, () => inputRef.current!)
+    useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
     return (
       <div className="flex flex-col w-full">

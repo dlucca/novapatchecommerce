@@ -2,7 +2,7 @@ import { currentUser } from '@clerk/nextjs/server'
 import { listRegions, getRegion } from "@lib/data/regions"
 import { retrieveCart } from "@lib/data/cart"
 import { logger } from "@lib/util/logger"
-import { StoreRegion } from "@medusajs/types"
+// import { StoreRegion } from "@medusajs/types"
 import { featureFlags } from "@lib/feature-flags"
 import { headers } from 'next/headers'
 import NavClient from "./nav-client"
@@ -27,7 +27,7 @@ export default async function Nav() {
     logger.error('Failed to get current user', error as Error, { context: 'Nav' })
   }
 
-  const regions = featureFlags.ENABLE_COUNTRY_SELECTOR
+  const _regions = featureFlags.ENABLE_COUNTRY_SELECTOR
     ? await listRegions().catch((error) => {
         logger.error('Failed to load regions', error as Error, { context: 'Nav' })
         return []

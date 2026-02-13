@@ -3,7 +3,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { useState } from "react"
 import { useTranslations } from "next-intl"
-import { handleOpenpayPayment } from "@/lib/data/openpay"
+import { createOpenpayPreference } from "@/lib/data/openpay"
 
 type OpenpayPaymentProps = {
     cart: HttpTypes.StoreCart
@@ -11,236 +11,92 @@ type OpenpayPaymentProps = {
     onPaymentCompleted: () => void
 }
 
+/**
+ * Openpay Payment Component - Redirect with Checkout Flow
+ *
+ * This component implements the redirect-based payment flow for Openpay.
+ * When the user clicks "Pay", it:
+ * 1. Creates a checkout preference on the backend
+ * 2. Redirects to Openpay's hosted checkout page
+ * 3. User completes payment on Openpay
+ * 4. Openpay redirects back with payment result
+ */
 export default function OpenpayPayment({
     cart,
-    session,
-    onPaymentCompleted,
 }: OpenpayPaymentProps) {
     const t = useTranslations("checkout")
-    const [showForm, setShowForm] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const [formData, setFormData] = useState({
-        cardNumber: "",
-        cardName: "",
-        expiryMonth: "",
-        expiryYear: "",
-        cvv: "",
-    })
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }))
-    }
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+    const handlePayment = async () => {
         setLoading(true)
         setError(null)
 
         try {
-            // Tokenize the card with Openpay.js
-            // @ts-ignore - Openpay is injected by script
-            if (!window.Openpay) {
-                throw new Error(t("openpay.errorSdk"))
+            // Crear preferencia de pago en Openpay
+            const preference = await createOpenpayPreference(cart.id)
+
+            const openpayEnv = process.env.NEXT_PUBLIC_OPENPAY_ENV
+            const useSandbox = openpayEnv
+                ? openpayEnv !== "production"
+                : process.env.NODE_ENV !== "production"
+
+            const redirectUrl = useSandbox
+                ? (preference.sandboxInitPoint || preference.initPoint)
+                : preference.initPoint
+
+            if (redirectUrl) {
+                window.location.href = redirectUrl
+            } else {
+                throw new Error(t("openpay.errorPreference"))
             }
-
-            // @ts-ignore
-            Openpay.setProductionReady(false) // Using sandbox
-            
-            // Get Openpay public key from environment
-            const publicKey = process.env.NEXT_PUBLIC_OPENPAY_PUBLIC_KEY
-            if (!publicKey) {
-                throw new Error(t("openpay.errorPublicKey"))
-            }
-
-            // @ts-ignore
-            Openpay.setId(publicKey.split('_')[1] || '') // Extract merchant ID from public key
-            // @ts-ignore
-            Openpay.setApiKey(publicKey)
-
-            // Create token from card data
-            // @ts-ignore
-            Openpay.token.create({
-                card_number: formData.cardNumber.replace(/\s/g, ''),
-                holder_name: formData.cardName,
-                expiration_month: formData.expiryMonth,
-                expiration_year: formData.expiryYear,
-                cvv2: formData.cvv,
-            }, (response: any) => {
-                if (response.data?.id) {
-                    // Token created successfully, now process payment
-                    const preferenceId = session.data && typeof session.data === 'object' && 'preferenceId' in session.data 
-                        ? (session.data as any).preferenceId 
-                        : `order-${Date.now()}`
-                    
-                    handleOpenpayPayment({
-                        tokenId: response.data.id,
-                        preferenceId,
-                        amount: (cart.total || 0) / 100, // Convert from cents to MXN
-                        description: `Pedido Novapatch - ${cart.id}`,
-                    }).then(() => {
-                        setShowForm(false)
-                        onPaymentCompleted()
-                    }).catch((err: any) => {
-                        setError(err.message)
-                    }).finally(() => {
-                        setLoading(false)
-                    })
-                } else {
-                    setError(response.error?.description || t("openpay.errorTokenize"))
-                    setLoading(false)
-                }
-            })
         } catch (err: any) {
+            console.error("Error creating Openpay preference:", err)
             setError(err.message || t("openpay.errorProcess"))
             setLoading(false)
         }
     }
 
     return (
-        <div className="w-full p-6 bg-green-50 border border-green-200 rounded-lg">
-            <div className="flex items-start gap-3">
-                <svg className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                </svg>
-                <div className="flex-1">
-                    <h3 className="font-semibold text-green-900 text-lg mb-2">{t("openpay.selectedTitle")}</h3>
-                    
-                    {!showForm ? (
-                        <>
-                            <p className="text-green-800 text-sm mb-3">
-                                {t("openpay.intro")}
+        <div className="space-y-4">
+            {error && (
+                <div className="p-3 bg-red-100 border border-red-300 text-red-800 rounded-md text-sm">
+                    {error}
+                </div>
+            )}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                    <div className="flex-1">
+                        <h3 className="font-semibold text-blue-900 text-lg mb-2">
+                            {t("openpay.selectedTitle")}
+                        </h3>
+                        <p className="text-blue-800 text-sm mb-3">
+                            {t("openpay.intro")}
+                        </p>
+                        <div className="bg-white p-3 rounded-md border border-blue-100 mb-4">
+                            <p className="text-sm text-gray-700 mb-2">
+                                <span className="font-semibold">{t("openpay.totalLabel")}</span>{" "}
+                                {new Intl.NumberFormat('es-MX', {
+                                    style: 'currency',
+                                    currency: cart.currency_code || 'MXN'
+                                }).format((cart.total || 0) / 100)}
                             </p>
-                            <div className="bg-white p-3 rounded-md border border-green-100 mb-4">
-                                <p className="text-sm text-gray-700 mb-2">
-                                    <span className="font-semibold">{t("openpay.totalLabel")}</span>{" "}
-                                    {new Intl.NumberFormat('es-MX', { 
-                                        style: 'currency', 
-                                        currency: cart.currency_code || 'MXN' 
-                                    }).format((cart.total || 0) / 100)}
-                                </p>
-                                <p className="text-xs text-gray-600">
-                                    {t("openpay.secureConnection")}
-                                </p>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={() => setShowForm(true)}
-                                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-md transition-colors"
-                            >
-                                {t("openpay.enterPaymentData")}
-                            </button>
-                        </>
-                    ) : (
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            {error && (
-                                <div className="p-3 bg-red-100 border border-red-300 text-red-800 rounded-md text-sm">
-                                    {error}
-                                </div>
-                            )}
-                            
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {t("openpay.cardNumberLabel")}
-                                </label>
-                                <input
-                                    type="text"
-                                    name="cardNumber"
-                                    placeholder={t("openpay.cardNumberPlaceholder")}
-                                    value={formData.cardNumber}
-                                    onChange={handleInputChange}
-                                    maxLength={19}
-                                    required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {t("openpay.cardNameLabel")}
-                                </label>
-                                <input
-                                    type="text"
-                                    name="cardName"
-                                    placeholder={t("openpay.cardNamePlaceholder")}
-                                    value={formData.cardName}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-3 gap-3">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        {t("openpay.monthLabel")}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="expiryMonth"
-                                        placeholder={t("openpay.monthPlaceholder")}
-                                        value={formData.expiryMonth}
-                                        onChange={handleInputChange}
-                                        maxLength={2}
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        {t("openpay.yearLabel")}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="expiryYear"
-                                        placeholder={t("openpay.yearPlaceholder")}
-                                        value={formData.expiryYear}
-                                        onChange={handleInputChange}
-                                        maxLength={2}
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        {t("openpay.cvvLabel")}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="cvv"
-                                        placeholder={t("openpay.cvvPlaceholder")}
-                                        value={formData.cvv}
-                                        onChange={handleInputChange}
-                                        maxLength={3}
-                                        required
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="flex gap-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowForm(false)}
-                                    disabled={loading}
-                                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50"
-                                >
-                                    {t("openpay.cancel")}
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={loading}
-                                    className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors disabled:opacity-50"
-                                >
-                                    {loading ? t("openpay.processing") : t("openpay.pay")}
-                                </button>
-                            </div>
-                        </form>
-                    )}
+                            <p className="text-xs text-gray-600">
+                                {t("openpay.secureConnection")}
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handlePayment}
+                            disabled={loading}
+                            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 rounded-md transition-colors"
+                        >
+                            {loading ? t("openpay.redirecting") : t("openpay.payButton")}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

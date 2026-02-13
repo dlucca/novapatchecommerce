@@ -20,8 +20,9 @@ const DeleteButton = ({
     setError(null)
     try {
       await deleteLineItem(id)
-    } catch (err: any) {
-      setError(err.message || "Failed to delete item")
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to delete item"
+      setError(message)
       console.error("Error deleting item:", err)
     } finally {
       setIsDeleting(false)

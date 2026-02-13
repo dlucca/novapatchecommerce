@@ -91,9 +91,18 @@ const Shipping: React.FC<ShippingProps> = ({
       if (promises.length) {
         Promise.allSettled(promises).then((res) => {
           const pricesMap: Record<string, number> = {}
-          res
-            .filter((r) => r.status === "fulfilled")
-            .forEach((p) => (pricesMap[p.value?.id || ""] = p.value?.amount!))
+          res.forEach((result) => {
+            if (result.status !== "fulfilled") {
+              return
+            }
+
+            const value = result.value
+            if (!value?.id) {
+              return
+            }
+
+            pricesMap[value.id] = Number(value.amount ?? 0)
+          })
 
           setCalculatedPricesMap(pricesMap)
           setIsLoadingPrices(false)

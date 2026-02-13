@@ -23,11 +23,13 @@ export default async function AccountOverviewPage() {
     last_name: user.lastName || '',
     phone: user.phoneNumbers[0]?.phoneNumber || null,
     addresses: [],
-  }
+    default_billing_address_id: null,
+    default_shipping_address_id: null,
+    company_name: null,
+  } as HttpTypes.StoreCustomer
 
   // TODO: Fetch orders from Medusa
   const orders: HttpTypes.StoreOrder[] = []
 
-  return <OverviewTemplate customer={mockCustomer as any} orders={orders} />
+  return <OverviewTemplate customer={mockCustomer} orders={orders} />
 }
-

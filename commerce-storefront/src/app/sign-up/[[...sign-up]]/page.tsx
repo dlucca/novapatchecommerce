@@ -5,8 +5,9 @@ import { getTranslations } from "next-intl/server"
 import { getLocaleFromCountryCode } from "@/i18n"
 import type { Metadata } from "next"
 
-const getLocaleFromCookie = () => {
-  const country = cookies().get("country")?.value
+const getLocaleFromCookie = async () => {
+  const cookieStore = await cookies()
+  const country = cookieStore.get("country")?.value
   return country ? getLocaleFromCountryCode(country) : "es"
 }
 
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const locale = getLocaleFromCookie()
+  const locale = await getLocaleFromCookie()
   const t = await getTranslations({ locale, namespace: "auth" })
   const tCommon = await getTranslations({ locale, namespace: "common" })
   return (

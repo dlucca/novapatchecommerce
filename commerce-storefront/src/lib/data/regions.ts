@@ -60,7 +60,7 @@ export const getRegion = async (countryCode: string) => {
       : regionMap.get("us")
 
     return region || null
-  } catch (e: any) {
+  } catch (e: unknown) {
     return null
   }
 }

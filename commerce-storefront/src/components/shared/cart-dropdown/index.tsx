@@ -69,7 +69,7 @@ const CartDropdown = ({
     }
 
     itemRef.current = totalItems
-  }, [pathname, totalItems])
+  }, [pathname, totalItems, timedOpen])
 
   const t = useTranslations("myCart")
   const tCommon = useTranslations("common")

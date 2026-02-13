@@ -236,9 +236,11 @@ const MercadoPagoPaymentButton = ({
       } else {
         throw new Error(t("payment.mercadoPagoUrlError"))
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error creating Mercado Pago preference:", err)
-      setErrorMessage(err.message || t("payment.mercadoPagoError"))
+      setErrorMessage(
+        err instanceof Error ? err.message : t("payment.mercadoPagoError")
+      )
       setSubmitting(false)
     }
   }
@@ -296,9 +298,9 @@ const OpenpayPaymentButton = ({
       } else {
         throw new Error(t("payment.openpayUrlError"))
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error creating Openpay preference:", err)
-      setErrorMessage(err.message || t("payment.openpayError"))
+      setErrorMessage(err instanceof Error ? err.message : t("payment.openpayError"))
       setSubmitting(false)
     }
   }
