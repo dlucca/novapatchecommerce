@@ -1,7 +1,6 @@
 import { Metadata } from "next"
-import { notFound } from "next/navigation"
 import { listProducts } from "@lib/data/products"
-import { getRegion, listRegions } from "@lib/data/regions"
+import { listRegions } from "@lib/data/regions"
 import { logger } from "@lib/util/logger"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import StoreGridTemplate from "@modules/store/pages/store-grid-template"

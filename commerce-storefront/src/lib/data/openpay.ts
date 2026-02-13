@@ -69,10 +69,11 @@ export async function verifyAndCompleteOpenpayOrder(cartId: string, paymentId?: 
             success: false,
             error: response.error || "Could not complete order",
         }
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error completing order:", error)
 
-        const errorMessage = error.body?.error || error.message || "Failed to complete order"
+        const err = error as { body?: { error?: string }; message?: string }
+        const errorMessage = err?.body?.error || err?.message || "Failed to complete order"
 
         return {
             success: false,
@@ -113,11 +114,11 @@ export async function checkOpenpayOrderStatus(cartId: string, paymentId?: string
         )
 
         return response
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error checking order status:", error)
         return {
             status: "failed",
-            message: error.message || "Failed to check order status",
+            message: error instanceof Error ? error.message : "Failed to check order status",
         }
     }
 }
@@ -155,10 +156,11 @@ export async function handleOpenpayPayment(input: HandleOpenpayPaymentInput): Pr
             paymentId: response.paymentId,
             error: response.error,
         }
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error processing Openpay payment:", error)
 
-        const errorMessage = error.body?.error || error.message || "Failed to process payment"
+        const err = error as { body?: { error?: string }; message?: string }
+        const errorMessage = err?.body?.error || err?.message || "Failed to process payment"
 
         return {
             success: false,

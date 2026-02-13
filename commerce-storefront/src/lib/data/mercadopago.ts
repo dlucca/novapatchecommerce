@@ -69,10 +69,11 @@ export async function verifyAndCompleteOrder(cartId: string, paymentId?: string)
             success: false,
             error: response.error || "Could not complete order",
         }
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error completing order:", error)
 
-        const errorMessage = error.body?.error || error.message || "Failed to complete order"
+        const err = error as { body?: { error?: string }; message?: string }
+        const errorMessage = err?.body?.error || err?.message || "Failed to complete order"
 
         return {
             success: false,
@@ -83,7 +84,7 @@ export async function verifyAndCompleteOrder(cartId: string, paymentId?: string)
 
 export async function processMercadoPagoPayment(data: {
     cartId: string
-    paymentData: any
+    paymentData: Record<string, unknown>
 }) {
     const headers = {
         ...(await getAuthHeaders()),
@@ -128,11 +129,11 @@ export async function checkOrderStatus(cartId: string, paymentId?: string): Prom
         )
 
         return response
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error checking order status:", error)
         return {
             status: "failed",
-            message: error.message || "Failed to check order status",
+            message: error instanceof Error ? error.message : "Failed to check order status",
         }
     }
 }

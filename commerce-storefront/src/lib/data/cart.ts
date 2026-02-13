@@ -125,7 +125,7 @@ export async function addToCart({
   variantId: string
   quantity: number
   countryCode: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }) {
   if (!variantId) {
     throw new Error("Missing variant ID when adding to cart")
@@ -292,7 +292,7 @@ export async function applyPromotions(codes: string[]) {
 /**
  * Apply subscription promotion to cart, replacing any existing subscription promotions
  */
-export async function applySubscriptionPromotion(promotionCode: string) {
+export async function applySubscriptionPromotion(_promotionCode: string) {
   const cart = await retrieveCart()
 
   if (!cart) {
@@ -303,7 +303,7 @@ export async function applySubscriptionPromotion(promotionCode: string) {
   const subscriptionPromoCodes = ['MONTHLY_SUB', 'BIMONTHLY_SUB', 'QUARTERLY_SUB']
 
   // Get current promotion codes, excluding subscription promotions
-  const currentPromoCodes = cart.promotions?.map(p => p.code).filter(code =>
+  const _currentPromoCodes = cart.promotions?.map(p => p.code).filter(code =>
     code && !subscriptionPromoCodes.includes(code)
   ) || []
 
@@ -327,7 +327,7 @@ export async function removeSubscriptionPromotions() {
   const subscriptionPromoCodes = ['MONTHLY_SUB', 'BIMONTHLY_SUB', 'QUARTERLY_SUB']
 
   // Get current promotion codes, excluding subscription promotions
-  const currentPromoCodes = cart.promotions?.map(p => p.code).filter(code =>
+  const _currentPromoCodes = cart.promotions?.map(p => p.code).filter(code =>
     code && !subscriptionPromoCodes.includes(code)
   ) || []
 
@@ -335,7 +335,7 @@ export async function removeSubscriptionPromotions() {
   // return applyPromotions(currentPromoCodes)
 }
 
-export async function applyGiftCard(code: string) {
+export async function applyGiftCard(_code: string) {
   //   const cartId = getCartId()
   //   if (!cartId) return "No cartId cookie found"
   //   try {
@@ -347,7 +347,7 @@ export async function applyGiftCard(code: string) {
   //   }
 }
 
-export async function removeDiscount(code: string) {
+export async function removeDiscount(_code: string) {
   // const cartId = getCartId()
   // if (!cartId) return "No cartId cookie found"
   // try {
@@ -359,8 +359,8 @@ export async function removeDiscount(code: string) {
 }
 
 export async function removeGiftCard(
-  codeToRemove: string,
-  giftCards: any[]
+  _codeToRemove: string,
+  _giftCards: Array<{ code?: string }>
   // giftCards: GiftCard[]
 ) {
   //   const cartId = getCartId()
@@ -385,13 +385,18 @@ export async function submitPromotionForm(
   const code = formData.get("code") as string
   try {
     await applyPromotions([code])
-  } catch (e: any) {
-    return e.message
+  } catch (e: unknown) {
+    return e instanceof Error ? e.message : "Failed to apply promotion"
   }
 }
 
 // TODO: Pass a POJO instead of a form entity here
 export async function setAddresses(currentState: unknown, formData: FormData) {
+  const getStringValue = (key: string): string | undefined => {
+    const value = formData.get(key)
+    return typeof value === "string" ? value : undefined
+  }
+
   try {
     if (!formData) {
       throw new Error("No form data found when setting addresses")
@@ -403,44 +408,43 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
 
     const data = {
       shipping_address: {
-        first_name: formData.get("shipping_address.first_name"),
-        last_name: formData.get("shipping_address.last_name"),
-        address_1: formData.get("shipping_address.address_1"),
+        first_name: getStringValue("shipping_address.first_name"),
+        last_name: getStringValue("shipping_address.last_name"),
+        address_1: getStringValue("shipping_address.address_1"),
         address_2: "",
-        company: formData.get("shipping_address.company"),
-        postal_code: formData.get("shipping_address.postal_code"),
-        city: formData.get("shipping_address.city"),
-        country_code: formData.get("shipping_address.country_code"),
-        province: formData.get("shipping_address.province"),
-        phone: formData.get("shipping_address.phone"),
+        company: getStringValue("shipping_address.company"),
+        postal_code: getStringValue("shipping_address.postal_code"),
+        city: getStringValue("shipping_address.city"),
+        country_code: getStringValue("shipping_address.country_code"),
+        province: getStringValue("shipping_address.province"),
+        phone: getStringValue("shipping_address.phone"),
       },
-      email: formData.get("email"),
-    } as any
+      email: getStringValue("email"),
+    } as HttpTypes.StoreUpdateCart
 
-    const sameAsBilling = formData.get("same_as_billing")
+    const sameAsBilling = getStringValue("same_as_billing")
     if (sameAsBilling === "on") data.billing_address = data.shipping_address
 
     if (sameAsBilling !== "on")
       data.billing_address = {
-        first_name: formData.get("billing_address.first_name"),
-        last_name: formData.get("billing_address.last_name"),
-        address_1: formData.get("billing_address.address_1"),
+        first_name: getStringValue("billing_address.first_name"),
+        last_name: getStringValue("billing_address.last_name"),
+        address_1: getStringValue("billing_address.address_1"),
         address_2: "",
-        company: formData.get("billing_address.company"),
-        postal_code: formData.get("billing_address.postal_code"),
-        city: formData.get("billing_address.city"),
-        country_code: formData.get("billing_address.country_code"),
-        province: formData.get("billing_address.province"),
-        phone: formData.get("billing_address.phone"),
+        company: getStringValue("billing_address.company"),
+        postal_code: getStringValue("billing_address.postal_code"),
+        city: getStringValue("billing_address.city"),
+        country_code: getStringValue("billing_address.country_code"),
+        province: getStringValue("billing_address.province"),
+        phone: getStringValue("billing_address.phone"),
       }
     await updateCart(data)
-  } catch (e: any) {
-    return e.message
+  } catch (e: unknown) {
+    return e instanceof Error ? e.message : "Failed to set addresses"
   }
 
-  redirect(
-    `/${formData.get("shipping_address.country_code")}/checkout?step=delivery`
-  )
+  const countryCode = getStringValue("shipping_address.country_code")
+  redirect(`/${countryCode ?? ""}/checkout?step=delivery`)
 }
 
 /**

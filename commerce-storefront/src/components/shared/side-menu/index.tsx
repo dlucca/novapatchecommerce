@@ -9,22 +9,20 @@ import { useClerk } from "@clerk/nextjs"
 import { useTranslations } from "next-intl"
 
 // Menú lateral actualizado con nuevas opciones
-const getSideMenuItems = () => {
-  const t = useTranslations("menu")
-  const items: Record<string, string> = {
+const getSideMenuItems = (t: (key: string) => string) => {
+  return {
     [t("home")]: "/",
     [t("store")]: "/store",
     [t("subscriptions")]: "/subscriptions",
     [t("about")]: "/about",
     [t("myAccount")]: "/account",
   }
-
-  return items
 }
 
 const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const SideMenuItems = getSideMenuItems()
+  const t = useTranslations("menu")
+  const SideMenuItems = getSideMenuItems(t)
   const { signOut } = useClerk()
 
   useEffect(() => {
@@ -42,7 +40,6 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
   }
   void regions
   const tFooter = useTranslations("footer")
-  const t = useTranslations("menu")
   const tCommon = useTranslations("common")
   return (
     <>

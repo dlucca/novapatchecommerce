@@ -1,5 +1,3 @@
-import { Metadata } from "next"
-
 import InteractiveLink from "@modules/common/components/interactive-link"
 import { getTranslations } from "next-intl/server"
 import type { Metadata } from "next"

@@ -34,8 +34,8 @@ export const listProducts = async ({
 
   if (countryCode) {
     region = await getRegion(countryCode)
-  } else {
-    region = await retrieveRegion(regionId!)
+  } else if (regionId) {
+    region = await retrieveRegion(regionId)
   }
 
   if (!region) {
@@ -56,9 +56,16 @@ export const listProducts = async ({
   const defaultFields =
     "+metadata,+tags,*variants,*variants.calculated_price,+variants.inventory_quantity,+variants.manage_inventory,+variants.allow_backorder,*images"
 
+  type DetailQueryParams = {
+    handle?: string | string[]
+    id?: string | string[]
+  }
+  const detailQueryParams = queryParams as DetailQueryParams | undefined
   const isDetailQuery =
-    Boolean((queryParams as any)?.handle) ||
-    (Array.isArray((queryParams as any)?.id) ? (queryParams as any).id.length > 0 : Boolean((queryParams as any)?.id))
+    Boolean(detailQueryParams?.handle) ||
+    (Array.isArray(detailQueryParams?.id)
+      ? detailQueryParams.id.length > 0
+      : Boolean(detailQueryParams?.id))
 
   return sdk.client
     .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(

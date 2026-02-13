@@ -2,7 +2,6 @@ import ItemsTemplate from "./items"
 import Summary from "./summary"
 import EmptyCartMessage from "../components/empty-cart-message"
 import SignInPrompt from "../components/sign-in-prompt"
-import Divider from "@/components/ui/divider"
 import { useTranslations } from "next-intl"
 import { HttpTypes } from "@medusajs/types"
 
@@ -44,7 +43,13 @@ const CartTemplate = ({
                 <div className="sticky top-24">
                   {cart && cart.region && (
                     <div className="bg-white rounded-2xl shadow-md p-6">
-                      <Summary cart={cart as any} />
+                      <Summary
+                        cart={
+                          cart as HttpTypes.StoreCart & {
+                            promotions: HttpTypes.StorePromotion[]
+                          }
+                        }
+                      />
                     </div>
                   )}
                 </div>

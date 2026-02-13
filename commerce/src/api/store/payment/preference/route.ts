@@ -35,8 +35,7 @@ export async function POST(
         "items.discount_total",
         "shipping_address.*",
         "shipping_methods.*",
-        "shipping_methods.tax_total",
-        "shipping_methods.total",
+        "shipping_methods.amount",
         "promotions.*",
         "promotions.code"
       ],
@@ -84,7 +83,22 @@ export async function POST(
     }))
 
     // Agregar envío si existe
-    const shippingTotal = cart.shipping_methods?.[0]?.total || cart.shipping_methods?.[0]?.amount || 0
+    const shippingMethod = cart.shipping_methods?.[0] as
+      | {
+          amount?: number
+          tax_total?: number
+          tax_amount?: number
+          tax_lines?: Array<{ amount?: number }>
+        }
+      | undefined
+    const shippingAmount = Number(shippingMethod?.amount ?? 0)
+    const shippingTaxFromLines = Array.isArray(shippingMethod?.tax_lines)
+      ? shippingMethod.tax_lines.reduce((sum, line) => sum + Number(line?.amount ?? 0), 0)
+      : 0
+    const shippingTaxTotal = Number(
+      shippingMethod?.tax_total ?? shippingMethod?.tax_amount ?? shippingTaxFromLines
+    )
+    const shippingTotal = shippingAmount + shippingTaxTotal
     if (shippingTotal > 0) {
       items.push({
         id: "shipping",
