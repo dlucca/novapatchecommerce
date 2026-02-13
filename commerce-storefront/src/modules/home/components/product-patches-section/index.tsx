@@ -72,13 +72,11 @@ const ProductPatchesSection = () => {
       <div className="w-full">
         <div className="flex flex-col md:flex-row w-full h-auto md:h-[clamp(280px,35vh,320px)]">
           <div
-            className="w-full md:w-1/2 flex items-center justify-start rounded-t-[30px] md:rounded-t-none md:rounded-tr-[50px] bg-novapatch-bg-light"
-            style={{ padding: 'clamp(2rem, 2.5vw, 2.5rem) clamp(1.5rem, 5vw, 5rem) clamp(2rem, 2.5vw, 2.5rem) clamp(4rem, 12vw, 12rem)' }}
+            className="w-full md:w-1/2 flex items-center justify-start rounded-t-[30px] md:rounded-t-none md:rounded-tr-[50px] bg-novapatch-bg-light px-6 sm:px-8 md:px-10 lg:px-16 xl:px-24 py-8 md:py-10"
           >
-            <div className="w-full">
+            <div className="w-full max-w-xl">
               <h2
-                className="font-normal leading-tight text-novapatch-title"
-                style={{ marginBottom: 'clamp(1rem, 1.25vw, 1.25rem)' }}
+                className="font-normal leading-tight text-novapatch-title mb-4"
               >
                 {t('title.line1')} <span className="font-bold">{t('title.line1Bold')}</span> {t('title.line1End')}
                 <br className="hidden sm:block" />

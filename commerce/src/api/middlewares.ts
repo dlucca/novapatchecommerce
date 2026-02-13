@@ -8,7 +8,8 @@ const serveStaticFiles = (req: Request, res: Response, next: NextFunction) => {
     return next()
   }
 
-  const filePath = path.join(process.cwd(), req.path)
+  const baseDir = process.env.NODE_ENV === "production" ? "/app" : process.cwd()
+  const filePath = path.join(baseDir, req.path)
 
   if (!fs.existsSync(filePath)) {
     return res.status(404).json({ message: "File not found" })
