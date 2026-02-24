@@ -36,7 +36,7 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
       return variantOption?.value === optionValue
     })
 
-    return variant?.images?.[0]?.url || variant?.product?.images?.[0]?.url || null
+    return variant?.product?.images?.[0]?.url || variant?.product?.thumbnail || null
   }
 
   return (

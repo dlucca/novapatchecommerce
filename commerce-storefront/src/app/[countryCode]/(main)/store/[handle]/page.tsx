@@ -6,6 +6,9 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 import StoreGridTemplate from "@modules/store/pages/store-grid-template"
 import { transformMediaUrl } from "@lib/util/transform-url"
 
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
 type PageProps = {
   params: { countryCode: string; handle: string }
   searchParams: {
