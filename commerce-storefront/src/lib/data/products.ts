@@ -52,7 +52,7 @@ export const listProducts = async ({
   }
 
   const defaultFields =
-    "+metadata,+tags,thumbnail,*variants,*variants.calculated_price,+variants.inventory_quantity,+variants.manage_inventory,+variants.allow_backorder,*images"
+    "handle,title,subtitle,thumbnail,+metadata,+tags,*variants,*variants.calculated_price,+variants.inventory_quantity,+variants.manage_inventory,+variants.allow_backorder,*images"
 
   type DetailQueryParams = {
     handle?: string | string[]
