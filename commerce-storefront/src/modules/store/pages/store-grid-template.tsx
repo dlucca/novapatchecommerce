@@ -57,12 +57,14 @@ export default async function StoreGridTemplate({
     }).then(({ response }) => response.products[0])
 
     if (selectedProduct) {
-      const idx = products.findIndex((p) => p.handle === selectedHandle)
+      const idx = products.findIndex(
+        (p) => p.handle === selectedHandle || p.id === selectedProduct.id
+      )
       if (idx !== -1) {
         products = [...products]
         products[idx] = selectedProduct
       } else {
-        products = [selectedProduct, ...products]
+        products = [selectedProduct, ...products].slice(0, PRODUCT_LIMIT)
       }
     }
   }
