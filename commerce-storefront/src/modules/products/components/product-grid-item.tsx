@@ -40,7 +40,7 @@ export default function ProductGridItem({
 }: ProductGridItemProps) {
   const tStore = useTranslations("store")
   const tCommon = useTranslations("common")
-  const thumbnail = transformMediaUrl(product.thumbnail || product.images?.[0]?.url)
+  const thumbnail = transformMediaUrl(product.images?.[0]?.url || product.thumbnail)
   
   const bgColor = product.metadata?.bg_color as string | undefined
 

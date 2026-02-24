@@ -24,7 +24,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   className,
   "data-testid": dataTestid,
 }) => {
-  const initialImage = transformMediaUrl(thumbnail || images?.[0]?.url)
+  const initialImage = transformMediaUrl(images?.[0]?.url || thumbnail)
 
   return (
     <Container
