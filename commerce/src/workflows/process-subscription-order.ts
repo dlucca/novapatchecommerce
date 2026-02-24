@@ -4,8 +4,15 @@ import {
   createStep,
   StepResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
-import { createCartWorkflow } from "@medusajs/medusa/core-flows"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  PromotionActions,
+} from "@medusajs/framework/utils"
+import {
+  createCartWorkflow,
+  updateCartPromotionsWorkflow,
+} from "@medusajs/medusa/core-flows"
 import {
   getSubscriptionPlanConfig,
   calculateNextOrderDate,
@@ -112,7 +119,6 @@ const applySubscriptionDiscountStep = createStep(
     },
     { container }
   ) => {
-    const cartModuleService = container.resolve(Modules.CART)
     const promotionModuleService = container.resolve(Modules.PROMOTION)
     const planConfig = await getSubscriptionPlanConfig(input.plan, container)
 
@@ -139,9 +145,12 @@ const applySubscriptionDiscountStep = createStep(
     }
 
     // Aplicar la promoción al carrito
-    await cartModuleService.updateCarts({
-      id: input.cart_id,
-      promo_codes: [planConfig.promotion_code],
+    await updateCartPromotionsWorkflow(container).run({
+      input: {
+        cart_id: input.cart_id,
+        promo_codes: [planConfig.promotion_code],
+        action: PromotionActions.ADD,
+      },
     })
 
     return new StepResponse({ promotion_id: promotion.id })
@@ -160,15 +169,7 @@ const completeSubscriptionCartStep = createStep(
     const orderModuleService = container.resolve(Modules.ORDER)
 
     // Obtener el carrito
-    const carts = await cartModuleService.retrieveCarts({
-      id: [input.cart_id],
-    })
-
-    if (!carts || carts.length === 0) {
-      throw new Error(`Cart ${input.cart_id} not found`)
-    }
-
-    const cart = carts[0]
+    const cart = await cartModuleService.retrieveCart(input.cart_id)
 
     // Crear la orden a partir del carrito
     const order = await orderModuleService.createOrders({
@@ -176,9 +177,29 @@ const completeSubscriptionCartStep = createStep(
       customer_id: cart.customer_id,
       region_id: cart.region_id,
       items: cart.items?.map((item: any) => ({
+        title:
+          item.title ||
+          item.product_title ||
+          item.variant_title ||
+          "Subscription item",
         variant_id: item.variant_id,
         quantity: item.quantity,
         unit_price: item.unit_price,
+        thumbnail: item.thumbnail,
+        product_id: item.product_id,
+        product_title: item.product_title,
+        product_description: item.product_description,
+        product_subtitle: item.product_subtitle,
+        product_type: item.product_type,
+        product_collection: item.product_collection,
+        product_handle: item.product_handle,
+        variant_title: item.variant_title,
+        variant_sku: item.variant_sku,
+        variant_barcode: item.variant_barcode,
+        requires_shipping: item.requires_shipping,
+        is_discountable: item.is_discountable,
+        is_tax_inclusive: item.is_tax_inclusive,
+        metadata: item.metadata,
       })) || [],
       shipping_address: cart.shipping_address,
       billing_address: cart.billing_address,
@@ -256,4 +277,3 @@ export const processSubscriptionOrderWorkflow = createWorkflow(
     })
   }
 )
-
