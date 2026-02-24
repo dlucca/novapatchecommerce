@@ -31,6 +31,7 @@
     "util:check-products": "medusa exec ./src/scripts/check-products.ts",
     "util:check-prices": "medusa exec ./src/scripts/check-prices.ts",
     "util:check-keys": "medusa exec ./src/scripts/check-publishable-keys.ts",
+    "util:sync-thumbnails": "medusa exec ./src/scripts/sync-product-thumbnails.ts",
     "util:test-email": "medusa exec ./src/scripts/test-resend.ts",
     "util:setup-brazil-shipping": "medusa exec ./src/scripts/setup-brazil-shipping.ts",
     "util:list-regions": "medusa exec ./src/scripts/list-regions.ts",
