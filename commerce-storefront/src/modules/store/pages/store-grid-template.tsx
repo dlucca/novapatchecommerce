@@ -45,6 +45,7 @@ export default async function StoreGridTemplate({
     queryParams,
     sortBy,
     countryCode,
+    cache: "no-store",
   })
 
   if (selectedHandle) {
@@ -79,4 +80,3 @@ export default async function StoreGridTemplate({
     />
   )
 }
-

@@ -12,11 +12,13 @@ export const listProducts = async ({
   queryParams,
   countryCode,
   regionId,
+  cache,
 }: {
   pageParam?: number
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductListParams
   countryCode?: string
   regionId?: string
+  cache?: RequestCache
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
@@ -49,12 +51,8 @@ export const listProducts = async ({
     ...(await getAuthHeaders()),
   }
 
-  const next = {
-    ...(await getCacheOptions("products")),
-  }
-
   const defaultFields =
-    "+metadata,+tags,*variants,*variants.calculated_price,+variants.inventory_quantity,+variants.manage_inventory,+variants.allow_backorder,*images"
+    "+metadata,+tags,thumbnail,*variants,*variants.calculated_price,+variants.inventory_quantity,+variants.manage_inventory,+variants.allow_backorder,*images"
 
   type DetailQueryParams = {
     handle?: string | string[]
@@ -66,6 +64,11 @@ export const listProducts = async ({
     (Array.isArray(detailQueryParams?.id)
       ? detailQueryParams.id.length > 0
       : Boolean(detailQueryParams?.id))
+
+  const next = {
+    ...(await getCacheOptions("products")),
+    ...(isDetailQuery || cache === "no-store" ? {} : { revalidate: 60 }),
+  }
 
   return sdk.client
     .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
@@ -81,7 +84,7 @@ export const listProducts = async ({
         },
         headers,
         next,
-        cache: isDetailQuery ? "no-store" : "force-cache",
+        cache: cache ?? (isDetailQuery ? "no-store" : "force-cache"),
       }
     )
     .then(({ products, count }) => {
@@ -107,11 +110,13 @@ export const listProductsWithSort = async ({
   queryParams,
   sortBy = "created_at",
   countryCode,
+  cache,
 }: {
   page?: number
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
   sortBy?: SortOptions
   countryCode: string
+  cache?: RequestCache
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
@@ -128,6 +133,7 @@ export const listProductsWithSort = async ({
       limit: 100,
     },
     countryCode,
+    cache,
   })
 
   const sortedProducts = sortProducts(products, sortBy)
