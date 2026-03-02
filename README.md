@@ -1,4 +1,4 @@
-# NovaPatch
+# Novapatch
 Subscription-based e-commerce platform dedicated to the sale of medical patches with different benefits for users.
 
 ## Guia rapida (ES)
