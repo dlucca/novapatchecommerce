@@ -137,26 +137,28 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         </LocalizedClientLink>
       </Table.Cell>
 
-      <Table.Cell className="text-left align-top">
-        <Text
-          className="txt-medium-plus text-ui-fg-base"
-          data-testid="product-title"
-        >
-          {item.product_title}
-        </Text>
-        <LineItemOptions variant={item.variant} data-testid="product-variant" />
+      <Table.Cell className="text-left align-middle">
+        <div className="flex flex-col justify-center h-full">
+          <Text
+            className="txt-medium-plus text-ui-fg-base"
+            data-testid="product-title"
+          >
+            {item.product_title}
+          </Text>
+          <LineItemOptions variant={item.variant} data-testid="product-variant" />
 
-        {Boolean(item.metadata?.is_subscription) && (
-          <div className="mt-1">
-            {Boolean(subscriptionPlanLabel) && (
-              <span className="block w-full min-h-4 text-xs text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis">
-                {subscriptionPlanPrefix}: {subscriptionPlanLabel}
-                {Boolean(item.metadata?.subscription_discount) &&
-                  ` (${String(item.metadata?.subscription_discount)}% OFF)`}
-              </span>
-            )}
-          </div>
-        )}
+          {Boolean(item.metadata?.is_subscription) && (
+            <div className="mt-1">
+              {Boolean(subscriptionPlanLabel) && (
+                <span className="block w-full min-h-4 text-xs text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis">
+                  {subscriptionPlanPrefix}: {subscriptionPlanLabel}
+                  {Boolean(item.metadata?.subscription_discount) &&
+                    ` (${String(item.metadata?.subscription_discount)}% OFF)`}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
       </Table.Cell>
 
       {type === "full" && (
@@ -192,19 +194,23 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       )}
 
       {type === "full" && (
-        <Table.Cell className="hidden small:table-cell">
-          <LineItemUnitPrice
-            item={itemWithDiscount}
-            style="tight"
-            currencyCode={currencyCode}
-          />
+        <Table.Cell className="hidden small:table-cell w-32 text-right align-middle">
+          <div className="flex justify-end items-center h-full w-full">
+            <LineItemUnitPrice
+              item={itemWithDiscount}
+              style="tight"
+              currencyCode={currencyCode}
+            />
+          </div>
         </Table.Cell>
       )}
 
-      <Table.Cell className="!pr-0 align-top">
+      <Table.Cell className="w-32 !pr-0 align-middle text-right">
         <span
           className={clx("!pr-0", {
-            "flex flex-col items-end h-full justify-start pt-0.5": type === "preview",
+            "flex flex-col items-end h-full justify-center": type === "full",
+            "flex flex-col items-end h-full justify-start pt-0.5":
+              type === "preview",
           })}
         >
           {type === "preview" && (
