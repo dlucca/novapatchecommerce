@@ -1,7 +1,7 @@
 "use client"
 
 import { RadioGroup } from "@headlessui/react"
-import { isStripe as isStripeFunc, isMercadoPago, isOpenpay, paymentInfoMap } from "@lib/constants"
+import { getPaymentTitleKey, isStripe as isStripeFunc, isMercadoPago, isOpenpay, paymentInfoMap } from "@lib/constants"
 import { initiatePaymentSession } from "@lib/data/cart"
 import { CreditCard } from "@medusajs/icons"
 import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
@@ -13,7 +13,7 @@ import MercadoPagoPayment from "@modules/checkout/components/payment/mercadopago
 import OpenpayPayment from "@modules/checkout/components/payment/openpay-payment"
 import { HttpTypes } from "@medusajs/types"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { useCallback, useEffect, useState } from "react"
 
 const Payment = ({
@@ -40,10 +40,11 @@ const Payment = ({
   const pathname = usePathname()
   const t = useTranslations("checkout")
   const tPaymentMethods = useTranslations("paymentMethods")
+  const locale = useLocale()
 
   const getPaymentTitle = (providerId?: string | null) => {
     if (!providerId) return tPaymentMethods("unknown")
-    const titleKey = paymentInfoMap[providerId]?.titleKey
+    const titleKey = getPaymentTitleKey(providerId, locale)
     return titleKey ? tPaymentMethods(titleKey) : providerId
   }
 

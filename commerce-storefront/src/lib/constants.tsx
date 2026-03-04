@@ -58,6 +58,18 @@ export const isOpenpay = (providerId?: string) => {
   return providerId === "pp_openpay_openpay" || providerId?.includes("openpay")
 }
 
+export const getPaymentTitleKey = (providerId?: string | null, locale?: string) => {
+  if (!providerId) {
+    return undefined
+  }
+
+  if (isManual(providerId)) {
+    return locale === "pt" ? "mercadoPago" : "openpay"
+  }
+
+  return paymentInfoMap[providerId]?.titleKey
+}
+
 // Add currencies that don't need to be divided by 100
 export const noDivisionCurrencies = [
   "krw",

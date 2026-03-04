@@ -724,7 +724,7 @@
     "paypal": "PayPal",
     "manualPayment": "Pago manual",
     "mercadoPago": "Mercado Pago",
-    "openpay": "Openpay",
+    "openpay": "Pagar con Openpay",
     "unknown": "Método de pago"
   },
   "productTabs": {
