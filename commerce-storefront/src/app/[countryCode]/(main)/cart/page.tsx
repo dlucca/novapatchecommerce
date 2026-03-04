@@ -1,4 +1,5 @@
-import { getOrSetCart } from "@lib/data/cart"
+import { retrieveCart } from "@lib/data/cart"
+import { getRegion } from "@lib/data/regions"
 import { logger } from "@lib/util/logger"
 import CartTemplate from "@modules/cart/pages"
 import { Metadata } from "next"
@@ -16,8 +17,9 @@ type PageProps = {
 
 export default async function Cart({ params }: PageProps) {
   const { countryCode } = await params
+  const region = await getRegion(countryCode)
   
-  const cart = await getOrSetCart(countryCode).catch((error) => {
+  const cart = await retrieveCart(undefined, undefined, region?.id).catch((error) => {
     logger.error("Failed to retrieve cart", error as Error, { context: 'CartPage' })
     return null
   })

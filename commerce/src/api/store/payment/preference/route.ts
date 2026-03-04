@@ -3,6 +3,25 @@ import { getPaymentGatewayByRegion, clearGatewayCache } from "../../../../module
 
 interface PreferenceRequestBody {
   cartId: string
+  frontendUrl?: string
+}
+
+const normalizeUrl = (value?: string) => {
+  if (!value) {
+    return undefined
+  }
+
+  const trimmed = value.trim()
+  if (!trimmed) {
+    return undefined
+  }
+
+  try {
+    const parsed = new URL(trimmed)
+    return parsed.origin
+  } catch {
+    return undefined
+  }
 }
 
 export async function POST(
@@ -12,7 +31,7 @@ export async function POST(
   clearGatewayCache()
   
   try {
-    const { cartId } = req.body as PreferenceRequestBody
+    const { cartId, frontendUrl } = req.body as PreferenceRequestBody
 
     if (!cartId) {
       res.status(400).json({ error: "cartId is required" })
@@ -82,7 +101,10 @@ export async function POST(
       return
     }
 
-    const frontendUrl = process.env.STORE_URL || "http://localhost:8000"
+    const resolvedFrontendUrl =
+      normalizeUrl(frontendUrl) ||
+      normalizeUrl(process.env.STORE_URL) ||
+      "http://localhost:8000"
 
     // Calculate total amount from items using unit_price and quantity
     // Since computed fields like +total are not being retrieved, we'll use unit_price
@@ -116,37 +138,6 @@ export async function POST(
 
     // Calculate final total with discount applied
     let totalAmount = itemsTotal - totalDiscount + cartShippingTotal
-
-    // Log detailed item information for debugging
-    console.log("Cart items debug:", cart.items?.map((item: any) => ({
-      id: item.id,
-      quantity: item.quantity,
-      unit_price: item.unit_price,
-      subtotal: item.subtotal,
-      total: item.total,
-      discount_total: item.discount_total,
-      tax_total: item.tax_total,
-      metadata: item.metadata,
-      calculated_item_total: Number(item.unit_price ?? 0) * Number(item.quantity ?? 0),
-    })))
-
-    console.log("Cart promotions debug:", cart.promotions?.map((promo: any) => ({
-      id: promo.id,
-      code: promo.code,
-      type: promo.type,
-    })))
-
-    console.log("Cart totals debug:", {
-      items_count: cart.items?.length,
-      items_total: itemsTotal,
-      total_discount: totalDiscount,
-      shipping_total: cartShippingTotal,
-      cart_total: cart.total,
-      cart_subtotal: cart.subtotal,
-      cart_discount_total: cart.discount_total,
-      cart_tax_total: cart.tax_total,
-      calculated_total: totalAmount,
-    })
 
     if (totalAmount <= 0) {
       res.status(400).json({
@@ -218,13 +209,6 @@ export async function POST(
     const calculatedTotal = items.reduce((sum: number, item: any) => sum + (item.unitPrice * item.quantity), 0)
     const difference = totalAmount - calculatedTotal
 
-    console.log("Openpay items calculation:", {
-      items_count: items.length,
-      calculated_total: calculatedTotal,
-      target_total: totalAmount,
-      difference,
-    })
-
     if (Math.abs(difference) > 0.01) {
       // Add a correction item to ensure the total matches exactly
       // This could be a discount or an adjustment
@@ -238,9 +222,9 @@ export async function POST(
       })
     }
 
-    const successUrl = `${frontendUrl}/${countryCode}/checkout/success?cartId=${cartId}`
-    const failureUrl = `${frontendUrl}/${countryCode}/checkout/failure?cartId=${cartId}`
-    const pendingUrl = `${frontendUrl}/${countryCode}/checkout/pending?cartId=${cartId}`
+    const successUrl = `${resolvedFrontendUrl}/${countryCode}/checkout/success?cartId=${cartId}`
+    const failureUrl = `${resolvedFrontendUrl}/${countryCode}/checkout/failure?cartId=${cartId}`
+    const pendingUrl = `${resolvedFrontendUrl}/${countryCode}/checkout/pending?cartId=${cartId}`
 
     const preferenceInput = {
       items,
@@ -261,7 +245,7 @@ export async function POST(
         pending: pendingUrl,
       },
       metadata: { cart_id: cartId },
-      autoReturn: frontendUrl.includes('localhost') ? undefined : "approved",
+      autoReturn: resolvedFrontendUrl.includes('localhost') ? undefined : "approved",
     }
 
     const result = await gateway.createPreference(preferenceInput)

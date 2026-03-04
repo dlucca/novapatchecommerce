@@ -282,7 +282,7 @@ const OpenpayPaymentButton = ({
 
     try {      
       // Crear preferencia de pago en Openpay
-      const preference = await createOpenpayPreference(cart.id)
+      const preference = await createOpenpayPreference(cart.id, window.location.origin)
 
       const openpayEnv = process.env.NEXT_PUBLIC_OPENPAY_ENV
       const useSandbox = openpayEnv
