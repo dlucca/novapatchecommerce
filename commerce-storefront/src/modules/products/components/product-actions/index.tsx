@@ -221,18 +221,14 @@ export default function ProductActions({
 
         {/* Radio buttons de tipo de compra */}
         <div className="space-y-3">
-          <label className={`flex items-start gap-3 cursor-pointer p-3 border-2 rounded-lg transition-colors ${
+          <label
+            onClick={() => setPurchaseType('single')}
+            className={`flex items-start gap-0 cursor-pointer p-3 border-2 rounded-lg transition-colors ${
             purchaseType === 'single' 
               ? 'border-novapatch-button bg-blue-50' 
               : 'border-gray-200 hover:border-gray-300'
-          }`}>
-            <input
-              type="radio"
-              name="purchase-type"
-              checked={purchaseType === 'single'}
-              onChange={() => setPurchaseType('single')}
-              className="mt-1 w-4 h-4 text-novapatch-button focus:ring-novapatch-button"
-            />
+          }`}
+          >
             <div className="flex-1">
               <div className="flex items-center justify-between">
                 <span className="font-medium text-gray-900">{t('oneTimePurchase')}</span>
@@ -245,18 +241,14 @@ export default function ProductActions({
             </div>
           </label>
 
-          <label className={`flex items-start gap-3 cursor-pointer p-3 border-2 rounded-lg transition-colors ${
+          <label
+            onClick={() => setPurchaseType('subscription')}
+            className={`flex items-start gap-0 cursor-pointer p-3 border-2 rounded-lg transition-colors ${
             purchaseType === 'subscription'
               ? 'border-novapatch-button bg-blue-50'
               : 'border-gray-200 hover:border-gray-300'
-          }`}>
-            <input
-              type="radio"
-              name="purchase-type"
-              checked={purchaseType === 'subscription'}
-              onChange={() => setPurchaseType('subscription')}
-              className="mt-1 w-4 h-4 text-novapatch-button focus:ring-novapatch-button"
-            />
+          }`}
+          >
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
