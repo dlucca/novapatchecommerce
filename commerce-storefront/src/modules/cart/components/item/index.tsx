@@ -2,6 +2,7 @@
 
 import { Table, Text, clx } from "@medusajs/ui"
 import { updateLineItem } from "@lib/data/cart"
+import { getSubscriptionPlans } from "@lib/data/subscriptions"
 import { HttpTypes } from "@medusajs/types"
 import CartItemSelect from "@modules/cart/components/cart-item-select"
 import ErrorMessage from "@modules/checkout/components/error-message"
@@ -12,7 +13,18 @@ import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Spinner from "@modules/common/icons/spinner"
 import Thumbnail from "@modules/products/components/thumbnail"
-import { useState } from "react"
+import { useTranslations } from "next-intl"
+import { useEffect, useState } from "react"
+
+let subscriptionPlansPromise: ReturnType<typeof getSubscriptionPlans> | null = null
+
+const fetchSubscriptionPlans = async () => {
+  if (!subscriptionPlansPromise) {
+    subscriptionPlansPromise = getSubscriptionPlans()
+  }
+
+  return subscriptionPlansPromise
+}
 
 type ItemProps = {
   item: HttpTypes.StoreCartLineItem
@@ -21,8 +33,10 @@ type ItemProps = {
 }
 
 const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
+  const tMyCart = useTranslations("myCart")
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [fallbackIntervalDays, setFallbackIntervalDays] = useState<number | null>(null)
 
   const changeQuantity = async (quantity: number) => {
     setError(null)
@@ -65,6 +79,45 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   }
 
   const itemWithDiscount = getItemWithDiscount()
+  const subscriptionIntervalDays = Number(item.metadata?.subscription_interval_days)
+  const hasValidSubscriptionInterval = Number.isFinite(subscriptionIntervalDays) && subscriptionIntervalDays > 0
+  const resolvedIntervalDays = hasValidSubscriptionInterval
+    ? subscriptionIntervalDays
+    : fallbackIntervalDays
+  const hasSubscriptionEveryDaysTranslation = tMyCart.has("subscriptionEveryDays")
+  const hasSubscriptionPlanLabelTranslation = tMyCart.has("subscriptionPlanLabel")
+  const subscriptionPlanPrefix = hasSubscriptionPlanLabelTranslation
+    ? tMyCart("subscriptionPlanLabel")
+    : "Plan"
+  const subscriptionPlanLabel = resolvedIntervalDays
+    ? hasSubscriptionEveryDaysTranslation
+      ? tMyCart("subscriptionEveryDays", { days: resolvedIntervalDays })
+      : `Cada ${resolvedIntervalDays} días`
+    : item.metadata?.subscription_plan
+      ? String(item.metadata.subscription_plan)
+      : null
+
+  useEffect(() => {
+    const resolveIntervalDays = async () => {
+      if (!item.metadata?.is_subscription || !item.metadata?.subscription_plan || hasValidSubscriptionInterval) {
+        return
+      }
+
+      try {
+        const { subscription_plans } = await fetchSubscriptionPlans()
+        const planCode = String(item.metadata.subscription_plan)
+        const matchedPlan = subscription_plans.find((plan) => plan.code === planCode)
+
+        if (matchedPlan?.interval_days) {
+          setFallbackIntervalDays(matchedPlan.interval_days)
+        }
+      } catch (error) {
+        console.error("Error resolving subscription interval days:", error)
+      }
+    }
+
+    resolveIntervalDays()
+  }, [item.metadata, hasValidSubscriptionInterval])
 
   return (
     <Table.Row className="w-full" data-testid="product-row">
@@ -84,7 +137,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         </LocalizedClientLink>
       </Table.Cell>
 
-      <Table.Cell className="text-left">
+      <Table.Cell className="text-left align-top">
         <Text
           className="txt-medium-plus text-ui-fg-base"
           data-testid="product-title"
@@ -94,14 +147,12 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         <LineItemOptions variant={item.variant} data-testid="product-variant" />
 
         {Boolean(item.metadata?.is_subscription) && (
-          <div className="flex items-center gap-2 mt-2">
-            <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-novapatch-button text-white">
-              🔄 Suscripción
-            </span>
-            {Boolean(item.metadata?.subscription_plan) && (
-              <span className="text-xs text-gray-600">
-                Plan: {String(item.metadata?.subscription_plan)}
-                {Boolean(item.metadata?.subscription_discount) && ` (${String(item.metadata?.subscription_discount)}% OFF)`}
+          <div className="mt-1">
+            {Boolean(subscriptionPlanLabel) && (
+              <span className="block w-full min-h-4 text-xs text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis">
+                {subscriptionPlanPrefix}: {subscriptionPlanLabel}
+                {Boolean(item.metadata?.subscription_discount) &&
+                  ` (${String(item.metadata?.subscription_discount)}% OFF)`}
               </span>
             )}
           </div>
@@ -150,20 +201,15 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         </Table.Cell>
       )}
 
-      <Table.Cell className="!pr-0">
+      <Table.Cell className="!pr-0 align-top">
         <span
           className={clx("!pr-0", {
-            "flex flex-col items-end h-full justify-center": type === "preview",
+            "flex flex-col items-end h-full justify-start pt-0.5": type === "preview",
           })}
         >
           {type === "preview" && (
             <span className="flex gap-x-1 ">
               <Text className="text-ui-fg-muted">{item.quantity}x </Text>
-              <LineItemUnitPrice
-                item={itemWithDiscount}
-                style="tight"
-                currencyCode={currencyCode}
-              />
             </span>
           )}
           <LineItemPrice

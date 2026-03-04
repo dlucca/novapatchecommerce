@@ -160,6 +160,7 @@ export default function ProductActions({
     if (purchaseType === 'subscription' && selectedPlan) {
       metadata.is_subscription = true
       metadata.subscription_plan = selectedPlanCode
+      metadata.subscription_interval_days = selectedPlan.interval_days
       if (selectedPlan.promotion?.type === 'percentage') {
         metadata.subscription_discount = selectedPlan.promotion.value
       }

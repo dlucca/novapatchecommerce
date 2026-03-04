@@ -330,6 +330,8 @@
     "closeCart": "Cerrar carrito",
     "quantity": "Cantidad",
     "subtotal": "Subtotal",
+    "subscriptionPlanLabel": "Plan",
+    "subscriptionEveryDays": "Cada {days} días",
     "viewCart": "Ver carrito",
     "checkout": "Finalizar compra",
     "emptyCart": "Tu carrito está vacío",
