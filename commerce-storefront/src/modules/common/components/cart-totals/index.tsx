@@ -98,47 +98,34 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
     ? subscriptionItemsOriginalSubtotal
     : effectiveSubtotal + effectiveDiscountTotal
 
+  const hasSubtotalDiscount =
+    effectiveDiscountTotal > 0 && originalSubtotal > effectiveSubtotal
+
   return (
     <div>
       <div className="flex flex-col gap-y-3 text-base text-gray-600">
-        {/* Precio original */}
         <div className="flex items-center justify-between">
           <span className="text-gray-500">{t("subtotal")}</span>
-          <span
-            className="line-through text-gray-400"
-            data-testid="cart-original-subtotal"
-            data-value={originalSubtotal || 0}
-          >
-            {convertToLocale({ amount: originalSubtotal ?? 0, currency_code })}
-          </span>
-        </div>
-
-        {/* Descuento */}
-        {!!effectiveDiscountTotal && (
-          <div className="flex items-center justify-between">
-            <span className="text-[#22b2bd] font-medium">{t("discount")}</span>
+          <div className="flex flex-col items-end">
+            {hasSubtotalDiscount && (
+              <span
+                className="line-through text-gray-400"
+                data-testid="cart-original-subtotal"
+                data-value={originalSubtotal || 0}
+              >
+                {convertToLocale({ amount: originalSubtotal ?? 0, currency_code })}
+              </span>
+            )}
             <span
-              className="text-[#22b2bd] font-medium"
-              data-testid="cart-discount"
-              data-value={effectiveDiscountTotal || 0}
+              className="font-semibold text-gray-900"
+              data-testid="cart-subtotal"
+              data-value={effectiveSubtotal || 0}
             >
-              -{convertToLocale({
-                amount: effectiveDiscountTotal ?? 0,
-                currency_code,
-              })}
+              {convertToLocale({ amount: effectiveSubtotal ?? 0, currency_code })}
             </span>
           </div>
-        )}
-
-        {/* Subtotal con descuento aplicado */}
-        <div className="flex items-center justify-between font-semibold text-gray-900">
-          <span>{t("subtotal")} ({t("discount")})</span>
-          <span data-testid="cart-subtotal" data-value={effectiveSubtotal || 0}>
-            {convertToLocale({ amount: effectiveSubtotal ?? 0, currency_code })}
-          </span>
         </div>
 
-        {/* Envío */}
         <div className="flex items-center justify-between">
           <span>{t("shipping")}</span>
           <span data-testid="cart-shipping" data-value={shipping_total || 0}>
@@ -146,7 +133,6 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
           </span>
         </div>
 
-        {/* Impuestos */}
         <div className="flex justify-between">
           <span className="flex gap-x-1 items-center ">{t("taxes")}</span>
           <span data-testid="cart-taxes" data-value={tax_total || 0}>

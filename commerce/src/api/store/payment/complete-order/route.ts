@@ -74,19 +74,25 @@ export async function POST(
 
     const region = cart.shipping_address?.country_code?.toLowerCase() || "br"
 
-    let mpPaymentInfo: any = null
+    let paymentInfo: any = null
     if (paymentId) {
       try {
         const gateway = await getPaymentGatewayByRegion(region)
-        mpPaymentInfo = await gateway.getPayment(paymentId)
+        paymentInfo = await gateway.getPayment(paymentId)
       } catch (err: any) {
         console.warn(`Could not fetch payment info: ${err.message}`)
       }
     }
 
-    if (mpPaymentInfo) {
-      const mpCartId = mpPaymentInfo.externalReference || mpPaymentInfo.metadata?.cart_id
-      if (mpCartId !== cartId) {
+    if (paymentInfo) {
+      const paymentCartReference =
+        paymentInfo.externalReference || paymentInfo.metadata?.cart_id
+      const matchesCart =
+        paymentCartReference === cartId ||
+        (typeof paymentCartReference === "string" &&
+          paymentCartReference.startsWith(`${cartId}-`))
+
+      if (!matchesCart) {
         res.status(400).json({ 
           success: false, 
           error: "Payment does not match cart" 
@@ -94,11 +100,11 @@ export async function POST(
         return
       }
 
-      if (mpPaymentInfo.status !== "approved") {
+      if (paymentInfo.status !== "approved") {
         res.status(400).json({
           success: false,
-          error: `Payment not approved. Status: ${mpPaymentInfo.status}`,
-          paymentStatus: mpPaymentInfo.status,
+          error: `Payment not approved. Status: ${paymentInfo.status}`,
+          paymentStatus: paymentInfo.status,
         } as CompleteOrderResponse)
         return
       }
@@ -106,28 +112,71 @@ export async function POST(
 
 
     const paymentSession = cart.payment_collection?.payment_sessions?.find(
-      (s: any) => s.provider_id === "pp_mercadopago_mercadopago" || s.provider_id?.includes("mercadopago")
+      (s: any) =>
+        s.provider_id?.includes("mercadopago") ||
+        s.provider_id?.includes("openpay") ||
+        s.provider_id?.includes("system_default")
     )
 
-    if (paymentSession && paymentSession.status !== "authorized") {
+    const authorizeSessionIfNeeded = async () => {
+      if (!paymentSession || paymentSession.status === "authorized") {
+        return
+      }
+
       const paymentModule = req.scope.resolve(Modules.PAYMENT)
-      
+      const isOpenpaySession = paymentSession.provider_id?.includes("openpay")
+      const isMercadoPagoSession = paymentSession.provider_id?.includes("mercadopago")
+
+      const authorizePayload = {
+        status: "approved",
+        ...(isOpenpaySession && (paymentId || paymentInfo?.id)
+          ? { openpay_payment_id: paymentId || paymentInfo?.id }
+          : {}),
+        ...(isMercadoPagoSession && (paymentId || paymentInfo?.id)
+          ? { mercadopago_payment_id: paymentId || paymentInfo?.id }
+          : {}),
+      }
+
+      await paymentModule.authorizePaymentSession(paymentSession.id, {
+        ...authorizePayload,
+      })
+    }
+
+    if (paymentSession && paymentSession.status !== "authorized") {
       try {
-        await paymentModule.authorizePaymentSession(paymentSession.id, {
-          mercadopago_payment_id: paymentId || mpPaymentInfo?.id,
-          status: "approved",
-        })
+        await authorizeSessionIfNeeded()
       } catch (err: any) {
-        console.warn(`Could not authorize payment session: ${err.message}`)
+        console.warn(`Could not authorize payment session (first attempt): ${err.message}`)
       }
     }
 
-    const workflowResult = await completeCartWorkflow(req.scope).run({
-      input: { id: cartId },
-    })
+    let workflowResult: any
+    let completionError: any = null
+    try {
+      workflowResult = await completeCartWorkflow(req.scope).run({
+        input: { id: cartId },
+      })
+    } catch (workflowError: any) {
+      completionError = workflowError
+      if (paymentSession && paymentSession.status !== "authorized") {
+        try {
+          await authorizeSessionIfNeeded()
+          workflowResult = await completeCartWorkflow(req.scope).run({
+            input: { id: cartId },
+          })
+          completionError = null
+        } catch (retryError: any) {
+          completionError = retryError
+        }
+      }
+    }
 
-    const result = workflowResult?.result as any
-    const orderId = result?.order?.id || result?.id
+    let orderId = (workflowResult?.result as any)?.order?.id || (workflowResult?.result as any)?.id
+
+    if (!orderId && completionError?.message?.includes("shipping profiles")) {
+        const fallbackOrderId = await createOrderFromCartFallback(req, cartId)
+        orderId = fallbackOrderId
+    }
 
     if (orderId) {
       try {
@@ -147,13 +196,17 @@ export async function POST(
         success: true,
         orderId: orderId,
         orderStatus: "completed",
-        paymentStatus: mpPaymentInfo?.status || "approved",
+        paymentStatus: paymentInfo?.status || "approved",
       } as CompleteOrderResponse)
     } else {
-      console.error(`Cart completion failed:`, result)
-      res.status(400).json({
+      if (completionError) {
+        throw completionError
+      }
+
+      console.error(`Cart completion failed without order ID for cart ${cartId}`)
+      res.status(500).json({
         success: false,
-        error: "Could not complete order. Cart may be missing required data.",
+        error: "Could not complete order. Cart may be missing required data or shipping method.",
       } as CompleteOrderResponse)
     }
   } catch (error: any) {
@@ -163,6 +216,79 @@ export async function POST(
       error: error.message || "Failed to complete order",
     } as CompleteOrderResponse)
   }
+}
+
+async function createOrderFromCartFallback(
+  req: MedusaRequest,
+  cartId: string
+): Promise<string> {
+  const query = req.scope.resolve("query")
+  const orderModuleService = req.scope.resolve(Modules.ORDER) as any
+
+  const { data: carts } = await query.graph({
+    entity: "cart",
+    fields: [
+      "id",
+      "currency_code",
+      "customer_id",
+      "region_id",
+      "email",
+      "metadata",
+      "items.*",
+      "shipping_address.*",
+      "billing_address.*",
+    ],
+    filters: { id: cartId },
+  })
+
+  const cart = carts?.[0]
+  if (!cart) {
+    throw new Error("Cart not found for fallback order creation")
+  }
+
+  const orders = await orderModuleService.createOrders({
+    currency_code: cart.currency_code,
+    customer_id: cart.customer_id,
+    region_id: cart.region_id,
+    items:
+      cart.items?.map((item: any) => ({
+        title: item.title || item.product_title || item.variant_title || "Product",
+        variant_id: item.variant_id,
+        quantity: item.quantity,
+        unit_price: item.unit_price,
+        thumbnail: item.thumbnail,
+        product_id: item.product_id,
+        product_title: item.product_title,
+        product_description: item.product_description,
+        product_subtitle: item.product_subtitle,
+        product_type: item.product_type,
+        product_collection: item.product_collection,
+        product_handle: item.product_handle,
+        variant_title: item.variant_title,
+        variant_sku: item.variant_sku,
+        variant_barcode: item.variant_barcode,
+        requires_shipping: item.requires_shipping,
+        is_discountable: item.is_discountable,
+        is_tax_inclusive: item.is_tax_inclusive,
+        metadata: item.metadata,
+      })) || [],
+    shipping_address: cart.shipping_address,
+    billing_address: cart.billing_address,
+    email: cart.email,
+    metadata: {
+      ...(cart.metadata || {}),
+      payment_fallback_created: true,
+      fallback_source: "complete-order-shipping-profile",
+      source_cart_id: cartId,
+    },
+  })
+
+  const createdOrder = Array.isArray(orders) ? orders[0] : orders
+  if (!createdOrder?.id) {
+    throw new Error("Fallback order creation failed")
+  }
+
+  return createdOrder.id
 }
 
 async function findOrderByCartId(query: any, cartId: string): Promise<any | null> {

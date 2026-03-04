@@ -107,15 +107,26 @@ async function handleApprovedPayment(
 
 
   const paymentSession = cart.payment_collection?.payment_sessions?.find(
-    (s: any) => s.provider_id?.includes("mercadopago") || s.provider_id?.includes("openpay")
+    (s: any) =>
+      s.provider_id?.includes("mercadopago") ||
+      s.provider_id?.includes("openpay") ||
+      s.provider_id?.includes("system_default")
   )
 
   if (paymentSession && paymentSession.status !== "authorized") {
     try {
       const paymentModule = req.scope.resolve(Modules.PAYMENT)
-      await paymentModule.authorizePaymentSession(paymentSession.id, {
-        mercadopago_payment_id: paymentInfo.id,
+      const isOpenpaySession = paymentSession.provider_id?.includes("openpay")
+      const isMercadoPagoSession = paymentSession.provider_id?.includes("mercadopago")
+
+      const authorizePayload = {
         status: "approved",
+        ...(isOpenpaySession ? { openpay_payment_id: paymentInfo.id } : {}),
+        ...(isMercadoPagoSession ? { mercadopago_payment_id: paymentInfo.id } : {}),
+      }
+
+      await paymentModule.authorizePaymentSession(paymentSession.id, {
+        ...authorizePayload,
       })
     } catch (err: any) {
       console.warn(`Could not authorize session: ${err.message}`)

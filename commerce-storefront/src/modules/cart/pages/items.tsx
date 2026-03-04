@@ -24,10 +24,10 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
             <Table.HeaderCell className="!pl-0">{t("product")}</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
             <Table.HeaderCell>{t("quantity")}</Table.HeaderCell>
-            <Table.HeaderCell className="hidden small:table-cell">
+            <Table.HeaderCell className="hidden small:table-cell w-32 text-right">
               {t("price")}
             </Table.HeaderCell>
-            <Table.HeaderCell className="!pr-0 text-right">
+            <Table.HeaderCell className="w-32 !pr-0 text-right">
               {t("total")}
             </Table.HeaderCell>
           </Table.Row>

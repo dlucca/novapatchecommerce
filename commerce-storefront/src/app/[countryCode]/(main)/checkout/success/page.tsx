@@ -1,6 +1,5 @@
 import { Metadata } from "next"
 import { redirect } from "next/navigation"
-import { verifyAndCompleteOrder } from "@lib/data/mercadopago"
 import SuccessPoller from "@modules/checkout/components/success-poller"
 
 export const metadata: Metadata = {
@@ -17,6 +16,7 @@ type Props = {
     collection_id?: string
     collection_status?: string
     external_reference?: string
+    id?: string
   }>
 }
 
@@ -24,8 +24,26 @@ export default async function PaymentSuccessPage({ params, searchParams }: Props
   const { countryCode } = await params
   const searchParamsData = await searchParams
 
-  const cartId = searchParamsData.cartId || searchParamsData.external_reference
-  const payment_id = searchParamsData.payment_id || searchParamsData.collection_id
+  const normalizeCartId = (value?: string) => {
+    if (!value) {
+      return undefined
+    }
+
+    if (value.startsWith("cart_")) {
+      return value
+    }
+
+    const match = value.match(/(cart_[A-Za-z0-9_]+)/)
+    return match?.[1]
+  }
+
+  const cartId =
+    searchParamsData.cartId ||
+    normalizeCartId(searchParamsData.external_reference)
+  const payment_id =
+    searchParamsData.payment_id ||
+    searchParamsData.collection_id ||
+    searchParamsData.id
   const status = searchParamsData.status || searchParamsData.collection_status
 
   if (!cartId) {
@@ -40,12 +58,6 @@ export default async function PaymentSuccessPage({ params, searchParams }: Props
 	  if (status === "pending" || status === "in_process") {
 	    redirect(`/${countryCode}/checkout/pending?cartId=${cartId}&status=${status}`)
 	  }
-
-  const result = await verifyAndCompleteOrder(cartId, payment_id)
-
-  if (result.success && result.orderId) {
-    redirect(`/${countryCode}/order/${result.orderId}/confirmed`)
-  }
 
   return (
     <div className="min-h-screen bg-novapatch-bg-cream py-12 px-4">

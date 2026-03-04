@@ -1,6 +1,6 @@
 import { Container, Heading, Text } from "@medusajs/ui"
 
-import { isStripe, paymentInfoMap } from "@lib/constants"
+import { getPaymentTitleKey, isStripe, paymentInfoMap } from "@lib/constants"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 import { useLocale, useTranslations } from "next-intl"
@@ -15,6 +15,7 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
   const locale = useLocale()
   const dateLocale = locale === "pt" ? "pt-BR" : "es-MX"
   const payment = order.payment_collections?.[0]?.payments?.[0]
+  const paymentTitleKey = payment ? getPaymentTitleKey(payment.provider_id, locale) : undefined
 
   const formatPaymentDate = (dateInput: string | Date) => {
     const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput
@@ -50,8 +51,8 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
                 className="text-[#0A4C6D] font-medium text-base"
                 data-testid="payment-method"
               >
-                {paymentInfoMap[payment.provider_id]?.titleKey
-                  ? tPaymentMethods(paymentInfoMap[payment.provider_id]?.titleKey)
+                {paymentTitleKey
+                  ? tPaymentMethods(paymentTitleKey)
                   : tOrder("payment.cardLabel")}
               </Text>
             </div>
