@@ -7,7 +7,7 @@ import { revalidateTag } from "next/cache"
 /**
  * Create Openpay payment preference and get redirect URL
  */
-export async function createOpenpayPreference(cartId: string) {
+export async function createOpenpayPreference(cartId: string, frontendUrl?: string) {
     const headers = {
         ...(await getAuthHeaders()),
     }
@@ -19,7 +19,10 @@ export async function createOpenpayPreference(cartId: string) {
     }>(`/store/payment/preference`, {
         method: "POST",
         headers,
-        body: { cartId },
+        body: {
+            cartId,
+            frontendUrl,
+        },
     })
 
     return response

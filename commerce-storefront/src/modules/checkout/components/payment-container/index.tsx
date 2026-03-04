@@ -1,11 +1,11 @@
 import { Radio as RadioGroupOption } from "@headlessui/react"
 import { Text, clx } from "@medusajs/ui"
 import React, { useContext, useMemo, type JSX } from "react"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 
 import Radio from "@/components/ui/radio"
 
-import { isManual } from "@lib/constants"
+import { getPaymentTitleKey, isManual } from "@lib/constants"
 import SkeletonCardDetails from "@/components/ui/skeletons/skeleton-card-details"
 import { CardElement } from "@stripe/react-stripe-js"
 import { StripeCardElementOptions } from "@stripe/stripe-js"
@@ -29,7 +29,8 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
 }) => {
   const isDevelopment = process.env.NODE_ENV === "development"
   const tPaymentMethods = useTranslations("paymentMethods")
-  const paymentTitleKey = paymentInfoMap[paymentProviderId]?.titleKey
+  const locale = useLocale()
+  const paymentTitleKey = getPaymentTitleKey(paymentProviderId, locale)
   const paymentTitle = paymentTitleKey
     ? tPaymentMethods(paymentTitleKey)
     : paymentProviderId
