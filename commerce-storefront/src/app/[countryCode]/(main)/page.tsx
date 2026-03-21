@@ -6,9 +6,8 @@ import { featureFlags } from "@lib/feature-flags"
 import HomeTemplate from "@modules/home/pages/home-template"
 
 export const metadata: Metadata = {
-  title: "NovaPatch - Parches Médicos Innovadores",
-  description:
-    "Activa tu bienestar sin complicaciones con nuestros parches médicos innovadores. La forma más limpia y práctica de tomar vitaminas.",
+  title: "Novapatch - Parches de Bienestar Natural",
+  description: "Activa tu bienestar con nuestros parches transdérmicos. La forma más limpia y práctica de incorporar vitaminas y minerales a tu rutina diaria.",
 }
 
 type PageProps = {

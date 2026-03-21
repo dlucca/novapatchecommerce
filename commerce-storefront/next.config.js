@@ -4,9 +4,7 @@ const withNextIntl = require('next-intl/plugin')('./src/i18n.ts')
 
 checkEnvVariables()
 
-/**
- * @type {import('next').NextConfig}
- */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   logging: {
@@ -20,6 +18,15 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
+  // Optimiza imports de librerías grandes automáticamente
+  experimental: {
+    optimizePackageImports: [
+      'lucide-react',
+      '@medusajs/ui',
+      '@headlessui/react',
+      'lodash',
+    ],
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -31,55 +38,18 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "9000",
-      },
-      {
-        protocol: "http",
-        hostname: "localhost",
-      },
-      {
-        protocol: "https",
-        hostname: "novapatchecommerce-production-f896.up.railway.app",
-      },
-      {
-        protocol: "https",
-        hostname: "*.railway.app",
-      },
-      {
-        protocol: "https",
-        hostname: "medusa-public-images.s3.eu-west-1.amazonaws.com",
-      },
-      {
-        protocol: "https",
-        hostname: "medusa-server-testing.s3.amazonaws.com",
-      },
-      {
-        protocol: "https",
-        hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com",
-      },
-      {
-        protocol: "https",
-        hostname: "example.com",
-      },
-      {
-        protocol: "https",
-        hostname: "placehold.co",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "img.clerk.com",
-      },
-      {
-        protocol: "https",
-        hostname: "images.clerk.dev",
-      },
+      { protocol: "http", hostname: "localhost", port: "9000" },
+      { protocol: "http", hostname: "localhost" },
+      { protocol: "https", hostname: "novapatchecommerce-production-f896.up.railway.app" },
+      { protocol: "https", hostname: "*.railway.app" },
+      { protocol: "https", hostname: "medusa-public-images.s3.eu-west-1.amazonaws.com" },
+      { protocol: "https", hostname: "medusa-server-testing.s3.amazonaws.com" },
+      { protocol: "https", hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com" },
+      { protocol: "https", hostname: "example.com" },
+      { protocol: "https", hostname: "placehold.co" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "img.clerk.com" },
+      { protocol: "https", hostname: "images.clerk.dev" },
     ],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",

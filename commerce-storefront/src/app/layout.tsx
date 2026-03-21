@@ -1,4 +1,4 @@
-import { Metadata } from "next"
+import { Metadata, Viewport } from "next"
 import { ClerkProvider } from '@clerk/nextjs'
 import ClerkMedusaSyncProvider from "@/providers/clerk-medusa-sync"
 import { Outfit } from 'next/font/google'
@@ -16,17 +16,20 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
   title: {
-    default: "Novapatch - Parches Médicos Innovadores",
+    default: "Novapatch - Parches de Bienestar Natural",
     template: "%s | Novapatch"
   },
-  description: "Descubre los parches médicos innovadores de Novapatch. La forma más limpia y práctica de incorporar vitaminas y minerales a tu rutina diaria.",
-  keywords: ["parches médicos", "vitaminas", "bienestar", "salud", "suplementos", "novapatch"],
+  description: "Descubre los parches de bienestar de Novapatch. La forma más limpia y práctica de incorporar vitaminas y minerales a tu rutina diaria.",
+  keywords: ["parches de bienestar", "vitaminas", "wellness", "salud", "suplementos", "bienestar natural", "novapatch"],
   authors: [{ name: "Novapatch" }],
-  colorScheme: "light",
-  themeColor: [{ media: "(prefers-color-scheme: light)", color: "#2C5697" }],
   other: {
     charset: "UTF-8"
   }
+}
+
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: [{ media: "(prefers-color-scheme: light)", color: "#2C5697" }],
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
@@ -50,13 +53,17 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       }}
     >
       <html lang="es" data-mode="light" className={outfit.variable} suppressHydrationWarning>
-        <head />
+        <head>
+          <link rel="preconnect" href="https://clerk.com" />
+          <link rel="preconnect" href="https://img.clerk.com" crossOrigin="anonymous" />
+          <link rel="dns-prefetch" href="https://img.clerk.com" />
+        </head>
         <body className={`${outfit.variable} ${outfit.className}`} suppressHydrationWarning>
           <ClerkMedusaSyncProvider>
             <a href="#main-content" className="skip-to-content">
               {tCommon("skipToContent")}
             </a>
-            
+
             <main id="main-content" className="relative">{props.children}</main>
           </ClerkMedusaSyncProvider>
         </body>

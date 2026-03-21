@@ -26,7 +26,7 @@ export default function Footer() {
           }}
         >
           <div
-            className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_auto] md:items-start"
+            className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_1fr_auto] md:items-start"
             style={{ gap: "clamp(2rem, 3vw, 3rem)" }}
           >
             <div
@@ -161,7 +161,44 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-
+            <div
+              className="flex flex-col"
+              style={{ gap: "clamp(0.5rem, 0.75vw, 0.75rem)" }}
+            >
+              <h3
+                className="text-white font-semibold"
+                style={{
+                  fontSize: "clamp(0.875rem, 1vw, 1rem)",
+                  marginBottom: "clamp(0.25rem, 0.75vw, 0.75rem)",
+                }}
+              >
+                Legal
+              </h3>
+              <ul
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "clamp(0.375rem, 0.5vw, 0.5rem)",
+                }}
+              >
+                <li>
+                  <LocalizedClientLink
+                    href="/legal/privacidad"
+                    className="text-white/90 hover:text-white transition-colors duration-200 text-xs sm:text-sm"
+                  >
+                    Aviso de Privacidad
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    href="/legal/terminos"
+                    className="text-white/90 hover:text-white transition-colors duration-200 text-xs sm:text-sm"
+                  >
+                    Términos y Condiciones
+                  </LocalizedClientLink>
+                </li>
+              </ul>
+            </div>
             <div
               className="flex flex-col items-end justify-start"
               style={{ gap: "clamp(1.25rem, 1.5vw, 1.5rem)" }}

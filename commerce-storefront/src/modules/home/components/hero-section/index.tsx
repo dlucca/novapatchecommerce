@@ -167,9 +167,8 @@ const HeroSection = () => {
         {heroSlidesConfig.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-[2000ms] ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 transition-opacity duration-[2000ms] ${index === currentSlide ? "opacity-100" : "opacity-0"
+              }`}
           >
             <Image
               src={slide.image}
@@ -230,9 +229,8 @@ const HeroSection = () => {
         <div className="w-full px-8 xsmall:px-12 sm:px-16 md:px-24 lg:px-32 xl:px-40">
           <div className="max-w-md">
             <h1
-              className={`text-pretty text-white font-bold type-hero mb-[clamp(1rem,2vw,1.5rem)] transition-opacity duration-700 ${
-                isTransitioning ? "opacity-0" : "opacity-100"
-              }`}
+              className={`text-pretty text-white font-bold type-hero mb-[clamp(1rem,2vw,1.5rem)] transition-opacity duration-700 ${isTransitioning ? "opacity-0" : "opacity-100"
+                }`}
             >
               {currentSlideTexts["title-bold"]} <br />
               <span className="relative inline-block">
@@ -251,9 +249,8 @@ const HeroSection = () => {
             </h1>
 
             <p
-              className={`text-white font-light type-hero-subtitle mb-[clamp(1.5rem,2vw,2rem)] max-w-[clamp(280px,50vw,500px)] transition-opacity duration-700 ${
-                isTransitioning ? "opacity-0" : "opacity-100"
-              }`}
+              className={`text-white font-light type-hero-subtitle mb-[clamp(1.5rem,2vw,2rem)] max-w-[clamp(280px,50vw,500px)] transition-opacity duration-700 ${isTransitioning ? "opacity-0" : "opacity-100"
+                }`}
             >
               {currentSlideTexts.subtitle}
             </p>

@@ -65,15 +65,13 @@ export default function SubscriptionsWhySection() {
           {whySubscribeItems.map((item, index) => (
             <div
               key={index}
-              className={`flex flex-col items-center text-center px-6 md:px-8 lg:px-12 py-4 transform transition-all duration-700 ${
-                isVisible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
-              } ${
-                index < whySubscribeItems.length - 1 
-                  ? "md:border-r md:border-novapatch-title/20" 
+              className={`flex flex-col items-center text-center px-6 md:px-8 lg:px-12 py-4 transform transition-all duration-700 ${isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+                } ${index < whySubscribeItems.length - 1
+                  ? "md:border-r md:border-novapatch-title/20"
                   : ""
-              }`}
+                }`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div className="w-20 h-20 md:w-24 md:h-24 flex items-center justify-center mb-4">
@@ -83,17 +81,18 @@ export default function SubscriptionsWhySection() {
                   width={80}
                   height={80}
                   className="object-contain"
+                  loading="lazy"
                 />
               </div>
-              
+
               <h3 className="type-subtitle font-bold text-novapatch-title mb-2">
                 {t(item.titleKey)}
               </h3>
-              
+
               <p className="text-gray-600 type-body max-w-[250px] flex-grow">
                 {t(item.subtitleKey)}
               </p>
-              
+
               <div className="flex items-center gap-1 mt-4">
                 <div className="h-5 w-5 md:h-6 md:w-6 bg-novapatch-subscription-why-circle rounded-full"></div>
                 <div className="h-5 w-5 md:h-6 md:w-6 bg-novapatch-subscription-why-circle rounded-full"></div>
