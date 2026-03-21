@@ -80,7 +80,7 @@ const ProductPatchesSection = () => {
               >
                 {t('title.line1')} <span className="font-bold">{t('title.line1Bold')}</span> {t('title.line1End')}
                 <br className="hidden sm:block" />
-                {t('title.line2')} <span className="font-bold">{t('title.line2Bold')}</span>
+                {' '}{t('title.line2')} <span className="font-bold">{t('title.line2Bold')}</span>
               </h2>
 
               <p className="text-gray-700 max-w-md" style={{ fontSize: 'clamp(1rem, 1.25vw, 1.125rem)', marginBottom: 'clamp(1.25rem, 1.5vw, 1.5rem)' }}>
