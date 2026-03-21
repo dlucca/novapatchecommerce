@@ -46,7 +46,7 @@ export default function TerminosPage() {
 
                 <div>
                     <h2 className="text-xl font-semibold text-novapatch-title mb-3">7. Métodos de pago</h2>
-                    <p>Aceptamos los métodos de pago que se mostrarán al momento de la compra (tarjetas de crédito y débito, pagos en línea, entre otros). Los pagos son procesados por proveedores de pago seguros. Novapatch no almacena datos completos de tarjetas bancarias.</p>
+                    <p>Aceptamos tarjetas de crédito y débito, así como otros métodos de pago que se mostrarán disponibles al momento de la compra. Los pagos son procesados de forma segura a través de <strong>Openpay</strong>, pasarela de pago certificada bajo estándar PCI DSS, que garantiza la protección de los datos financieros del usuario durante toda la transacción. Novapatch no almacena, ni tiene acceso directo, a los datos completos de tarjetas bancarias de sus clientes, ya que dicha información es gestionada de manera exclusiva por Openpay conforme a sus políticas de seguridad y privacidad.</p>
                 </div>
 
                 <div>

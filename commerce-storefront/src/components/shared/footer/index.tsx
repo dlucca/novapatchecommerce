@@ -241,7 +241,7 @@ export default function Footer() {
                 </a>
 
                 <a
-                  href="https://tiktok.com/@novapatch"
+                  href="https://www.tiktok.com/@novapatch.mx"
                   target="_blank"
                   rel="noreferrer"
                   className="text-white hover:text-white/80 transition-colors duration-200"
