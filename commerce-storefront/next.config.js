@@ -38,8 +38,13 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
-      { protocol: "http", hostname: "localhost", port: "9000" },
-      { protocol: "http", hostname: "localhost" },
+      // Dev local
+      ...(process.env.NODE_ENV === "development"
+        ? [
+            { protocol: "http", hostname: "localhost", port: "9000" },
+            { protocol: "http", hostname: "localhost" },
+          ]
+        : []),
       { protocol: "https", hostname: "novapatchecommerce-production-f896.up.railway.app" },
       { protocol: "https", hostname: "*.railway.app" },
       { protocol: "https", hostname: "medusa-public-images.s3.eu-west-1.amazonaws.com" },
